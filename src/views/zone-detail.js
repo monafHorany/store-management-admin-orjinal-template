@@ -7,7 +7,7 @@ const ZoneDetail = ({ match, history }) => {
   const dispatch = useDispatch();
   const zone_detail = useSelector((state) => state.singleZone);
   const { loading, zone, error } = zone_detail;
-  console.log(zone);
+  console.log(loading);
 
   useEffect(() => {
     dispatch(fetchSingleZones(match.params.id));

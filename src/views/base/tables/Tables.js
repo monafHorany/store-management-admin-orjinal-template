@@ -8,7 +8,6 @@ import {
   CDataTable,
   CRow
 } from '@coreui/react'
-import { DocsLink } from 'src/reusable'
 
 import usersData from '../../users/UsersData'
 
@@ -31,7 +30,6 @@ const Tables = () => {
           <CCard>
             <CCardHeader>
               Simple Table
-              <DocsLink name="CModal"/>
             </CCardHeader>
             <CCardBody>
             <CDataTable

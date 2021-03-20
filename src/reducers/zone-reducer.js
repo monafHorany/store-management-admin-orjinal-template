@@ -29,7 +29,7 @@ export const fetchAllZonesReducer = (state = {}, action) => {
   }
 };
 
-export const fetchSingleZoneReducer = (state = {}, action) => {
+export const fetchSingleZoneReducer = (state = {loading: true}, action) => {
   switch (action.type) {
     case FETCH_SINGLE_ZONE_REQUEST:
       return { loading: true };

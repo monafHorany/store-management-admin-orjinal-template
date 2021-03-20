@@ -17,7 +17,6 @@ import {
   CFormGroup,
   CLabel
 } from '@coreui/react'
-import { DocsLink } from 'src/reusable'
 
 const Toaster = () => {
 
@@ -66,7 +65,6 @@ const Toaster = () => {
     <CCard>
       <CCardHeader>
         Toasts.
-        <DocsLink name="-Toast"/>
       </CCardHeader>
       <CCardBody>
         <CContainer>

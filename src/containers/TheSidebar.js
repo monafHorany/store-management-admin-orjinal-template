@@ -40,7 +40,7 @@ const TheSidebar = () => {
       _tag: "CSidebarNavDropdown",
       name: "All Zones",
       
-      _children: [...zones.map((zone) => ({
+      _children: zones && [...zones.map((zone) => ({
           _tag: "CSidebarNavItem",
           icon: "cil-location-pin",
           name: `Zone ${zone.zone_symbol}`,
@@ -58,12 +58,6 @@ const TheSidebar = () => {
       show={show}
       onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
     >
-      {console.log(...zones.map((zone) => ({
-          _tag: "CSidebarNavItem",
-          name: `Zone ${zone.zone_symbol}`,
-          to: `/zone/${zone.id}`,
-        }))
-      )}
       <CSidebarBrand
         className="d-md-down-none"
         to="/"
