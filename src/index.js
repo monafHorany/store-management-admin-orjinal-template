@@ -11,6 +11,10 @@ import { icons } from './assets/icons'
 
 import { Provider } from 'react-redux'
 import store from './store'
+import { fetchAllZones } from './actions/zone-action';
+
+
+store.dispatch(fetchAllZones())
 
 React.icons = icons
 

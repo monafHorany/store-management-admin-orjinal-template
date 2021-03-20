@@ -20,6 +20,34 @@ const _nav =  [
     to: '/zones',
     icon: 'cil-location-pin',
   },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Buttons',
+    route: '/buttons',
+    icon: 'cil-cursor',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Buttons',
+        to: '/buttons/buttons',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Brand buttons',
+        to: '/buttons/brand-buttons',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Buttons groups',
+        to: '/buttons/button-groups',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Dropdowns',
+        to: '/buttons/button-dropdowns',
+      }
+    ],
+  },
   
 ]
 

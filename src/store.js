@@ -1,24 +1,28 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
+import {
+  fetchAllZonesReducer,
+  fetchSingleZoneReducer,
+} from "./reducers/zone-reducer";
 const initialState = {
-  sidebarShow: 'responsive'
-}
+  sidebarShow: "responsive",
+};
 
 const changeStateReducer = (state = initialState, { type, ...rest }) => {
   switch (type) {
-    case 'set':
-      return {...state, ...rest }
+    case "set":
+      return { ...state, ...rest };
     default:
-      return state
+      return state;
   }
-}
+};
 const middleware = [thunk];
-
-
 
 const reducer = combineReducers({
   changeState: changeStateReducer,
+  allZones: fetchAllZonesReducer,
+  singleZone: fetchSingleZoneReducer,
 });
 
 const store = createStore(
@@ -26,4 +30,4 @@ const store = createStore(
   // changeState,
   composeWithDevTools(applyMiddleware(...middleware))
 );
-export default store
+export default store;

@@ -12,12 +12,43 @@ import {
   CSidebarNavItem,
 } from "@coreui/react";
 
-import CIcon from "@coreui/icons-react";
+// import CIcon from "@coreui/icons-react";
 
 // sidebar nav config
-import navigation from "./_nav";
 
 const TheSidebar = () => {
+  const zones = useSelector((state) => state.allZones.zones);
+  console.log(zones);
+
+  const _nav = [
+    {
+      _tag: "CSidebarNavItem",
+      name: "Dashboard",
+      to: "/dashboard",
+      // icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
+      icon: "cil-speedometer",
+    },
+    {
+      _tag: "CSidebarNavDivider",
+      className: "m-2",
+    },
+    {
+      _tag: "CSidebarNavTitle",
+      _children: ["ZONES"],
+    },
+    {
+      _tag: "CSidebarNavDropdown",
+      name: "All Zones",
+      
+      _children: [...zones.map((zone) => ({
+          _tag: "CSidebarNavItem",
+          icon: "cil-location-pin",
+          name: `Zone ${zone.zone_symbol}`,
+          to: `/zone/${zone.id}`,
+        })),
+      ],
+    },
+  ];
   const dispatch = useDispatch();
   const show = useSelector((state) => state.changeState.sidebarShow);
 
@@ -27,6 +58,12 @@ const TheSidebar = () => {
       show={show}
       onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
     >
+      {console.log(...zones.map((zone) => ({
+          _tag: "CSidebarNavItem",
+          name: `Zone ${zone.zone_symbol}`,
+          to: `/zone/${zone.id}`,
+        }))
+      )}
       <CSidebarBrand
         className="d-md-down-none"
         to="/"
@@ -59,7 +96,7 @@ const TheSidebar = () => {
       </CSidebarBrand>
       <CSidebarNav style={{ color: "black" }}>
         <CCreateElement
-          items={navigation}
+          items={_nav}
           components={{
             CSidebarNavDivider,
             CSidebarNavDropdown,

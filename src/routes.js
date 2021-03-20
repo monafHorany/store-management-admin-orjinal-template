@@ -40,11 +40,11 @@ const User = React.lazy(() => import('./views/users/User'));
 
 
 
-const Zones = React.lazy(() => import('./views/zones'));
+const zone_page = React.lazy(() => import('./views/zone-detail'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/zones', exact: true, name: 'zones', component: Zones },
+  { path: '/zone/:id', exact: true, name: 'zone', component: zone_page },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
