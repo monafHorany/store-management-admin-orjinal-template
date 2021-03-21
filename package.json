@@ -24,6 +24,8 @@
     "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^26.0.0",
+    "@ckeditor/ckeditor5-react": "^3.0.2",
     "@coreui/chartjs": "^2.0.0",
     "@coreui/coreui": "^3.4.0",
     "@coreui/icons": "^2.0.0-rc.0",
@@ -39,6 +41,7 @@
     "react-app-polyfill": "^2.0.0",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
+    "react-responsive-modal": "^6.0.1",
     "react-router-dom": "^5.2.0",
     "redux": "4.0.5",
     "redux-devtools-extension": "^2.13.9",

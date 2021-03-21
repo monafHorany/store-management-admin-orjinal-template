@@ -5,6 +5,7 @@ import {
   fetchAllZonesReducer,
   fetchSingleZoneReducer,
 } from "./reducers/zone-reducer";
+import { productCreateReducer } from "./reducers/products-reducer";
 const initialState = {
   sidebarShow: "responsive",
 };
@@ -23,6 +24,7 @@ const reducer = combineReducers({
   changeState: changeStateReducer,
   allZones: fetchAllZonesReducer,
   singleZone: fetchSingleZoneReducer,
+  productCreate: productCreateReducer,
 });
 
 const store = createStore(

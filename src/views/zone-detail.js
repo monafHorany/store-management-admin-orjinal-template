@@ -1,6 +1,7 @@
 import { CCard, CCardBody, CCardHeader, CCol, CRow } from "@coreui/react";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { fetchSingleZones } from "../actions/zone-action";
 
 const ZoneDetail = ({ match, history }) => {
@@ -16,18 +17,40 @@ const ZoneDetail = ({ match, history }) => {
     <>
       {!loading && (
         <>
-          <h3>{zone.stands.length} available stand In This Zone</h3>
+          <h3>
+            {zone.stands.length} available{" "}
+            {zone.stands.length > 1 ? "stands" : "stand"} In Zone{" "}
+            {zone.zone_symbol}
+          </h3>
           <CRow>
             {zone.stands.map((stand) => (
               <CCol xs="12" sm="6" md="4" lg="3">
                 <CCard>
-                  <CCardHeader>Stand # {stand.stand_number}</CCardHeader>
+                  <CCardHeader>
+                    <Link to={`/stand/${stand.id}`}>
+                      Stand # {stand.stand_number}
+                    </Link>
+                  </CCardHeader>
                   <CCardBody>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                    sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                    magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-                    quis nostrud exerci tation ullamcorper suscipit lobortis
-                    nisl ut aliquip ex ea commodo consequat.
+                    <p style={{ color: "red" }}>
+                      Stand Capacity:{" "}
+                      <span style={{ color: "black" }}>
+                        {stand.stand_capacity}
+                      </span>
+                    </p>
+                    <p style={{ color: "green" }}>
+                      number of products:{" "}
+                      <span style={{ color: "black" }}>
+                        {stand.products.length}
+                      </span>
+                    </p>
+                    <p style={{ color: "blue" }}>
+                      filling Percentage:{" "}
+                      <span style={{ color: "black" }}>
+                        {(+stand.products.length * stand.stand_capacity) / 100}{" "}
+                        %
+                      </span>
+                    </p>
                   </CCardBody>
                 </CCard>
               </CCol>
