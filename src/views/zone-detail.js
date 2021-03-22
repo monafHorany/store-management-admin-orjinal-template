@@ -7,7 +7,7 @@ import { fetchSingleZones } from "../actions/zone-action";
 const ZoneDetail = ({ match, history }) => {
   const dispatch = useDispatch();
   const zone_detail = useSelector((state) => state.singleZone);
-  const { loading, zone, error } = zone_detail;
+  const { loading, zone } = zone_detail;
   console.log(loading);
 
   useEffect(() => {
@@ -41,13 +41,13 @@ const ZoneDetail = ({ match, history }) => {
                     <p style={{ color: "green" }}>
                       number of products:{" "}
                       <span style={{ color: "black" }}>
-                        {stand.products.length}
+                        {stand.products.reduce((acc, item) => acc + item.quantity, 0)}
                       </span>
                     </p>
                     <p style={{ color: "blue" }}>
                       filling Percentage:{" "}
                       <span style={{ color: "black" }}>
-                        {(+stand.products.length * stand.stand_capacity) / 100}{" "}
+                        {((stand.products.reduce((acc, item) => acc + item.quantity, 0)) * stand.stand_capacity) / 100}{" "}
                         %
                       </span>
                     </p>

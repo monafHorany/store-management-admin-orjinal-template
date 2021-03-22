@@ -83,6 +83,26 @@ const StandDetail = ({ match, history }) => {
     if (!zone) {
       history.push("/");
     }
+
+    useEffect(() => {
+      if (success || successColor) {
+        setOpenModal1(false);
+        setProduct_ar_name("");
+        setProduct_en_name("");
+        setProduct_ar_desc("");
+        setProduct_en_desc("");
+        setImage_url("");
+        setProduct_barcode("");
+        setProduct_sku("");
+       
+  
+        dispatch({ type: ADD_PRODUCT_COLOR_RESET });
+        dispatch({ type: PRODUCT_CREATE_RESET });
+        dispatch({ type: PRODUCT_LIST_RESET });
+  
+        dispatch(listProducts());
+      }
+    }, [dispatch, success, successColor]);
   }, [history, zone]);
   return (
     <>
@@ -107,15 +127,13 @@ const StandDetail = ({ match, history }) => {
             {filterdStand.products.map((product) => (
               <CCol key={product.id} xs="12" sm="6" md="4" lg="3">
                 <CCard>
-                  <CCardHeader>{product.id}</CCardHeader>
-                  <CCardBody>
-                    <p style={{ color: "red" }}>
-                      Stand Capacity:{" "}
-                      <span style={{ color: "black" }}>
-                        {product.product_en_name}
-                      </span>
-                    </p>
-                  </CCardBody>
+                  <CCardHeader style={{ color: "red" }}>
+                    product name:
+                    <span style={{ color: "black" }}>
+                      {product.product_en_name}
+                    </span>
+                  </CCardHeader>
+                  <CCardBody></CCardBody>
                 </CCard>
               </CCol>
             ))}

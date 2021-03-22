@@ -38,14 +38,39 @@ const TheSidebar = () => {
     },
     {
       _tag: "CSidebarNavDropdown",
+      icon: "cil-location-pin",
       name: "All Zones",
-      
-      _children: zones && [...zones.map((zone) => ({
+
+      _children: zones && [
+        ...zones.map((zone) => ({
           _tag: "CSidebarNavItem",
           icon: "cil-location-pin",
           name: `Zone ${zone.zone_symbol}`,
           to: `/zone/${zone.id}`,
         })),
+      ],
+    },
+    {
+      _tag: "CSidebarNavDivider",
+      className: "m-3",
+    },
+    {
+      _tag: "CSidebarNavDropdown",
+      name: "USERS",
+      icon: "cil-user",
+      _children: [
+        {
+          _tag: "CSidebarNavItem",
+          icon: "cil-user",
+          name: `all users`,
+          to: "/users",
+        },
+        {
+          _tag: "CSidebarNavItem",
+          icon: "cil-user-plus",
+          name: `add new user`,
+          to: "/create-user",
+        },
       ],
     },
   ];
