@@ -24,7 +24,7 @@ const ZoneDetail = ({ match, history }) => {
           </h3>
           <CRow>
             {zone.stands.map((stand) => (
-              <CCol xs="12" sm="6" md="4" lg="3">
+              <CCol key={stand.id} xs="12" sm="6" md="4" lg="3">
                 <CCard>
                   <CCardHeader>
                     <Link to={`/stand/${stand.id}`}>
