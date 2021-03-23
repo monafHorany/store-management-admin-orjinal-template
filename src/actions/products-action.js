@@ -4,7 +4,7 @@ import {
   PRODUCT_CREATE_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
-  PRODUCT_LIST_FAIL,
+  // PRODUCT_LIST_FAIL,
 } from "../constants/product-constants";
 
 import axios from "axios";
@@ -48,11 +48,11 @@ export const listProducts = () => async (dispatch) => {
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
     });
-    sessionStorage.setItem(
-      "products",
+    // sessionStorage.setItem(
+    //   "products",
 
-      JSON.stringify(data)
-    );
+    //   JSON.stringify(data)
+    // );
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,

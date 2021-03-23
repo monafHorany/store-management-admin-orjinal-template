@@ -1,0 +1,20 @@
+.message {
+  width: 500px;
+  height: 100px;
+  background: red;
+  position: relative;
+  animation: mymove 0.3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes mymove {
+  0% {
+    left: 0px;
+  }
+  40% {
+    left: 200px;
+  }
+  100% {
+    left: 180px;
+  }
+}

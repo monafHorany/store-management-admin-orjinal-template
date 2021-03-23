@@ -19,7 +19,7 @@ const ZoneDetail = ({ match, history }) => {
         <>
           <h3>
             {zone.stands.length} available{" "}
-            {zone.stands.length > 1 ? "stands" : "stand"} In Zone{" "}
+            {zone.stands.length > 1 ? "stands" : "stand"} in Zone{" "}
             {zone.zone_symbol}
           </h3>
           <CRow>

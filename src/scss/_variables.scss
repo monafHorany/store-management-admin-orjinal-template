@@ -1,44 +1,65 @@
-html{
-    font-family: Arial, Helvetica, sans-serif !important;
+html {
+  font-family: Arial, Helvetica, sans-serif !important;
 }
 body {
-font-family: Arial, Helvetica, sans-serif !important;
+  font-family: Arial, Helvetica, sans-serif !important;
 }
 
-.c-sidebar .c-sidebar-brand{
-background-color:transparent !important;
+.c-sidebar .c-sidebar-brand {
+  background-color: transparent !important;
 }
 
-.c-sidebar-nav{
-background: #ee8332 !important;
-:hover{
-    background: #9b5825 !important;
+.c-sidebar-nav-item {
+  background: #ee8332 !important;
+  :hover {
+    background: #643613 !important;
+  }
 }
-}
-
-.c-sidebar-minimizer{
-background: #ee8332 !important;
-}
-
-.c-sidebar-nav-dropdown-toggle, .c-sidebar-nav-link{
-font-family: Arial, Helvetica, sans-serif;
+.c-sidebar-nav {
+  background: #ee8332 !important;
+  :hover {
+    background: #643613 !important;
+  }
 }
 
-.c-sidebar-nav-icon{
-color: rgb(255, 255, 255) !important;
+.c-sidebar-minimizer {
+  background: #ee8332 !important;
 }
 
-.react-responsive-modal-modal{
-margin: 4rem !important;
+.c-sidebar-nav-dropdown-toggle,
+.c-sidebar-nav-link {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-// .card { 
+.c-sidebar-nav-icon {
+  color: rgb(255, 255, 255) !important;
+}
+
+.react-responsive-modal-modal {
+  margin: 4rem !important;
+}
+
+.react-responsive-modal-closeButton {
+  display: none !important;
+}
+
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+input:focus {
+  outline-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+// .card {
 // border: 3px solid black !important;
 // margin: 2rem !important;
 // }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
--webkit-appearance: none;
-margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }

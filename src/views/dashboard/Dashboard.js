@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createProduct } from "../../actions/products-action";
+import { createProduct, listProducts } from "../../actions/products-action";
 import { Modal } from "react-responsive-modal";
+import styles from "./dashboard.module.css";
 import "react-responsive-modal/styles.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -18,13 +19,21 @@ import {
   CInputFile,
   CLabel,
   CRow,
+  CSelect,
 } from "@coreui/react";
+import { PRODUCT_CREATE_RESET } from "../../constants/product-constants";
 
 const Dashboard = ({ match, history }) => {
   const [openModal1, setOpenModal1] = useState(false);
 
   const productCreate = useSelector((state) => state.productCreate);
-  const { loading, success } = productCreate;
+  let { success } = productCreate;
+
+  console.log(success);
+
+  const zones = useSelector((state) => state.allZones.zones);
+
+  console.log(zones);
 
   const [product_ar_name, setProduct_ar_name] = useState("");
   const [product_en_name, setProduct_en_name] = useState("");
@@ -37,6 +46,17 @@ const Dashboard = ({ match, history }) => {
   const [image_url, setImage_url] = useState();
   const [product_barcode, setProduct_barcode] = useState("");
   const [product_sku, setProduct_sku] = useState("");
+  const [model_number, setModel_number] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [zone, setZone] = useState("");
+  const [stand, setStand] = useState("");
+
+  let stands = [];
+  if (zone) {
+    stands = zones[zone - 1].stands;
+  }
+
+  console.log(stands);
 
   const dispatch = useDispatch();
 
@@ -50,7 +70,9 @@ const Dashboard = ({ match, history }) => {
     formData.append("image_url", image_url);
     formData.append("product_barcode", product_barcode);
     formData.append("product_sku", product_sku);
-    formData.append("standId", match.params.id);
+    formData.append("model_number", model_number);
+    formData.append("quantity", quantity);
+    formData.append("standId", stand);
 
     if (
       product_ar_name &&
@@ -59,38 +81,54 @@ const Dashboard = ({ match, history }) => {
       product_en_desc &&
       image_url &&
       product_barcode &&
-      product_sku
+      product_sku &&
+      model_number &&
+      stand
     ) {
       dispatch(createProduct(formData));
     } else {
-      alert("يرجى تعبئة الحقول بالكامل");
+      alert("Please Fill All Fields");
     }
     console.log(formData);
   };
 
+  const productsList = useSelector((state) => state.productList);
+  const { products } = productsList;
+
   const onOpenModal1 = () => setOpenModal1(true);
   const onCloseModal1 = () => setOpenModal1(false);
 
-  // useEffect(() => {
-  //   if (success || successColor) {
-  //     setOpenModal1(false);
-  //     setProduct_ar_name("");
-  //     setProduct_en_name("");
-  //     setProduct_ar_desc("");
-  //     setProduct_en_desc("");
-  //     setImage_url("");
-  //     setProduct_barcode("");
-  //     setProduct_sku("");
-  //   }
-  // }, [history, zone]);
-
+  useEffect(() => {
+    if (success) {
+      setOpenModal1(false);
+      setProduct_ar_name("");
+      setProduct_en_name("");
+      setProduct_ar_desc("");
+      setProduct_en_desc("");
+      setImage_url("");
+      setProduct_barcode("");
+      setProduct_sku("");
+      dispatch(listProducts());
+    }
+    if (success) {
+      setTimeout(() => {
+        dispatch({ type: PRODUCT_CREATE_RESET });
+      }, 2000);
+    }
+  }, [dispatch, history, success]);
+  console.log(success);
   return (
     <>
+      {success && <div className={styles.message}></div>}
       <CButton
-        style={{ float: "right" }}
+        style={{
+          // float: "right",
+          borderColor: "#ee8332",
+          color: "#ee8332",
+          margin: "1rem",
+        }}
         onClick={onOpenModal1}
         variant="outline"
-        color="primary"
         size="lg"
       >
         Add New Product
@@ -105,7 +143,17 @@ const Dashboard = ({ match, history }) => {
         <CRow>
           <CCol>
             <CCard>
-              <CCardHeader>Add Product</CCardHeader>
+              <CCardHeader
+                style={{
+                  textAlign: "center",
+                  backgroundColor: "#ee8332",
+                  color: "#FFFFFF",
+                  fontWeight: "bold",
+                  letterSpacing: ".5em",
+                }}
+              >
+                Add Product
+              </CCardHeader>
               <CCardBody>
                 <CForm
                   encType="multipart/form-data"
@@ -185,6 +233,7 @@ const Dashboard = ({ match, history }) => {
                     </CLabel>
                     <CCol xs="12" md="9">
                       <CInputFile
+                        size="sm"
                         accept="image/*"
                         required
                         onChange={(e) => setImage_url(e.target.files[0])}
@@ -219,20 +268,100 @@ const Dashboard = ({ match, history }) => {
                       <CInput
                         required
                         onChange={(e) => setProduct_sku(e.target.value)}
-                        type="number"
+                        type="text"
                         value={product_sku}
                         placeholder="SKU Code"
                       />
                     </CCol>
                   </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Model Number</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        required
+                        onChange={(e) => setModel_number(e.target.value)}
+                        type="text"
+                        value={model_number}
+                        placeholder="Model Number"
+                      />
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">quantity</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        required
+                        onChange={(e) => setQuantity(e.target.value)}
+                        type="number"
+                        value={quantity}
+                        placeholder="quantity"
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="selectSm">select Zone</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CSelect
+                        dir="ltr"
+                        custom
+                        size="sm"
+                        name="selectSm"
+                        id="SelectLm"
+                        onChange={(e) => {
+                          setZone(e.target.value);
+                          setStand();
+                        }}
+                      >
+                        <option></option>
+                        {zones.map((zone, index) => (
+                          <option key={index} value={zone.id}>
+                            Zone {zone.zone_symbol}
+                          </option>
+                        ))}
+                      </CSelect>
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="selectSm">select stand</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CSelect
+                        dir="ltr"
+                        custom
+                        size="sm"
+                        disabled={!zone}
+                        name="selectSm"
+                        id="SelectLm"
+                        onChange={(e) => setStand(e.target.value)}
+                      >
+                        <option></option>
+                        {stands.map((stand, index) => (
+                          <option key={index} value={stand.id}>
+                            {stand.stand_number} available Spaces{" "}
+                            {stand.stand_capacity}
+                          </option>
+                        ))}
+                      </CSelect>
+                    </CCol>
+                  </CFormGroup>
                 </CForm>
               </CCardBody>
-              <CCardFooter>
+              <CCardFooter style={{ textAlign: "center" }}>
                 <CButton
+                  style={{ borderColor: "#ee8332", color: "#ee8332" }}
                   onClick={formSubmit}
                   type="button"
-                  size="md"
-                  color="primary"
+                  variant="outline"
+                  size="lg"
                 >
                   Add
                   <i className="fas fa-plus" style={{ marginLeft: "1em" }}></i>
@@ -242,6 +371,22 @@ const Dashboard = ({ match, history }) => {
           </CCol>
         </CRow>
       </Modal>
+
+      <CRow>
+        {products.map((product) => (
+          <CCol key={product.id} xs="12" sm="6" md="4" lg="3">
+            <CCard>
+              <CCardHeader style={{ color: "#ee8332" }}>
+                product name:
+                <span style={{ color: "black" }}>
+                  {product.product_en_name}
+                </span>
+              </CCardHeader>
+              <CCardBody></CCardBody>
+            </CCard>
+          </CCol>
+        ))}
+      </CRow>
     </>
   );
 };
