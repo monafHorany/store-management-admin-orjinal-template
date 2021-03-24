@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createProduct, listProducts } from "../../actions/products-action";
 import { Modal } from "react-responsive-modal";
-import styles from "./dashboard.module.css";
+// import styles from "./dashboard.module.css";
 import "react-responsive-modal/styles.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -18,10 +18,13 @@ import {
   CInput,
   CInputFile,
   CLabel,
+  CLink,
   CRow,
   CSelect,
 } from "@coreui/react";
-import { PRODUCT_CREATE_RESET } from "../../constants/product-constants";
+import { Image } from "react-bootstrap";
+import CIcon from "@coreui/icons-react";
+// import { PRODUCT_CREATE_RESET } from "../../constants/product-constants";
 
 const Dashboard = ({ match, history }) => {
   const [openModal1, setOpenModal1] = useState(false);
@@ -55,8 +58,14 @@ const Dashboard = ({ match, history }) => {
   if (zone) {
     stands = zones[zone - 1].stands;
   }
+  console.log("stands", stands);
+  console.log("stand", stand);
+  let selectedStand;
+  if (stand && stands.length !== 0) {
+    selectedStand = stands.filter((s) => +s.id === +stand)[0];
+  }
 
-  console.log(stands);
+  console.log(selectedStand);
 
   const dispatch = useDispatch();
 
@@ -73,21 +82,24 @@ const Dashboard = ({ match, history }) => {
     formData.append("model_number", model_number);
     formData.append("quantity", quantity);
     formData.append("standId", stand);
-
-    if (
-      product_ar_name &&
-      product_en_name &&
-      product_ar_desc &&
-      product_en_desc &&
-      image_url &&
-      product_barcode &&
-      product_sku &&
-      model_number &&
-      stand
-    ) {
-      dispatch(createProduct(formData));
-    } else {
-      alert("Please Fill All Fields");
+    if (stand && selectedStand) {
+      if (quantity > selectedStand.stand_capacity) {
+        alert("inserted quantity is greater than stand capacity");
+      } else if (
+        product_ar_name &&
+        product_en_name &&
+        product_ar_desc &&
+        product_en_desc &&
+        image_url &&
+        product_barcode &&
+        product_sku &&
+        model_number &&
+        stand
+      ) {
+        dispatch(createProduct(formData));
+      } else {
+        alert("Please Fill All Fields");
+      }
     }
     console.log(formData);
   };
@@ -110,16 +122,11 @@ const Dashboard = ({ match, history }) => {
       setProduct_sku("");
       dispatch(listProducts());
     }
-    if (success) {
-      setTimeout(() => {
-        dispatch({ type: PRODUCT_CREATE_RESET });
-      }, 2000);
-    }
   }, [dispatch, history, success]);
   console.log(success);
   return (
     <>
-      {success && <div className={styles.message}></div>}
+      {/* {success && <div className={styles.message}></div>} */}
       <CButton
         style={{
           // float: "right",
@@ -295,12 +302,21 @@ const Dashboard = ({ match, history }) => {
                     <CCol xs="12" md="9">
                       <CInput
                         required
-                        onChange={(e) => setQuantity(e.target.value)}
+                        onChange={(e) => {
+                          setQuantity(e.target.value);
+                        }}
                         type="number"
                         value={quantity}
                         placeholder="quantity"
                       />
                     </CCol>
+                    <div style={{ margin: "auto" }}>
+                      <p style={{ fontSize: "11px", margin: "auto" }}>
+                        {" "}
+                        make sure that quantity is not greater than stand
+                        capcity{" "}
+                      </p>
+                    </div>
                   </CFormGroup>
 
                   <CFormGroup row>
@@ -316,7 +332,6 @@ const Dashboard = ({ match, history }) => {
                         id="SelectLm"
                         onChange={(e) => {
                           setZone(e.target.value);
-                          setStand();
                         }}
                       >
                         <option></option>
@@ -338,16 +353,55 @@ const Dashboard = ({ match, history }) => {
                         dir="ltr"
                         custom
                         size="sm"
-                        disabled={!zone}
+                        placeholder="set zone and quantity"
+                        disabled={!zone || !quantity}
                         name="selectSm"
                         id="SelectLm"
-                        onChange={(e) => setStand(e.target.value)}
+                        onChange={(e) => {
+                          setStand(e.target.value);
+                        }}
                       >
                         <option></option>
                         {stands.map((stand, index) => (
-                          <option key={index} value={stand.id}>
-                            {stand.stand_number} available Spaces{" "}
-                            {stand.stand_capacity}
+                          <option
+                            key={index}
+                            value={stand.id}
+                            style={{
+                              color:
+                                +stand.stand_capacity -
+                                  stand.products.reduce(
+                                    (acc, item) => acc + item.quantity,
+                                    0
+                                  ) ===
+                                  0 && "red",
+                            }}
+                            disabled={
+                              +stand.stand_capacity -
+                                stand.products.reduce(
+                                  (acc, item) => acc + item.quantity,
+                                  0
+                                ) ===
+                                0 ||
+                              quantity >
+                                +stand.stand_capacity -
+                                  stand.products.reduce(
+                                    (acc, item) => acc + item.quantity,
+                                    0
+                                  )
+                            }
+                          >
+                            {stand.stand_number} available places{" "}
+                            {+stand.stand_capacity -
+                              stand.products.reduce(
+                                (acc, item) => acc + item.quantity,
+                                0
+                              )}
+                            {+stand.stand_capacity -
+                              stand.products.reduce(
+                                (acc, item) => acc + item.quantity,
+                                0
+                              ) ===
+                              0 && " full"}
                           </option>
                         ))}
                       </CSelect>
@@ -357,6 +411,19 @@ const Dashboard = ({ match, history }) => {
               </CCardBody>
               <CCardFooter style={{ textAlign: "center" }}>
                 <CButton
+                  disabled={
+                    !product_ar_name ||
+                    !product_en_name ||
+                    !product_ar_desc ||
+                    !product_en_desc ||
+                    !image_url ||
+                    !product_barcode ||
+                    !product_sku ||
+                    !model_number ||
+                    !quantity ||
+                    !zone ||
+                    !stand
+                  }
                   style={{ borderColor: "#ee8332", color: "#ee8332" }}
                   onClick={formSubmit}
                   type="button"
@@ -374,15 +441,29 @@ const Dashboard = ({ match, history }) => {
 
       <CRow>
         {products.map((product) => (
-          <CCol key={product.id} xs="12" sm="6" md="4" lg="3">
+          <CCol key={product.id} xs="12" sm="6" md="3" lg="2">
             <CCard>
               <CCardHeader style={{ color: "#ee8332" }}>
-                product name:
                 <span style={{ color: "black" }}>
                   {product.product_en_name}
                 </span>
+                <div className="card-header-actions">
+                  <CLink className="card-header-action">
+                    <CIcon name="cil-list" />
+                  </CLink>
+                </div>
               </CCardHeader>
-              <CCardBody></CCardBody>
+              <CCardBody>
+                <div style={{ margin: "auto", textAlign: "center" }}>
+                  <Image
+                    height={150}
+                    width={150}
+                    src={process.env.REACT_APP_BACKEND_URL + product.image_url}
+                    alt=""
+                    fluid
+                  />
+                </div>
+              </CCardBody>
             </CCard>
           </CCol>
         ))}
