@@ -7,7 +7,9 @@ import {
 } from "./reducers/zone-reducer";
 import {
   productCreateReducer,
+  productDeleteReducer,
   productListReducer,
+  productUpdateReducer,
 } from "./reducers/products-reducer";
 const initialState = {
   sidebarShow: "responsive",
@@ -28,6 +30,8 @@ const reducer = combineReducers({
   allZones: fetchAllZonesReducer,
   singleZone: fetchSingleZoneReducer,
   productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
+  productDelete: productDeleteReducer,
   productList: productListReducer,
 });
 

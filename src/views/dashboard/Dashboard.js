@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createProduct, listProducts } from "../../actions/products-action";
+import {
+  createProduct,
+  deleteProduct,
+  listProducts,
+} from "../../actions/products-action";
 import { Modal } from "react-responsive-modal";
-// import styles from "./dashboard.module.css";
+import styles from "./dashboard.module.css";
 import "react-responsive-modal/styles.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -19,22 +23,48 @@ import {
   CInputFile,
   CLabel,
   CLink,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
   CRow,
   CSelect,
 } from "@coreui/react";
 import { Image } from "react-bootstrap";
-import CIcon from "@coreui/icons-react";
+// import CIcon from "@coreui/icons-react";
 // import { PRODUCT_CREATE_RESET } from "../../constants/product-constants";
 
 const Dashboard = ({ match, history }) => {
   const [openModal1, setOpenModal1] = useState(false);
 
+  const [danger, setDanger] = useState(false);
+  const [info, setInfo] = useState(false);
+
+  const [productDetail, setProductDetail] = useState({});
+
+  console.log(productDetail);
+
   const productCreate = useSelector((state) => state.productCreate);
   let { success } = productCreate;
+  const productDelete = useSelector((state) => state.productList);
+  let { success: deleteSuccess } = productDelete;
 
   console.log(success);
 
   const zones = useSelector((state) => state.allZones.zones);
+
+  let calculatedZone;
+
+  if (productDetail) {
+    calculatedZone = zones.filter((zone) => {
+      let obj = zone.stands.some(({ id }) => id === productDetail.standId);
+      console.log(obj);
+      return obj;
+    })[0];
+  }
+
+  console.log(calculatedZone);
 
   console.log(zones);
 
@@ -122,7 +152,11 @@ const Dashboard = ({ match, history }) => {
       setProduct_sku("");
       dispatch(listProducts());
     }
-  }, [dispatch, history, success]);
+
+    if (deleteSuccess) {
+      setDanger(false);
+    }
+  }, [danger, deleteSuccess, dispatch, history, success]);
   console.log(success);
   return (
     <>
@@ -443,18 +477,65 @@ const Dashboard = ({ match, history }) => {
         {products.map((product) => (
           <CCol key={product.id} xs="12" sm="6" md="3" lg="2">
             <CCard>
-              <CCardHeader style={{ color: "#ee8332" }}>
-                <span style={{ color: "black" }}>
+              <CCardHeader
+                style={{
+                  color: "#ee8332",
+                  display: "flex",
+                  justifyContent: "space-around",
+                }}
+              >
+                <span style={{ color: "black", whiteSpace: "nowrap" }}>
                   {product.product_en_name}
                 </span>
-                <div className="card-header-actions">
-                  <CLink className="card-header-action">
-                    <CIcon name="cil-list" />
+                <div className={`card-header-actions ${styles.__dropdown}`}>
+                  <CLink className={`card-header-action ${styles.__dropbtn}`}>
+                    <i className="fas fa-bars"></i>
                   </CLink>
+                  <div
+                    className={styles.__dropdown_content}
+                    style={{ color: "black" }}
+                  >
+                    <p
+                      style={{ margin: "0", padding: "14px" }}
+                      onClick={() => {
+                        setInfo(!info);
+                        setProductDetail(product);
+                      }}
+                    >
+                      <i
+                        className="fas fa-info-circle"
+                        style={{ padding: ".5rem" }}
+                      ></i>{" "}
+                      Details
+                    </p>
+                    <p style={{ margin: "0", padding: "14px" }}>
+                      <i
+                        className="fas fa-edit"
+                        style={{ padding: ".5rem" }}
+                      ></i>{" "}
+                      Edit
+                    </p>
+                    <p
+                      style={{ margin: "0", padding: "14px" }}
+                      onClick={() => {
+                        setDanger(!danger);
+                        setProductDetail(product);
+                      }}
+                    >
+                      <i
+                        className="fas fa-trash-alt"
+                        style={{ padding: ".5rem" }}
+                      ></i>{" "}
+                      Delete
+                    </p>
+                  </div>
                 </div>
               </CCardHeader>
               <CCardBody>
-                <div style={{ margin: "auto", textAlign: "center" }}>
+                <div
+                  style={{ margin: "auto", textAlign: "center" }}
+                  className={styles.image_dropdown}
+                >
                   <Image
                     height={150}
                     width={150}
@@ -462,12 +543,127 @@ const Dashboard = ({ match, history }) => {
                     alt=""
                     fluid
                   />
+                  <div className={styles.image_dropdown_content}>
+                    <Image
+                      height={400}
+                      width={400}
+                      src={
+                        process.env.REACT_APP_BACKEND_URL + product.image_url
+                      }
+                      alt=""
+                      fluid
+                    />
+                  </div>
                 </div>
               </CCardBody>
             </CCard>
           </CCol>
         ))}
       </CRow>
+
+      <CModal
+        show={danger}
+        onClose={() => setDanger(!danger)}
+        color="danger"
+        size="sm"
+      >
+        <CModalHeader closeButton>
+          <CModalTitle>
+            <strong>Delete</strong> {productDetail.name}
+          </CModalTitle>
+        </CModalHeader>
+        <CModalBody style={{ fontWeight: "bold", fontStyle: "italic" }}>
+          Warning This Action Can't Be Undone
+        </CModalBody>
+        <CModalFooter>
+          <CButton
+            color="danger"
+            onClick={() => dispatch(deleteProduct(productDetail.id))}
+          >
+            Delete
+          </CButton>{" "}
+          <CButton color="secondary" onClick={() => setDanger(!danger)}>
+            Cancel
+          </CButton>
+        </CModalFooter>
+      </CModal>
+      {calculatedZone && (
+        <CModal
+          show={info}
+          onClose={() => setInfo(!info)}
+          color="info"
+          size="lg"
+        >
+          <CModalHeader closeButton>
+            <CModalTitle>{productDetail.product_en_name}</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CRow>
+              <CCol>
+                <div>
+                  <strong>name: </strong> {productDetail.product_en_name}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>description: </strong> {productDetail.product_en_desc}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>product_sku: </strong> {productDetail.product_sku}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>quantity: </strong> {productDetail.quantity}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>model_number: </strong> {productDetail.model_number}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>Location: </strong>{" "}
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontStyle: "italic",
+                      color: "blue",
+                    }}
+                  >
+                    ZONE:{" "}
+                  </span>{" "}
+                  {calculatedZone.zone_symbol}{" "}
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontStyle: "italic",
+                      color: "blue",
+                    }}
+                  >
+                    STAND:{" "}
+                  </span>{" "}
+                  {productDetail.standId}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>added at: </strong>{" "}
+                  {new Date(productDetail.createdAt).toLocaleString()}{" "}
+                </div>
+              </CCol>
+              <CCol>
+                <Image
+                  height={300}
+                  width={300}
+                  src={
+                    process.env.REACT_APP_BACKEND_URL + productDetail.image_url
+                  }
+                  alt=""
+                  fluid
+                />
+              </CCol>
+            </CRow>
+          </CModalBody>
+        </CModal>
+      )}
     </>
   );
 };
