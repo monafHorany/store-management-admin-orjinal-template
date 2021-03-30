@@ -63,12 +63,14 @@ const User = React.lazy(() => import("./views/users/User"));
 const zone_page = React.lazy(() => import("./views/zone-detail"));
 const stand_page = React.lazy(() => import("./views/stand-detail"));
 const login = React.lazy(() => import("./views/login"));
+const create = React.lazy(() => import("./views/create-user"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/zone/:id", exact: true, name: "zone", component: zone_page },
   { path: "/stand/:id", exact: true, name: "stand", component: stand_page },
   { path: "/login", exact: true, name: "login", component: login },
+  { path: "/create-user", exact: true, name: "create", component: create },
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
   { path: "/theme", name: "Theme", component: Colors, exact: true },
   { path: "/theme/colors", name: "Colors", component: Colors },

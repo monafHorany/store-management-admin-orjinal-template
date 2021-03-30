@@ -20,6 +20,15 @@ const TheSidebar = () => {
   const zones = useSelector((state) => state.allZones.zones);
   console.log(zones);
 
+  const convertedZones = zones.map((zone) => ({
+    _tag: "CSidebarNavItem",
+    icon: "cil-location-pin",
+    name: `Zone ${zone.zone_symbol}`,
+    to: `/zone/${zone.id}`,
+  }));
+
+  console.log(...convertedZones);
+
   const _nav = [
     {
       _tag: "CSidebarNavItem",
@@ -36,20 +45,7 @@ const TheSidebar = () => {
       _tag: "CSidebarNavTitle",
       _children: ["ZONES"],
     },
-    {
-      _tag: "CSidebarNavDropdown",
-      icon: "cil-location-pin",
-      name: "All Zones",
-
-      _children: zones && [
-        ...zones.map((zone) => ({
-          _tag: "CSidebarNavItem",
-          icon: "cil-location-pin",
-          name: `Zone ${zone.zone_symbol}`,
-          to: `/zone/${zone.id}`,
-        })),
-      ],
-    },
+    ...convertedZones,
     {
       _tag: "CSidebarNavDivider",
       className: "m-3",
