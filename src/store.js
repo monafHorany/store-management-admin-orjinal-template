@@ -11,7 +11,7 @@ import {
   productListReducer,
   productUpdateReducer,
 } from "./reducers/products-reducer";
-import { userCreateReducer } from "./reducers/user-reducers";
+import { userCreateReducer, userListReducer } from "./reducers/user-reducers";
 const initialState = {
   sidebarShow: "responsive",
 };
@@ -35,6 +35,7 @@ const reducer = combineReducers({
   productDelete: productDeleteReducer,
   productList: productListReducer,
   userCreate: userCreateReducer,
+  userList: userListReducer,
 });
 
 const store = createStore(

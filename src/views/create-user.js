@@ -151,7 +151,7 @@ const Craete = ({ history }) => {
                           </span>
                         </CLabel>
                       </CCol>
-                      <CCol md="12">
+                      <CCol xs="12" sm="12" md="12" style={{ display: "flex" }}>
                         <CFormGroup variant="custom-radio" inline>
                           <CInputRadio
                             onChange={(e) => {

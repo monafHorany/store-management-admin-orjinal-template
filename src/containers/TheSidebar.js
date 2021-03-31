@@ -51,23 +51,21 @@ const TheSidebar = () => {
       className: "m-3",
     },
     {
-      _tag: "CSidebarNavDropdown",
-      name: "USERS",
+      _tag: "CSidebarNavTitle",
+      _children: ["USER"],
+    },
+
+    {
+      _tag: "CSidebarNavItem",
       icon: "cil-user",
-      _children: [
-        {
-          _tag: "CSidebarNavItem",
-          icon: "cil-user",
-          name: `all users`,
-          to: "/users",
-        },
-        {
-          _tag: "CSidebarNavItem",
-          icon: "cil-user-plus",
-          name: `add new user`,
-          to: "/create-user",
-        },
-      ],
+      name: `all users`,
+      to: "/users",
+    },
+    {
+      _tag: "CSidebarNavItem",
+      icon: "cil-user-plus",
+      name: `add new user`,
+      to: "/create-user",
     },
   ];
   const dispatch = useDispatch();

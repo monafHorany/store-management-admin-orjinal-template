@@ -13,9 +13,11 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { fetchAllZones } from "./actions/zone-action";
 import { listProducts } from "./actions/products-action";
+import { fetchAllUser } from "./actions/user-action";
 
 store.dispatch(fetchAllZones());
 store.dispatch(listProducts());
+store.dispatch(fetchAllUser());
 
 React.icons = icons;
 

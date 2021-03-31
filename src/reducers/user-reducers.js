@@ -3,6 +3,10 @@ import {
   USER_CREATE_REQUEST,
   USER_CREATE_RESET,
   USER_CREATE_SUCCESS,
+  USER_LIST_FAIL,
+  USER_LIST_REQUEST,
+  USER_LIST_RESET,
+  USER_LIST_SUCCESS,
 } from "../constants/user-constants";
 
 export const userCreateReducer = (state = {}, action) => {
@@ -14,6 +18,20 @@ export const userCreateReducer = (state = {}, action) => {
     case USER_CREATE_FAIL:
       return { loading: false, error: action.payload };
     case USER_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+export const userListReducer = (state = {users: []}, action) => {
+  switch (action.type) {
+    case USER_LIST_REQUEST:
+      return { loading: true };
+    case USER_LIST_SUCCESS:
+      return { loading: false, users: action.payload };
+    case USER_LIST_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_LIST_RESET:
       return {};
     default:
       return state;
