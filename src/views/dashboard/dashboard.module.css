@@ -24,7 +24,7 @@
 .__dropbtn {
   /* background-color: #4CAF50; */
   color: rgb(15, 14, 14);
-  padding: 16px;
+  padding: 10px;
   font-size: 16px;
   border: none;
   cursor: pointer;
@@ -46,7 +46,7 @@
 
 .__dropdown_content a {
   color: black;
-  padding: 12px 16px;
+  padding: 10px 12px;
   text-decoration: none;
   display: block;
 }
@@ -58,7 +58,7 @@
 }
 
 .__dropdown:hover .__dropdown_content {
-  display: block;
+  display: block !important;
 }
 
 /* .__dropdown:hover .__dropbtn {

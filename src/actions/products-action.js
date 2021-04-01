@@ -10,10 +10,12 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
+  PRODUCT_CREATE_RESET,
   // PRODUCT_LIST_FAIL,
 } from "../constants/product-constants";
 
 import axios from "axios";
+import { fetchAllZones } from "./zone-action";
 export const createProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -31,6 +33,9 @@ export const createProduct = (product) => async (dispatch, getState) => {
       type: PRODUCT_CREATE_SUCCESS,
       payload: data,
     });
+    dispatch(listProducts());
+    dispatch({ type: PRODUCT_CREATE_RESET });
+    dispatch(fetchAllZones());
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,

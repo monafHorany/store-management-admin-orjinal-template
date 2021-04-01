@@ -41,13 +41,21 @@ const ZoneDetail = ({ match, history }) => {
                     <p style={{ color: "green" }}>
                       number of products:{" "}
                       <span style={{ color: "black" }}>
-                        {stand.products.reduce((acc, item) => acc + item.quantity, 0)}
+                        {stand.products.reduce(
+                          (acc, item) => acc + item.quantity,
+                          0
+                        )}
                       </span>
                     </p>
                     <p style={{ color: "blue" }}>
                       filling Percentage:{" "}
                       <span style={{ color: "black" }}>
-                        {((stand.products.reduce((acc, item) => acc + item.quantity, 0)) * stand.stand_capacity) / 100}{" "}
+                        {(stand.products.reduce(
+                          (acc, item) => acc + item.quantity,
+                          0
+                        ) *
+                          100) /
+                          stand.stand_capacity}{" "}
                         %
                       </span>
                     </p>
