@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createProduct, deleteProduct } from "../../actions/products-action";
+import {
+  createProduct,
+  deleteProduct,
+  UpdateProduct,
+} from "../../actions/products-action";
 import { Modal } from "react-responsive-modal";
 import styles from "./dashboard.module.css";
 import "react-responsive-modal/styles.css";
@@ -33,6 +37,7 @@ import { Image } from "react-bootstrap";
 
 const Dashboard = ({ match, history }) => {
   const [openModal, setOpenModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
   const [danger, setDanger] = useState(false);
   const [info, setInfo] = useState(false);
@@ -62,52 +67,44 @@ const Dashboard = ({ match, history }) => {
       return obj;
     })[0];
   }
-
-  console.log(calculatedZone);
-
-  console.log(zones);
-
-  const [product_ar_name, setProduct_ar_name] = useState(
-    // productDetail.product_ar_name
-    `${productDetail.product_ar_name}`
-  );
-  const [product_en_name, setProduct_en_name] = useState(
-    productDetail.product_en_name
-  );
-  const [product_ar_desc, setProduct_ar_desc] = useState(
-    productDetail.product_ar_desc
-  );
-  const [product_en_desc, setProduct_en_desc] = useState(
-    productDetail.product_en_desc
-  );
+  const [_ar_name, setProduct_ar_name] = useState("");
+  const [_en_name, setProduct_en_name] = useState("");
+  const [_ar_desc, setProduct_ar_desc] = useState("");
+  const [_en_desc, setProduct_en_desc] = useState("");
   const [image_url, setImage_url] = useState();
-  const [product_barcode, setProduct_barcode] = useState(
-    productDetail.product_barcode
-  );
-  const [product_sku, setProduct_sku] = useState(productDetail.product_sku);
-  const [model_number, setModel_number] = useState(productDetail.model_number);
-  const [quantity, setQuantity] = useState(productDetail.quantity);
-  const [zone, setZone] = useState(productDetail.zone);
-  const [stand, setStand] = useState(productDetail.stand);
+  const [_barcode, setProduct_barcode] = useState("");
+  const [_sku, setProduct_sku] = useState("");
+  const [productModel_number, setModel_number] = useState("");
+  const [productQuantity, setQuantity] = useState("");
+  const [productZone, setZone] = useState("");
+  const [productStand, setStand] = useState("");
 
-  console.log(
-    productDetail.product_ar_name,
-    productDetail.product_en_name,
-    productDetail.product_ar_desc,
-    productDetail.product_en_desc,
-    productDetail.product_barcode,
-    productDetail.product_sku,
-    productDetail.model_number
-  );
+  const [product_ar_name, setEditedProduct_ar_name] = useState();
+  const [product_en_name, setEditedProduct_en_name] = useState();
+  const [product_ar_desc, setEditedProduct_ar_desc] = useState();
+  const [product_en_desc, setEditedProduct_en_desc] = useState();
+  const [product_barcode, setEditedProduct_barcode] = useState();
+  const [product_sku, setEditedProduct_sku] = useState();
+  const [model_number, setEditedModel_number] = useState();
+  const [quantity, setEditedQuantity] = useState();
+  const [zone, setEditedZone] = useState();
+  const [standId, setEditedStand] = useState();
 
   let stands = [];
+  if (productZone && zones) {
+    stands = zones[productZone - 1].stands;
+  }
   if (zone && zones) {
     stands = zones[zone - 1].stands;
   }
+  console.log(stands);
 
   let selectedStand;
-  if (stand && stands.length !== 0) {
-    selectedStand = stands.filter((s) => +s.id === +stand)[0];
+  if (productStand && stands.length !== 0) {
+    selectedStand = stands.filter((s) => +s.id === +productStand)[0];
+  }
+  if (standId && stands.length !== 0) {
+    selectedStand = stands.filter((s) => +s.id === +standId)[0];
   }
 
   console.log(selectedStand);
@@ -117,36 +114,35 @@ const Dashboard = ({ match, history }) => {
   const formSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("product_ar_name", product_ar_name);
-    formData.append("product_en_name", product_en_name);
-    formData.append("product_ar_desc", product_ar_desc);
-    formData.append("product_en_desc", product_en_desc);
+    formData.append("product_ar_name", _ar_name);
+    formData.append("product_en_name", _en_name);
+    formData.append("product_ar_desc", _ar_desc);
+    formData.append("product_en_desc", _en_desc);
     formData.append("image_url", image_url);
-    formData.append("product_barcode", product_barcode);
-    formData.append("product_sku", product_sku);
-    formData.append("model_number", model_number);
-    formData.append("quantity", quantity);
-    formData.append("standId", stand);
-    if (stand && selectedStand) {
-      if (quantity > selectedStand.stand_capacity) {
+    formData.append("product_barcode", _barcode);
+    formData.append("product_sku", _sku);
+    formData.append("model_number", productModel_number);
+    formData.append("quantity", productQuantity);
+    formData.append("standId", productStand);
+    if (productStand && selectedStand) {
+      if (productQuantity > selectedStand.stand_capacity) {
         alert("inserted quantity is greater than stand capacity");
       } else if (
-        product_ar_name &&
-        product_en_name &&
-        product_ar_desc &&
-        product_en_desc &&
+        _ar_name &&
+        _en_name &&
+        _ar_desc &&
+        _en_desc &&
         image_url &&
-        product_barcode &&
-        product_sku &&
-        model_number &&
-        stand
+        _barcode &&
+        _sku &&
+        productModel_number &&
+        productStand
       ) {
         dispatch(createProduct(formData));
       } else {
         alert("Please Fill All Fields");
       }
     }
-    console.log(formData);
   };
 
   const productsList = useSelector((state) => state.productList);
@@ -154,10 +150,47 @@ const Dashboard = ({ match, history }) => {
 
   const onOpenModal = () => setOpenModal(true);
   const onCloseModal = () => setOpenModal(false);
+  const onOpenEditModal = () => setOpenEditModal(true);
+  const onCloseEditModal = () => setOpenEditModal(false);
+
+  const editForm = (e) => {
+    if (standId && selectedStand) {
+      if (quantity > selectedStand.stand_capacity) {
+        alert("inserted quantity is greater than stand capacity");
+      } else if (
+        product_ar_name &&
+        product_en_name &&
+        product_ar_desc &&
+        product_en_desc &&
+        product_barcode &&
+        product_sku &&
+        model_number &&
+        quantity &&
+        standId
+      ) {
+        dispatch(
+          UpdateProduct(productDetail.id, {
+            product_ar_name,
+            product_en_name,
+            product_ar_desc,
+            product_en_desc,
+            product_barcode,
+            product_sku,
+            model_number,
+            quantity,
+            standId,
+          })
+        );
+      } else {
+        alert("Please Fill All Fields");
+      }
+    }
+  };
 
   useEffect(() => {
     if (success || updateSuccess) {
       setOpenModal(false);
+      setOpenEditModal(false);
       setProduct_ar_name("");
       setProduct_en_name("");
       setProduct_ar_desc("");
@@ -167,13 +200,23 @@ const Dashboard = ({ match, history }) => {
       setProduct_sku("");
       setModel_number("");
       setQuantity("");
+
+      setEditedProduct_ar_name("");
+      setEditedProduct_en_name("");
+      setEditedProduct_ar_desc("");
+      setEditedProduct_en_desc("");
+      setEditedProduct_barcode("");
+      setEditedProduct_sku("");
+      setEditedModel_number("");
+      setEditedQuantity("");
+      setEditedZone("");
+      setEditedStand("");
     }
 
     if (deleteSuccess) {
       setDanger(false);
     }
   }, [danger, deleteSuccess, dispatch, history, success, updateSuccess]);
-  console.log(success);
   return (
     <>
       {!loading && !error ? (
@@ -226,7 +269,7 @@ const Dashboard = ({ match, history }) => {
                             required
                             type="text"
                             onChange={(e) => setProduct_ar_name(e.target.value)}
-                            value={product_ar_name}
+                            value={_ar_name}
                             placeholder="Product Name in Arabic"
                           />
                         </CCol>
@@ -240,7 +283,7 @@ const Dashboard = ({ match, history }) => {
                             onChange={(e) => setProduct_en_name(e.target.value)}
                             required
                             type="text"
-                            value={product_en_name}
+                            value={_en_name}
                             placeholder="Product Name in English"
                           />
                         </CCol>
@@ -253,15 +296,15 @@ const Dashboard = ({ match, history }) => {
                         </CCol>
                         <CCol xs="12" md="9">
                           <CKEditor
-                            onChange={(event, product_ar_desc) => {
-                              setProduct_ar_desc(product_ar_desc.getData());
+                            onChange={(event, _ar_desc) => {
+                              setProduct_ar_desc(_ar_desc.getData());
                             }}
                             // onChange={(e)=>setar_description(e.target.value)}
                             required
                             config={{ language: "ar" }}
                             editor={ClassicEditor}
                             placeholder="product description in Arabic"
-                            data={product_ar_desc}
+                            data={_ar_desc}
                             dir="rtl"
                           />
                         </CCol>
@@ -274,13 +317,13 @@ const Dashboard = ({ match, history }) => {
                         </CCol>
                         <CCol xs="12" md="9">
                           <CKEditor
-                            onChange={(event, product_en_desc) => {
-                              setProduct_en_desc(product_en_desc.getData());
+                            onChange={(event, _en_desc) => {
+                              setProduct_en_desc(_en_desc.getData());
                             }}
                             required
                             editor={ClassicEditor}
                             placeholder="product description in English"
-                            data={product_en_desc}
+                            data={_en_desc}
                           />
                         </CCol>
                       </CFormGroup>
@@ -316,7 +359,7 @@ const Dashboard = ({ match, history }) => {
                             required
                             onChange={(e) => setProduct_barcode(e.target.value)}
                             type="number"
-                            value={product_barcode}
+                            value={_barcode}
                             placeholder="product barcode"
                           />
                         </CCol>
@@ -330,7 +373,7 @@ const Dashboard = ({ match, history }) => {
                             required
                             onChange={(e) => setProduct_sku(e.target.value)}
                             type="text"
-                            value={product_sku}
+                            value={_sku}
                             placeholder="SKU Code"
                           />
                         </CCol>
@@ -344,7 +387,7 @@ const Dashboard = ({ match, history }) => {
                             required
                             onChange={(e) => setModel_number(e.target.value)}
                             type="text"
-                            value={model_number}
+                            value={productModel_number}
                             placeholder="Model Number"
                           />
                         </CCol>
@@ -360,7 +403,7 @@ const Dashboard = ({ match, history }) => {
                               setQuantity(e.target.value);
                             }}
                             type="number"
-                            value={quantity}
+                            value={productQuantity}
                             placeholder="quantity"
                           />
                         </CCol>
@@ -408,7 +451,7 @@ const Dashboard = ({ match, history }) => {
                             custom
                             size="sm"
                             placeholder="set zone and quantity"
-                            disabled={!zone || !quantity}
+                            disabled={!productZone || !productQuantity}
                             name="selectSm"
                             id="SelectLm"
                             onChange={(e) => {
@@ -436,7 +479,7 @@ const Dashboard = ({ match, history }) => {
                                       0
                                     ) ===
                                     0 ||
-                                  quantity >
+                                  productQuantity >
                                     +stand.stand_capacity -
                                       stand.products.reduce(
                                         (acc, item) => acc + item.quantity,
@@ -466,17 +509,17 @@ const Dashboard = ({ match, history }) => {
                   <CCardFooter style={{ textAlign: "center" }}>
                     <CButton
                       disabled={
-                        !product_ar_name ||
-                        !product_en_name ||
-                        !product_ar_desc ||
-                        !product_en_desc ||
+                        !_ar_name ||
+                        !_en_name ||
+                        !_ar_desc ||
+                        !_en_desc ||
                         !image_url ||
-                        !product_barcode ||
-                        !product_sku ||
-                        !model_number ||
-                        !quantity ||
-                        !zone ||
-                        !stand
+                        !_barcode ||
+                        !_sku ||
+                        !productModel_number ||
+                        !productQuantity ||
+                        !productZone ||
+                        !productStand
                       }
                       style={{ borderColor: "#ee8332", color: "#ee8332" }}
                       onClick={formSubmit}
@@ -547,7 +590,15 @@ const Dashboard = ({ match, history }) => {
                             setProductDetail(product);
                           }}
                           onClick={() => {
-                            onOpenModal();
+                            onOpenEditModal();
+                            setEditedProduct_ar_name(product.product_ar_name);
+                            setEditedProduct_en_name(product.product_en_name);
+                            setEditedProduct_ar_desc(product.product_ar_desc);
+                            setEditedProduct_en_desc(product.product_en_desc);
+                            setEditedProduct_barcode(product.product_barcode);
+                            setEditedProduct_sku(product.product_sku);
+                            setEditedModel_number(product.model_number);
+                            setEditedQuantity(product.quantity);
                           }}
                         >
                           <i
@@ -714,6 +765,300 @@ const Dashboard = ({ match, history }) => {
               </CModalBody>
             </CModal>
           )}
+
+          <Modal
+            open={openEditModal}
+            onClose={onCloseEditModal}
+            center
+            className={{ modal: "customModal" }}
+          >
+            <CRow>
+              <CCol>
+                <CCard>
+                  {/* <CCardHeader
+                style={{
+                  textAlign: "center",
+                  backgroundColor: "#ee8332",
+                  color: "#FFFFFF",
+                  fontWeight: "bold",
+                  letterSpacing: ".5em",
+                }}
+              >
+                Edit Product
+              </CCardHeader> */}
+                  <CCardBody>
+                    <CForm
+                      encType="multipart/form-data"
+                      className="form-horizontal"
+                    >
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="text-input">Product Name</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CInput
+                            required
+                            type="text"
+                            onChange={(e) =>
+                              setEditedProduct_ar_name(e.target.value)
+                            }
+                            value={product_ar_name}
+                            placeholder="Product Name in Arabic"
+                          />
+                        </CCol>
+                      </CFormGroup>
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="text-input">Product Name</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CInput
+                            onChange={(e) =>
+                              setEditedProduct_en_name(e.target.value)
+                            }
+                            required
+                            type="text"
+                            value={product_en_name}
+                            placeholder="Product Name in English"
+                          />
+                        </CCol>
+                      </CFormGroup>
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="textarea-input">
+                            product description
+                          </CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CKEditor
+                            onChange={(event, editedproduct_ar_desc) => {
+                              setEditedProduct_ar_desc(
+                                editedproduct_ar_desc.getData()
+                              );
+                            }}
+                            // onChange={(e)=>setar_description(e.target.value)}
+                            required
+                            config={{ language: "ar" }}
+                            editor={ClassicEditor}
+                            placeholder="product description in Arabic"
+                            data={product_ar_desc}
+                            dir="rtl"
+                          />
+                        </CCol>
+                      </CFormGroup>
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="textarea-input">
+                            product description
+                          </CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CKEditor
+                            onChange={(event, editedproduct_en_desc) => {
+                              setEditedProduct_en_desc(
+                                editedproduct_en_desc.getData()
+                              );
+                            }}
+                            required
+                            editor={ClassicEditor}
+                            placeholder="product description in English"
+                            data={product_en_desc}
+                          />
+                        </CCol>
+                      </CFormGroup>
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="text-input">product barcode</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CInput
+                            required
+                            onChange={(e) =>
+                              setEditedProduct_barcode(e.target.value)
+                            }
+                            type="number"
+                            value={product_barcode}
+                            placeholder="product barcode"
+                          />
+                        </CCol>
+                      </CFormGroup>
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="text-input">SKU Code</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CInput
+                            required
+                            onChange={(e) =>
+                              setEditedProduct_sku(e.target.value)
+                            }
+                            type="text"
+                            value={product_sku}
+                            placeholder="SKU Code"
+                          />
+                        </CCol>
+                      </CFormGroup>
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="text-input">Model Number</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CInput
+                            required
+                            onChange={(e) =>
+                              setEditedModel_number(e.target.value)
+                            }
+                            type="text"
+                            value={model_number}
+                            placeholder="Model Number"
+                          />
+                        </CCol>
+                      </CFormGroup>
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="text-input">quantity</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CInput
+                            required
+                            onChange={(e) => {
+                              setEditedQuantity(e.target.value);
+                            }}
+                            type="number"
+                            value={quantity}
+                            placeholder="quantity"
+                          />
+                        </CCol>
+                        <div style={{ margin: "auto" }}>
+                          <p style={{ fontSize: "11px", margin: "auto" }}>
+                            {" "}
+                            make sure that quantity is not greater than stand
+                            capcity{" "}
+                          </p>
+                        </div>
+                      </CFormGroup>
+
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="selectSm">select Zone</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CSelect
+                            dir="ltr"
+                            custom
+                            size="sm"
+                            name="selectSm"
+                            id="SelectLm"
+                            onChange={(e) => {
+                              setEditedZone(e.target.value);
+                            }}
+                          >
+                            <option></option>
+                            {zones.map((zone, index) => (
+                              <option key={index} value={zone.id}>
+                                Zone {zone.zone_symbol}
+                              </option>
+                            ))}
+                          </CSelect>
+                        </CCol>
+                      </CFormGroup>
+
+                      <CFormGroup row>
+                        <CCol md="3">
+                          <CLabel htmlFor="selectSm">select stand</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="9">
+                          <CSelect
+                            dir="ltr"
+                            custom
+                            size="sm"
+                            placeholder="set zone and quantity"
+                            disabled={!zone || !quantity}
+                            name="selectSm"
+                            id="SelectLm"
+                            onChange={(e) => {
+                              setEditedStand(e.target.value);
+                            }}
+                          >
+                            <option></option>
+                            {stands.map((stand, index) => (
+                              <option
+                                key={index}
+                                value={stand.id}
+                                style={{
+                                  color:
+                                    +stand.stand_capacity -
+                                      stand.products.reduce(
+                                        (acc, item) => acc + item.quantity,
+                                        0
+                                      ) ===
+                                      0 && "red",
+                                }}
+                                disabled={
+                                  +stand.stand_capacity -
+                                    stand.products.reduce(
+                                      (acc, item) => acc + item.quantity,
+                                      0
+                                    ) ===
+                                    0 ||
+                                  quantity >
+                                    +stand.stand_capacity -
+                                      stand.products.reduce(
+                                        (acc, item) => acc + item.quantity,
+                                        0
+                                      )
+                                }
+                              >
+                                {stand.stand_number} available places{" "}
+                                {+stand.stand_capacity -
+                                  stand.products.reduce(
+                                    (acc, item) => acc + item.quantity,
+                                    0
+                                  )}
+                                {+stand.stand_capacity -
+                                  stand.products.reduce(
+                                    (acc, item) => acc + item.quantity,
+                                    0
+                                  ) ===
+                                  0 && " full"}
+                              </option>
+                            ))}
+                          </CSelect>
+                        </CCol>
+                      </CFormGroup>
+                    </CForm>
+                  </CCardBody>
+                  <CCardFooter style={{ textAlign: "center" }}>
+                    <CButton
+                      disabled={
+                        !product_ar_name ||
+                        !product_en_name ||
+                        !product_ar_desc ||
+                        !product_en_desc ||
+                        !product_barcode ||
+                        !product_sku ||
+                        !model_number ||
+                        !quantity ||
+                        !zone ||
+                        !standId
+                      }
+                      style={{ borderColor: "#ee8332", color: "#ee8332" }}
+                      onClick={editForm}
+                      type="button"
+                      variant="outline"
+                      size="lg"
+                    >
+                      OK
+                      <i
+                        className="fas fa-pen"
+                        style={{ marginLeft: "1em" }}
+                      ></i>
+                    </CButton>
+                  </CCardFooter>
+                </CCard>
+              </CCol>
+            </CRow>
+          </Modal>
         </>
       ) : (
         <p>...loading</p>

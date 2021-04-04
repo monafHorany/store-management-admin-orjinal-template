@@ -52,7 +52,7 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "content-type": "multipart/form-data",
+        "content-type": "application/json",
       },
     };
     const { data } = await axios.post(`/product/update/${id}`, product, config);
@@ -61,6 +61,9 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
       type: PRODUCT_UPDATE_SUCCESS,
       payload: data,
     });
+    dispatch(listProducts());
+    dispatch({ type: PRODUCT_CREATE_RESET });
+    dispatch(fetchAllZones());
   } catch (error) {
     dispatch({
       type: PRODUCT_UPDATE_FAIL,

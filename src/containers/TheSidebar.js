@@ -18,7 +18,7 @@ import {
 
 const TheSidebar = () => {
   const zonesReducer = useSelector((state) => state.allZones);
-  const { loading, zones, error } = zonesReducer;
+  const { loading, zones } = zonesReducer;
   console.log(zones);
   let convertedZones = [];
   if (!loading && zones) {
