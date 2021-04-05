@@ -3,9 +3,15 @@ import {
   USER_CREATE_FAIL,
   USER_CREATE_REQUEST,
   USER_CREATE_SUCCESS,
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
   USER_LIST_FAIL,
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
+  USER_UPDATE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
 } from "../constants/user-constants";
 export const createUser = (user) => async (dispatch, getState) => {
   try {
@@ -24,6 +30,7 @@ export const createUser = (user) => async (dispatch, getState) => {
       type: USER_CREATE_SUCCESS,
       payload: data,
     });
+    dispatch(fetchAllUser());
   } catch (error) {
     dispatch({
       type: USER_CREATE_FAIL,
@@ -52,6 +59,58 @@ export const fetchAllUser = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_LIST_FAIL,
+      payload: error.response.data || error.response.statusText,
+    });
+  }
+};
+
+export const updateUser = (id, user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+    const { data } = await axios.put(`/user/${id}`, user, config);
+
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+      payload: data,
+    });
+    dispatch(fetchAllUser());
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
+      payload: error.response.data || error.response.statusText,
+    });
+  }
+};
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+    const { data } = await axios.delete(`/user/${id}`, config);
+
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+      payload: data,
+    });
+    dispatch(fetchAllUser());
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_FAIL,
       payload: error.response.data || error.response.statusText,
     });
   }

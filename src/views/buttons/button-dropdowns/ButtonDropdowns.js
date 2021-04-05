@@ -68,7 +68,7 @@ const ButtonDropdowns = () => {
                 <CDropdownItem>Another Action</CDropdownItem>
               </CDropdownMenu>
             </CDropdown>
-            <CDropdown className="m-1 btn-group">
+            <CDropdown  >
               <CDropdownToggle color="success">
                 Success
               </CDropdownToggle>

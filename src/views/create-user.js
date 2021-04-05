@@ -216,7 +216,7 @@ const Craete = ({ history }) => {
                         size="lg"
                         onClick={formSumbit}
                       >
-                        Login
+                        Create
                       </CButton>
                     </CRow>
                   </CForm>

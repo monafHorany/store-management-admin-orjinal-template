@@ -40,7 +40,7 @@ const Dashboard = ({ match, history }) => {
   const [openEditModal, setOpenEditModal] = useState(false);
 
   const [danger, setDanger] = useState(false);
-  const [info, setInfo] = useState(false);
+  const [info, setInfo] = useState(false);  
 
   const [productDetail, setProductDetail] = useState({});
 

@@ -7,9 +7,9 @@ import {
   FETCH_SINGLE_ZONE_REQUEST,
   FETCH_SINGLE_ZONE_SUCCESS,
   FETCH_SINGLE_ZONE_FAIL,
-  // ADD_NEW_ZONE_REQUEST,
-  // ADD_NEW_ZONE_SUCCESS,
-  // ADD_NEW_ZONE_FAIL,
+  ADD_NEW_ZONE_REQUEST,
+  ADD_NEW_ZONE_SUCCESS,
+  ADD_NEW_ZONE_FAIL,
   // UPDATE_ZONE_REQUEST,
   // UPDATE_ZONE_SUCCESS,
   // UPDATE_ZONE_FAIL,
@@ -44,7 +44,6 @@ export const fetchAllZones = () => async (dispatch) => {
   }
 };
 
-
 export const fetchSingleZones = (id) => async (dispatch) => {
   try {
     dispatch({
@@ -60,12 +59,39 @@ export const fetchSingleZones = (id) => async (dispatch) => {
     const { data } = await axios.get(`/zone/${id}`, config);
 
     dispatch({
-      type:   FETCH_SINGLE_ZONE_SUCCESS,
+      type: FETCH_SINGLE_ZONE_SUCCESS,
       payload: data,
     });
   } catch (error) {
     dispatch({
       type: FETCH_SINGLE_ZONE_FAIL,
+      payload: error.response.data || error.response.statusText,
+    });
+  }
+};
+
+export const addNewZones = (zone) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ADD_NEW_ZONE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post("/zone/create", zone, config);
+
+    dispatch({
+      type: ADD_NEW_ZONE_SUCCESS,
+      payload: data,
+    });
+    dispatch(fetchAllZones());
+  } catch (error) {
+    dispatch({
+      type: ADD_NEW_ZONE_FAIL,
       payload: error.response.data || error.response.statusText,
     });
   }

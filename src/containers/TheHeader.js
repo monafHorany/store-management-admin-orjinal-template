@@ -1,12 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { CHeader, CHeaderNav, CSubheader, CToggler } from "@coreui/react";
+import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
+
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardGroup,
+  CCol,
+  CDropdown,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
+  CForm,
+  CFormGroup,
+  CHeader,
+  CHeaderNav,
+  CInput,
+  CInputGroup,
+  CInputGroupPrepend,
+  CInputGroupText,
+  CInputRadio,
+  CLabel,
+  CModal,
+  CModalBody,
+  CModalHeader,
+  CModalTitle,
+  CRow,
+  CToggler,
+  CTooltip,
+} from "@coreui/react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import CIcon from "@coreui/icons-react";
+import { addNewZones } from "../actions/zone-action";
+import { Image } from "react-bootstrap";
 
 const TheHeader = () => {
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.changeState.sidebarShow);
+  const zoneCreate = useSelector((state) => state.zoneCreate);
+  const { success } = zoneCreate;
+
+  const [searchValue, setSearchValue] = useState("");
+
+  const [zone_symbol, setZone_symbol] = useState("");
+  const [zone_capacity, setZone_capacity] = useState("");
+
+  const [searchTerm, setSearchTerm] = useState("Search By Product Name");
 
   const productsList = useSelector((state) => state.productList);
   const { products } = productsList;
@@ -24,47 +66,273 @@ const TheHeader = () => {
       : "responsive";
     dispatch({ type: "set", sidebarShow: val });
   };
-  const options = ["Option 1", "Option 2"];
+  const [openModal, setOpenModal] = useState(false);
+
+  const onOpenModal = () => setOpenModal(true);
+  const onCloseModal = () => setOpenModal(false);
+
+  const formSumbit = () => {
+    if (!zone_symbol) {
+      alert("zone symbol can't be blank");
+    } else if (!zone_capacity) {
+      alert("zone capacity can't be blank");
+    } else {
+      dispatch(addNewZones({ zone_symbol, zone_capacity }));
+    }
+  };
+  useEffect(() => {
+    if (success) {
+      setOpenModal(false);
+    }
+  }, [success]);
+
+  const [productDetail, setProductDetail] = useState({});
+  const [info, setInfo] = useState(false);
+  const zonesReducer = useSelector((state) => state.allZones);
+  const { loading, zones, error } = zonesReducer;
+
+  console.log(productDetail);
+  let calculatedZone;
+
+  if (productDetail && zones) {
+    calculatedZone = zones.filter((zone) => {
+      let obj = zone.stands.some(({ id }) => id === productDetail.standId);
+      console.log(obj);
+      return obj;
+    })[0];
+  }
 
   return (
-    <CHeader withSubheader>
-      <CToggler
-        inHeader
-        className="ml-md-3 d-lg-none"
-        onClick={toggleSidebarMobile}
-      />
-      <CToggler
-        inHeader
-        className="ml-3 d-md-down-none"
-        onClick={toggleSidebar}
-      />
-      <CHeaderNav className="d-md-down-none m-auto w-75">
-        <Autocomplete
-          size="small"
-          autoComplete
-          className="w-100"
-          getOptionLabel={(option) => option.product_en_name}
-          clearOnBlur={true}
-          clearOnEscape={true}
-          // freeSolo
-          id="free-solo-demo"
-          disableClearable
-          onChange={(event, value, reason) => console.log(event, value, reason)}
-          onClick={() => console.log("sdfsdf")}
-          // onClick={() => alert("asdasd")}
-          // onKeyDown={(e) => e.charCode === 13 && alert("asdasd")}
-          options={products}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Search input"
-              margin="normal"
-              variant="outlined"
+    <>
+      {!loading && !error ? (
+        <>
+          <CHeader withSubheader>
+            <CToggler
+              inHeader
+              className="ml-md-3 d-lg-none"
+              onClick={toggleSidebarMobile}
             />
-          )}
-        />
-      </CHeaderNav>
-    </CHeader>
+            <CToggler
+              inHeader
+              className="ml-3 d-md-down-none"
+              onClick={toggleSidebar}
+            />
+            <CTooltip content="Add New Zone" placement="bottom">
+              <div
+                style={{ padding: "24px", cursor: "pointer" }}
+                onClick={() => onOpenModal()}
+              >
+                <i class="fas fa-plus"></i>{" "}
+              </div>
+            </CTooltip>
+            <CHeaderNav className="d-md-down-none m-auto w-75">
+              <Autocomplete
+                size="small"
+                autoComplete
+                className="w-100"
+                getOptionLabel={(option) =>
+                  option && searchTerm === "Search By Product Name"
+                    ? option.product_en_name
+                    : option && searchTerm === "Search By SKU"
+                    ? option.product_sku
+                    : option && searchTerm === "Search By Model Number"
+                    ? option.model_number
+                    : ""
+                }
+                clearOnBlur={true}
+                clearOnEscape={true}
+                // freeSolo
+                id="free-solo-demo"
+                value={searchValue}
+                disableClearable
+                onChange={(event, value, reason) => {
+                  setInfo(!info);
+                  setProductDetail(value);
+                  console.log(event, value, reason);
+                  if (reason === "select-option") {
+                    setSearchValue("");
+                  }
+                }}
+                options={products}
+                renderInput={(params) => (
+                  <TextField
+                    onChange={(e) => console.log(e.target.value)}
+                    {...params}
+                    value={searchValue}
+                    label={searchTerm}
+                    margin="normal"
+                    variant="outlined"
+                  />
+                )}
+              />
+            </CHeaderNav>
+            <CHeaderNav className="px-3">
+              <CDropdown className="m-1 btn-group" direction="down">
+                <CDropdownToggle color="success">{searchTerm}</CDropdownToggle>
+                <CDropdownMenu>
+                  <CDropdownItem
+                    onClick={() => setSearchTerm("Search By Product Name")}
+                  >
+                    Search By Product Name
+                  </CDropdownItem>
+                  <CDropdownItem onClick={() => setSearchTerm("Search By SKU")}>
+                    Search By SKU
+                  </CDropdownItem>
+                  <CDropdownItem
+                    onClick={() => setSearchTerm("Search By Model Number")}
+                  >
+                    Search By Model Number
+                  </CDropdownItem>
+                </CDropdownMenu>
+              </CDropdown>
+            </CHeaderNav>
+          </CHeader>
+          <Modal
+            open={openModal}
+            onClose={onCloseModal}
+            center
+            classNames={{ modal: "customModal" }}
+          >
+            <CRow>
+              <CCol>
+                <CCardGroup>
+                  <CCard className="p-4">
+                    <CCardBody>
+                      <CForm autoComplete="new-password">
+                        <CInputGroup className="mb-3">
+                          <CInputGroupPrepend>
+                            <CInputGroupText>
+                              <i class="far fa-flag"></i>{" "}
+                            </CInputGroupText>
+                          </CInputGroupPrepend>
+                          <CInput
+                            onChange={(e) => setZone_symbol(e.target.value)}
+                            type="text"
+                            value={zone_symbol}
+                            placeholder="Zone Symbol"
+                            autoComplete="new-password"
+                          />
+                        </CInputGroup>
+                        <CInputGroup className="mb-4">
+                          <CInputGroupPrepend>
+                            <CInputGroupText>
+                              <i class="fas fa-warehouse"></i>{" "}
+                            </CInputGroupText>
+                          </CInputGroupPrepend>
+                          <CInput
+                            onChange={(e) => setZone_capacity(e.target.value)}
+                            type="number"
+                            value={zone_capacity}
+                            placeholder="Zone Capacity"
+                            autoComplete="new-password"
+                          />
+                        </CInputGroup>
+
+                        <CRow className="justify-content-center">
+                          <CButton
+                            // disabled={loading}
+                            color="primary"
+                            className="px-4"
+                            size="lg"
+                            onClick={() => formSumbit()}
+                          >
+                            create
+                          </CButton>
+                        </CRow>
+                      </CForm>
+                    </CCardBody>
+                  </CCard>
+                </CCardGroup>
+              </CCol>
+            </CRow>
+          </Modal>
+        </>
+      ) : (
+        <h3>...loading</h3>
+      )}
+
+      {calculatedZone && (
+        <CModal
+          show={info}
+          onClose={() => setInfo(!info)}
+          color="info"
+          size="lg"
+        >
+          <CModalHeader closeButton>
+            <CModalTitle>{productDetail.product_en_name}</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CRow>
+              <CCol>
+                <div>
+                  <strong>name: </strong> {productDetail.product_en_name}
+                </div>{" "}
+                <br />
+                <strong>description: </strong>{" "}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: productDetail.product_en_desc,
+                  }}
+                ></div>{" "}
+                <br />
+                <div>
+                  <strong>product_sku: </strong>
+                  {productDetail.product_sku}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>quantity: </strong> {productDetail.quantity}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>model_number: </strong> {productDetail.model_number}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>Location: </strong>{" "}
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontStyle: "italic",
+                      color: "blue",
+                    }}
+                  >
+                    ZONE:{" "}
+                  </span>{" "}
+                  {calculatedZone.zone_symbol}{" "}
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontStyle: "italic",
+                      color: "blue",
+                    }}
+                  >
+                    STAND:{" "}
+                  </span>{" "}
+                  {productDetail.standId}
+                </div>{" "}
+                <br />
+                <div>
+                  <strong>added at: </strong>{" "}
+                  {new Date(productDetail.createdAt).toLocaleString()}{" "}
+                </div>
+              </CCol>
+              <CCol>
+                <Image
+                  height={300}
+                  width={300}
+                  src={
+                    process.env.REACT_APP_BACKEND_URL + productDetail.image_url
+                  }
+                  alt=""
+                  fluid
+                />
+              </CCol>
+            </CRow>
+          </CModalBody>
+        </CModal>
+      )}
+    </>
   );
 };
 

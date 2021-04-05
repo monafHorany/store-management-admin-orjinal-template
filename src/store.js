@@ -2,8 +2,10 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
+  createNewZoneReducer,
   fetchAllZonesReducer,
   fetchSingleZoneReducer,
+  updateZoneReducer,
 } from "./reducers/zone-reducer";
 import {
   productCreateReducer,
@@ -11,7 +13,12 @@ import {
   productListReducer,
   productUpdateReducer,
 } from "./reducers/products-reducer";
-import { userCreateReducer, userListReducer } from "./reducers/user-reducers";
+import {
+  userCreateReducer,
+  userDeleteReducer,
+  userListReducer,
+  userUpdateReducer,
+} from "./reducers/user-reducers";
 const initialState = {
   sidebarShow: "responsive",
 };
@@ -36,6 +43,10 @@ const reducer = combineReducers({
   productList: productListReducer,
   userCreate: userCreateReducer,
   userList: userListReducer,
+  userDelete: userDeleteReducer,
+  userUpdate: userUpdateReducer,
+  zoneCreate: createNewZoneReducer,
+  zoneUpdate: updateZoneReducer,
 });
 
 const store = createStore(
