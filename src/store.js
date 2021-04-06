@@ -18,14 +18,18 @@ import {
   userCreateReducer,
   userDeleteReducer,
   userListReducer,
+  userLoginReducer,
   userUpdateReducer,
 } from "./reducers/user-reducers";
 import { createNewStandReducer } from "./reducers/stand-reducer";
-const initialState = {
-  sidebarShow: "responsive",
-};
+// const initialState = {
+//   sidebarShow: "responsive",
+// };
 
-const changeStateReducer = (state = initialState, { type, ...rest }) => {
+const changeStateReducer = (
+  state = { sidebarShow: "responsive" },
+  { type, ...rest }
+) => {
   switch (type) {
     case "set":
       return { ...state, ...rest };
@@ -43,6 +47,7 @@ const reducer = combineReducers({
   productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
   productList: productListReducer,
+  userLogin: userLoginReducer,
   userCreate: userCreateReducer,
   userList: userListReducer,
   userDelete: userDeleteReducer,
@@ -55,9 +60,15 @@ const reducer = combineReducers({
   standCreate: createNewStandReducer,
 });
 
+const userInfoFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null;
+
+const initialState = { userLogin: { userInfo: userInfoFromStorage } };
+
 const store = createStore(
   reducer,
-  // changeState,
+  initialState,
   composeWithDevTools(applyMiddleware(...middleware))
 );
 export default store;

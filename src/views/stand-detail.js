@@ -220,7 +220,10 @@ const StandDetail = ({ match, history }) => {
                     </div>
                   </CCardHeader>
                   <CCardBody>
-                    <div style={{ margin: "auto", textAlign: "center" }}>
+                    <div
+                      style={{ margin: "auto", textAlign: "center" }}
+                      className={styles.image_dropdown}
+                    >
                       <Image
                         height={150}
                         width={150}
@@ -230,6 +233,18 @@ const StandDetail = ({ match, history }) => {
                         alt=""
                         fluid
                       />
+                      <div className={styles.image_dropdown_content}>
+                        <Image
+                          height={800}
+                          width={800}
+                          src={
+                            process.env.REACT_APP_BACKEND_URL +
+                            product.image_url
+                          }
+                          alt=""
+                          fluid
+                        />
+                      </div>
                     </div>
                   </CCardBody>
                 </CCard>

@@ -32,15 +32,13 @@ import {
   CSelect,
 } from "@coreui/react";
 import { Image } from "react-bootstrap";
-// import CIcon from "@coreui/icons-react";
-// import { PRODUCT_CREATE_RESET } from "../../constants/product-constants";
 
 const Dashboard = ({ match, history }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
 
   const [danger, setDanger] = useState(false);
-  const [info, setInfo] = useState(false);  
+  const [info, setInfo] = useState(false);
 
   const [productDetail, setProductDetail] = useState({});
 
@@ -53,10 +51,14 @@ const Dashboard = ({ match, history }) => {
   const productDelete = useSelector((state) => state.productDelete);
   const { success: deleteSuccess } = productDelete;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  console.log(userInfo);
   console.log(success);
 
-      const zonesReducer = useSelector((state) => state.allZones);
-      const { loading, zones, error } = zonesReducer;
+  const zonesReducer = useSelector((state) => state.allZones);
+  const { loading, zones, error } = zonesReducer;
 
   let calculatedZone;
 
@@ -188,6 +190,9 @@ const Dashboard = ({ match, history }) => {
   };
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push("/login");
+    }
     if (success || updateSuccess) {
       setOpenModal(false);
       setOpenEditModal(false);
@@ -216,7 +221,15 @@ const Dashboard = ({ match, history }) => {
     if (deleteSuccess) {
       setDanger(false);
     }
-  }, [danger, deleteSuccess, dispatch, history, success, updateSuccess]);
+  }, [
+    danger,
+    deleteSuccess,
+    dispatch,
+    history,
+    success,
+    updateSuccess,
+    userInfo,
+  ]);
   return (
     <>
       {!loading && !error ? (
@@ -637,18 +650,6 @@ const Dashboard = ({ match, history }) => {
                         alt=""
                         fluid
                       />
-                      <div className={styles.image_dropdown_content}>
-                        <Image
-                          height={400}
-                          width={400}
-                          src={
-                            process.env.REACT_APP_BACKEND_URL +
-                            product.image_url
-                          }
-                          alt=""
-                          fluid
-                        />
-                      </div>
                     </div>
                   </CCardBody>
                 </CCard>

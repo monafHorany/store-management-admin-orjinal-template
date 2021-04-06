@@ -9,6 +9,9 @@ import {
   USER_LIST_FAIL,
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
+  USER_LOGIN_FAIL,
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
   USER_UPDATE_FAIL,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
@@ -38,8 +41,38 @@ export const createUser = (user) => async (dispatch, getState) => {
     });
   }
 };
+export const login = (email, password) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_LOGIN_REQUEST,
+    });
 
-export const fetchAllUser = () => async (dispatch, getState) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      "user/login",
+      { email, password },
+      config
+    );
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_LOGIN_FAIL,
+      payload: error.response.data || error.response.statusText,
+    });
+  }
+};
+
+export const fetchAllUser = () => async (dispatch) => {
   try {
     dispatch({
       type: USER_LIST_REQUEST,
