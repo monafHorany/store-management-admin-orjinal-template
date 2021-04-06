@@ -63,3 +63,15 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+@media (min-width: 350px) {
+  .ml-sm-auto,
+  .ml-xs-auto {
+    margin-left: auto !important;
+  }
+}
+@media (min-width: 320px) {
+  .ml-xs-auto {
+    margin-left: auto !important;
+  }
+}

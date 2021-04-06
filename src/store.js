@@ -10,6 +10,7 @@ import {
 import {
   productCreateReducer,
   productDeleteReducer,
+  productListByStandIdReducer,
   productListReducer,
   productUpdateReducer,
 } from "./reducers/products-reducer";
@@ -19,6 +20,7 @@ import {
   userListReducer,
   userUpdateReducer,
 } from "./reducers/user-reducers";
+import { createNewStandReducer } from "./reducers/stand-reducer";
 const initialState = {
   sidebarShow: "responsive",
 };
@@ -47,6 +49,10 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   zoneCreate: createNewZoneReducer,
   zoneUpdate: updateZoneReducer,
+
+  standProduct: productListByStandIdReducer,
+
+  standCreate: createNewStandReducer,
 });
 
 const store = createStore(

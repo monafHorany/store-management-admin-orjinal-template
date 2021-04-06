@@ -100,15 +100,15 @@ const TheSidebar = () => {
         /> */}
               <img
                 className="c-sidebar-brand-full"
-                height="50"
-                width="200"
+                height="64"
+                width="220"
                 src="https://orjeen.com/wp-content/themes/orjeen/imgs/logo-en.png"
                 alt=""
               />
               <img
                 className="c-sidebar-brand-minimized"
-                height="50"
-                width="200"
+                height="64"
+                width="220"
                 src="https://orjeen.com/wp-content/uploads/elago.jpg"
                 alt=""
               />

@@ -55,8 +55,8 @@ const Dashboard = ({ match, history }) => {
 
   console.log(success);
 
-  const zonesReducer = useSelector((state) => state.allZones);
-  const { loading, zones, error } = zonesReducer;
+      const zonesReducer = useSelector((state) => state.allZones);
+      const { loading, zones, error } = zonesReducer;
 
   let calculatedZone;
 
@@ -775,17 +775,6 @@ const Dashboard = ({ match, history }) => {
             <CRow>
               <CCol>
                 <CCard>
-                  {/* <CCardHeader
-                style={{
-                  textAlign: "center",
-                  backgroundColor: "#ee8332",
-                  color: "#FFFFFF",
-                  fontWeight: "bold",
-                  letterSpacing: ".5em",
-                }}
-              >
-                Edit Product
-              </CCardHeader> */}
                   <CCardBody>
                     <CForm
                       encType="multipart/form-data"

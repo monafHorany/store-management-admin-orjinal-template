@@ -14,15 +14,12 @@ import {
   CDropdownMenu,
   CDropdownToggle,
   CForm,
-  CFormGroup,
   CHeader,
   CHeaderNav,
   CInput,
   CInputGroup,
   CInputGroupPrepend,
   CInputGroupText,
-  CInputRadio,
-  CLabel,
   CModal,
   CModalBody,
   CModalHeader,
@@ -33,7 +30,6 @@ import {
 } from "@coreui/react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import CIcon from "@coreui/icons-react";
 import { addNewZones } from "../actions/zone-action";
 import { Image } from "react-bootstrap";
 
@@ -106,7 +102,7 @@ const TheHeader = () => {
     <>
       {!loading && !error ? (
         <>
-          <CHeader withSubheader>
+          <CHeader>
             <CToggler
               inHeader
               className="ml-md-3 d-lg-none"
@@ -117,15 +113,27 @@ const TheHeader = () => {
               className="ml-3 d-md-down-none"
               onClick={toggleSidebar}
             />
-            <CTooltip content="Add New Zone" placement="bottom">
+            <CTooltip
+              content="Add New Zone"
+              placement="bottom"
+              // className="ml-sm-auto"
+            >
               <div
-                style={{ padding: "24px", cursor: "pointer" }}
+                className="ml-sm-auto ml-xs-auto mr-md-auto"
                 onClick={() => onOpenModal()}
+                style={{ margin: "10px" }}
               >
-                <i class="fas fa-plus"></i>{" "}
+                <i
+                  className="fas fa-map-marked-alt fa-3x"
+                  style={{
+                    textAlign: "center",
+                    padding: "0px",
+                    cursor: "pointer",
+                  }}
+                ></i>{" "}
               </div>
             </CTooltip>
-            <CHeaderNav className="d-md-down-none m-auto w-75">
+            <CHeaderNav className="d-md-down-none m-auto w-50">
               <Autocomplete
                 size="small"
                 autoComplete
@@ -166,7 +174,7 @@ const TheHeader = () => {
                 )}
               />
             </CHeaderNav>
-            <CHeaderNav className="px-3">
+            <CHeaderNav className="px-3 d-md-down-none">
               <CDropdown className="m-1 btn-group" direction="down">
                 <CDropdownToggle color="success">{searchTerm}</CDropdownToggle>
                 <CDropdownMenu>
@@ -187,6 +195,7 @@ const TheHeader = () => {
               </CDropdown>
             </CHeaderNav>
           </CHeader>
+
           <Modal
             open={openModal}
             onClose={onCloseModal}
@@ -202,7 +211,7 @@ const TheHeader = () => {
                         <CInputGroup className="mb-3">
                           <CInputGroupPrepend>
                             <CInputGroupText>
-                              <i class="far fa-flag"></i>{" "}
+                              <i className="far fa-flag"></i>{" "}
                             </CInputGroupText>
                           </CInputGroupPrepend>
                           <CInput
@@ -216,7 +225,7 @@ const TheHeader = () => {
                         <CInputGroup className="mb-4">
                           <CInputGroupPrepend>
                             <CInputGroupText>
-                              <i class="fas fa-warehouse"></i>{" "}
+                              <i className="fas fa-warehouse"></i>{" "}
                             </CInputGroupText>
                           </CInputGroupPrepend>
                           <CInput

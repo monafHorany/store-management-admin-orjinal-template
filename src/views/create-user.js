@@ -237,7 +237,7 @@ const Craete = ({ history }) => {
           textAlign: "center",
           margin: "auto",
           float: "left",
-        }}
+        }}  
         onClose={() => setShow(false)}
         show={show}
         delay={3000}

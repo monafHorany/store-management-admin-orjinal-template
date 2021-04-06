@@ -1,25 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  CBadge,
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
   CDataTable,
   CRow,
-  CPagination,
 } from "@coreui/react";
 
-import usersData from "./UsersData";
 import { USER_CREATE_RESET } from "../../constants/user-constants";
 
 const Users = () => {
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.userList);
-  const { loading, users, error } = userList;
+  const { loading, users } = userList;
 
   const transformedListOfUsers = [];
   console.log(users);

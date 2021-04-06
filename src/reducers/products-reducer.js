@@ -15,6 +15,10 @@ import {
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_RESET,
+  PRODUCT_LIST_BY_STAND_ID_REQUEST,
+  PRODUCT_LIST_BY_STAND_ID_SUCCESS,
+  PRODUCT_LIST_BY_STAND_ID_FAIL,
+  PRODUCT_LIST_BY_STAND_ID_RESET,
 } from "../constants/product-constants";
 
 export const productCreateReducer = (state = {}, action) => {
@@ -73,6 +77,27 @@ export const productListReducer = (state = { products: [] }, action) => {
     case PRODUCT_LIST_FAIL:
       return { loading: false, error: action.payload };
     case PRODUCT_LIST_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const productListByStandIdReducer = (
+  state = { products: [] },
+  action
+) => {
+  switch (action.type) {
+    case PRODUCT_LIST_BY_STAND_ID_REQUEST:
+      return { ...state, loading: true, products: [] };
+    case PRODUCT_LIST_BY_STAND_ID_SUCCESS:
+      return {
+        loading: false,
+        products: action.payload,
+      };
+    case PRODUCT_LIST_BY_STAND_ID_FAIL:
+      return { loading: false, error: action.payload };
+    case PRODUCT_LIST_BY_STAND_ID_RESET:
       return {};
     default:
       return state;

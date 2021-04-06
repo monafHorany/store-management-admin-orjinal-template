@@ -11,6 +11,9 @@ import {
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
   PRODUCT_CREATE_RESET,
+  PRODUCT_LIST_BY_STAND_ID_REQUEST,
+  PRODUCT_LIST_BY_STAND_ID_SUCCESS,
+  PRODUCT_LIST_BY_STAND_ID_FAIL,
   // PRODUCT_LIST_FAIL,
 } from "../constants/product-constants";
 
@@ -102,14 +105,27 @@ export const listProducts = () => async (dispatch) => {
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
     });
-    // sessionStorage.setItem(
-    //   "products",
-
-    //   JSON.stringify(data)
-    // );
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
+      payload: error.response.data || error.response.statusText,
+    });
+  }
+};
+
+export const listProductsByStandId = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_LIST_BY_STAND_ID_REQUEST });
+
+    const { data } = await axios.get(`/product/${id}`);
+
+    dispatch({
+      type: PRODUCT_LIST_BY_STAND_ID_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_LIST_BY_STAND_ID_FAIL,
       payload: error.response.data || error.response.statusText,
     });
   }
