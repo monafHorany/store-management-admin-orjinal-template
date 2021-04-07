@@ -12,6 +12,7 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
+  USER_LOGOUT,
   USER_UPDATE_FAIL,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
@@ -41,6 +42,13 @@ export const createUser = (user) => async (dispatch, getState) => {
     });
   }
 };
+
+export const logout = () => (dispatch) => {
+  sessionStorage.removeItem("userInfo");
+  dispatch({ type: USER_LOGOUT });
+
+  document.location.href = "/login";
+};
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({
@@ -63,7 +71,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data,
     });
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    sessionStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,

@@ -1,5 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+
 import {
   CCreateElement,
   CSidebar,
@@ -19,8 +21,8 @@ import {
 const TheSidebar = () => {
   const zonesReducer = useSelector((state) => state.allZones);
   const { loading, zones } = zonesReducer;
-  console.log(zones);
-  let convertedZones = [];
+
+  var convertedZones = [];
   if (!loading && zones) {
     convertedZones = zones.map((zone) => ({
       _tag: "CSidebarNavItem",
@@ -29,8 +31,39 @@ const TheSidebar = () => {
       to: `/zone/${zone.id}`,
     }));
   }
+  const history = useHistory();
 
-  console.log(...convertedZones);
+  console.log(convertedZones);
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  if (!userInfo) {
+    history.push("/login");
+  }
+  // useEffect(() => {}, [history, userInfo]);
+
+  const userLinks =
+    userInfo && userInfo.role === "super user"
+      ? [
+          {
+            _tag: "CSidebarNavTitle",
+            _children: ["USER"],
+          },
+
+          {
+            _tag: "CSidebarNavItem",
+            icon: "cil-user",
+            name: `all users`,
+            to: "/users",
+          },
+          {
+            _tag: "CSidebarNavItem",
+            icon: "cil-user-plus",
+            name: `add new user`,
+            to: "/create-user",
+          },
+        ]
+      : [];
 
   const _nav = [
     {
@@ -53,22 +86,18 @@ const TheSidebar = () => {
       _tag: "CSidebarNavDivider",
       className: "m-3",
     },
-    {
-      _tag: "CSidebarNavTitle",
-      _children: ["USER"],
-    },
 
+    ...userLinks,
     {
-      _tag: "CSidebarNavItem",
-      icon: "cil-user",
-      name: `all users`,
-      to: "/users",
+      _tag: "CSidebarNavDivider",
+      className: "m-3",
     },
     {
       _tag: "CSidebarNavItem",
-      icon: "cil-user-plus",
-      name: `add new user`,
-      to: "/create-user",
+      name: "logout",
+      to: "/logout",
+      // icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
+      icon: "cil-account-logout",
     },
   ];
   const dispatch = useDispatch();
@@ -88,16 +117,6 @@ const TheSidebar = () => {
               to="/"
               style={{ backgroundColor: "transparent" }}
             >
-              {/* <CIcon
-          className="c-sidebar-brand-full"
-          name="logo-negative"
-          height={55}
-        />
-        <CIcon
-          className="c-sidebar-brand-minimized"
-          name="sygnet"
-          height={55}
-        /> */}
               <img
                 className="c-sidebar-brand-full"
                 height="64"

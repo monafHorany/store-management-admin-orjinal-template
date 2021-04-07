@@ -24,10 +24,13 @@ export const createProduct = (product) => async (dispatch, getState) => {
     dispatch({
       type: PRODUCT_CREATE_REQUEST,
     });
-
+    const {
+      userLogin: { userInfo },
+    } = getState();
     const config = {
       headers: {
         "content-type": "multipart/form-data",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
     const { data } = await axios.post("/product/create", product, config);

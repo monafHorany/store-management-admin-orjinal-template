@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "react-responsive-modal/styles.css";
+import { useHistory } from "react-router-dom";
+
 import { Modal } from "react-responsive-modal";
 
 import {
@@ -35,6 +37,8 @@ import { Image } from "react-bootstrap";
 
 const TheHeader = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const sidebarShow = useSelector((state) => state.changeState.sidebarShow);
   const zoneCreate = useSelector((state) => state.zoneCreate);
   const { success } = zoneCreate;
@@ -76,27 +80,32 @@ const TheHeader = () => {
       dispatch(addNewZones({ zone_symbol, zone_capacity }));
     }
   };
-  useEffect(() => {
-    if (success) {
-      setOpenModal(false);
-    }
-  }, [success]);
 
   const [productDetail, setProductDetail] = useState({});
   const [info, setInfo] = useState(false);
   const zonesReducer = useSelector((state) => state.allZones);
   const { loading, zones, error } = zonesReducer;
 
-  console.log(productDetail);
   let calculatedZone;
 
   if (productDetail && zones) {
     calculatedZone = zones.filter((zone) => {
       let obj = zone.stands.some(({ id }) => id === productDetail.standId);
-      console.log(obj);
       return obj;
     })[0];
   }
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  useEffect(() => {
+    if (success) {
+      setOpenModal(false);
+    }
+
+    if (!userInfo) {
+      history.push("/login");
+    }
+  }, [history, success, userInfo]);
 
   return (
     <>
@@ -113,26 +122,28 @@ const TheHeader = () => {
               className="ml-3 d-md-down-none"
               onClick={toggleSidebar}
             />
-            <CTooltip
-              content="Add New Zone"
-              placement="bottom"
-              // className="ml-sm-auto"
-            >
-              <div
-                className="ml-sm-auto ml-xs-auto mr-md-auto"
-                onClick={() => onOpenModal()}
-                style={{ margin: "10px" }}
+            {userInfo && userInfo.role === "super user" && (
+              <CTooltip
+                content="Add New Zone"
+                placement="bottom"
+                // className="ml-sm-auto"
               >
-                <i
-                  className="fas fa-map-marked-alt fa-3x"
-                  style={{
-                    textAlign: "center",
-                    padding: "0px",
-                    cursor: "pointer",
-                  }}
-                ></i>{" "}
-              </div>
-            </CTooltip>
+                <div
+                  className="ml-sm-auto ml-xs-auto mr-md-auto"
+                  onClick={() => onOpenModal()}
+                  style={{ margin: "10px" }}
+                >
+                  <i
+                    className="fas fa-map-marked-alt fa-3x"
+                    style={{
+                      textAlign: "center",
+                      padding: "0px",
+                      cursor: "pointer",
+                    }}
+                  ></i>{" "}
+                </div>
+              </CTooltip>
+            )}
             <CHeaderNav className="d-md-down-none m-auto w-50">
               <Autocomplete
                 size="small"
@@ -149,14 +160,13 @@ const TheHeader = () => {
                 }
                 clearOnBlur={true}
                 clearOnEscape={true}
-                // freeSolo
+                freeSolo
                 id="free-solo-demo"
                 value={searchValue}
                 disableClearable
                 onChange={(event, value, reason) => {
                   setInfo(!info);
                   setProductDetail(value);
-                  console.log(event, value, reason);
                   if (reason === "select-option") {
                     setSearchValue("");
                   }
@@ -164,7 +174,6 @@ const TheHeader = () => {
                 options={products}
                 renderInput={(params) => (
                   <TextField
-                    onChange={(e) => console.log(e.target.value)}
                     {...params}
                     value={searchValue}
                     label={searchTerm}

@@ -11,7 +11,10 @@ import {
   CRow,
 } from "@coreui/react";
 
-import { USER_CREATE_RESET } from "../../constants/user-constants";
+import {
+  USER_CREATE_RESET,
+  USER_DELETE_RESET,
+} from "../../constants/user-constants";
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -19,7 +22,6 @@ const Users = () => {
   const { loading, users } = userList;
 
   const transformedListOfUsers = [];
-  console.log(users);
 
   if (!loading && users) {
     users.map((user) =>
@@ -31,8 +33,8 @@ const Users = () => {
       })
     );
   }
-  console.log(transformedListOfUsers);
   dispatch({ type: USER_CREATE_RESET });
+  dispatch({ type: USER_DELETE_RESET });
 
   const history = useHistory();
 

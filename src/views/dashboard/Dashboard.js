@@ -42,8 +42,6 @@ const Dashboard = ({ match, history }) => {
 
   const [productDetail, setProductDetail] = useState({});
 
-  console.log(productDetail);
-
   const productCreate = useSelector((state) => state.productCreate);
   const { success } = productCreate;
   const productUpdate = useSelector((state) => state.productUpdate);
@@ -54,9 +52,6 @@ const Dashboard = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  console.log(userInfo);
-  console.log(success);
-
   const zonesReducer = useSelector((state) => state.allZones);
   const { loading, zones, error } = zonesReducer;
 
@@ -65,7 +60,6 @@ const Dashboard = ({ match, history }) => {
   if (productDetail && zones) {
     calculatedZone = zones.filter((zone) => {
       let obj = zone.stands.some(({ id }) => id === productDetail.standId);
-      console.log(obj);
       return obj;
     })[0];
   }
@@ -99,7 +93,6 @@ const Dashboard = ({ match, history }) => {
   if (zone && zones) {
     stands = zones[zone - 1].stands;
   }
-  console.log(stands);
 
   let selectedStand;
   if (productStand && stands.length !== 0) {
@@ -108,8 +101,6 @@ const Dashboard = ({ match, history }) => {
   if (standId && stands.length !== 0) {
     selectedStand = stands.filter((s) => +s.id === +standId)[0];
   }
-
-  console.log(selectedStand);
 
   const dispatch = useDispatch();
 
@@ -126,7 +117,11 @@ const Dashboard = ({ match, history }) => {
     formData.append("model_number", productModel_number);
     formData.append("quantity", productQuantity);
     formData.append("standId", productStand);
-    if (productStand && selectedStand) {
+    if (
+      productStand &&
+      selectedStand &&
+      (userInfo.role === "super user" || userInfo.role === "editor")
+    ) {
       if (productQuantity > selectedStand.stand_capacity) {
         alert("inserted quantity is greater than stand capacity");
       } else if (
@@ -156,7 +151,11 @@ const Dashboard = ({ match, history }) => {
   const onCloseEditModal = () => setOpenEditModal(false);
 
   const editForm = (e) => {
-    if (standId && selectedStand) {
+    if (
+      standId &&
+      selectedStand &&
+      (userInfo.role === "super user" || userInfo.role === "editor")
+    ) {
       if (quantity > selectedStand.stand_capacity) {
         alert("inserted quantity is greater than stand capacity");
       } else if (
@@ -234,19 +233,22 @@ const Dashboard = ({ match, history }) => {
     <>
       {!loading && !error ? (
         <>
-          <CButton
-            style={{
-              // float: "right",
-              borderColor: "#ee8332",
-              color: "#ee8332",
-              margin: "1rem",
-            }}
-            onClick={onOpenModal}
-            variant="outline"
-            size="lg"
-          >
-            Add New Product
-          </CButton>
+          {userInfo &&
+            (userInfo.role === "super user" || userInfo.role === "editor") && (
+              <CButton
+                style={{
+                  // float: "right",
+                  borderColor: "#ee8332",
+                  color: "#ee8332",
+                  margin: "1rem",
+                }}
+                onClick={onOpenModal}
+                variant="outline"
+                size="lg"
+              >
+                Add New Product
+              </CButton>
+            )}
 
           <Modal
             open={openModal}
@@ -429,30 +431,32 @@ const Dashboard = ({ match, history }) => {
                         </div>
                       </CFormGroup>
 
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="selectSm">select Zone</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CSelect
-                            dir="ltr"
-                            custom
-                            size="sm"
-                            name="selectSm"
-                            id="SelectLm"
-                            onChange={(e) => {
-                              setZone(e.target.value);
-                            }}
-                          >
-                            <option></option>
-                            {zones.map((zone, index) => (
-                              <option key={index} value={zone.id}>
-                                Zone {zone.zone_symbol}
-                              </option>
-                            ))}
-                          </CSelect>
-                        </CCol>
-                      </CFormGroup>
+                      {zones && (
+                        <CFormGroup row>
+                          <CCol md="3">
+                            <CLabel htmlFor="selectSm">select Zone</CLabel>
+                          </CCol>
+                          <CCol xs="12" md="9">
+                            <CSelect
+                              dir="ltr"
+                              custom
+                              size="sm"
+                              name="selectSm"
+                              id="SelectLm"
+                              onChange={(e) => {
+                                setZone(e.target.value);
+                              }}
+                            >
+                              <option></option>
+                              {zones.map((zone, index) => (
+                                <option key={index} value={zone.id}>
+                                  Zone {zone.zone_symbol}
+                                </option>
+                              ))}
+                            </CSelect>
+                          </CCol>
+                        </CFormGroup>
+                      )}
 
                       <CFormGroup row>
                         <CCol md="3">
@@ -558,9 +562,9 @@ const Dashboard = ({ match, history }) => {
                 key={product.id}
                 xs="12"
                 sm="6"
-                md="3"
-                lg="3"
-                xl="2"
+                md="4"
+                lg="4"
+                xl="3"
                 xxl="2"
               >
                 <CCard>
@@ -574,67 +578,83 @@ const Dashboard = ({ match, history }) => {
                     <span style={{ color: "black", whiteSpace: "nowrap" }}>
                       {product.product_en_name}
                     </span>
-                    <div className={`card-header-actions ${styles.__dropdown}`}>
-                      <CLink
-                        className={`card-header-action ${styles.__dropbtn}`}
-                      >
-                        <i className="fas fa-bars"></i>
-                      </CLink>
-                      <div
-                        className={styles.__dropdown_content}
-                        style={{ color: "black" }}
-                      >
-                        <p
-                          style={{ margin: "0", padding: "14px" }}
-                          onClick={() => {
-                            setInfo(!info);
-                            setProductDetail(product);
-                          }}
+                    {userInfo &&
+                      (userInfo.role === "super user" ||
+                        userInfo.role === "editor") && (
+                        <div
+                          className={`card-header-actions ${styles.__dropdown}`}
                         >
-                          <i
-                            className="fas fa-info-circle"
-                            style={{ padding: ".5rem" }}
-                          ></i>{" "}
-                          Details
-                        </p>
-                        <p
-                          style={{ margin: "0", padding: "14px" }}
-                          onMouseEnter={() => {
-                            setProductDetail(product);
-                          }}
-                          onClick={() => {
-                            onOpenEditModal();
-                            setEditedProduct_ar_name(product.product_ar_name);
-                            setEditedProduct_en_name(product.product_en_name);
-                            setEditedProduct_ar_desc(product.product_ar_desc);
-                            setEditedProduct_en_desc(product.product_en_desc);
-                            setEditedProduct_barcode(product.product_barcode);
-                            setEditedProduct_sku(product.product_sku);
-                            setEditedModel_number(product.model_number);
-                            setEditedQuantity(product.quantity);
-                          }}
-                        >
-                          <i
-                            className="fas fa-edit"
-                            style={{ padding: ".5rem" }}
-                          ></i>{" "}
-                          Edit
-                        </p>
-                        <p
-                          style={{ margin: "0", padding: "14px" }}
-                          onClick={() => {
-                            setDanger(!danger);
-                            setProductDetail(product);
-                          }}
-                        >
-                          <i
-                            className="fas fa-trash-alt"
-                            style={{ padding: ".5rem" }}
-                          ></i>{" "}
-                          Delete
-                        </p>
-                      </div>
-                    </div>
+                          <CLink
+                            className={`card-header-action ${styles.__dropbtn}`}
+                          >
+                            <i className="fas fa-bars"></i>
+                          </CLink>
+                          <div
+                            className={styles.__dropdown_content}
+                            style={{ color: "black" }}
+                          >
+                            <p
+                              style={{ margin: "0", padding: "14px" }}
+                              onClick={() => {
+                                setInfo(!info);
+                                setProductDetail(product);
+                              }}
+                            >
+                              <i
+                                className="fas fa-info-circle"
+                                style={{ padding: ".5rem" }}
+                              ></i>{" "}
+                              Details
+                            </p>
+                            <p
+                              style={{ margin: "0", padding: "14px" }}
+                              onMouseEnter={() => {
+                                setProductDetail(product);
+                              }}
+                              onClick={() => {
+                                onOpenEditModal();
+                                setEditedProduct_ar_name(
+                                  product.product_ar_name
+                                );
+                                setEditedProduct_en_name(
+                                  product.product_en_name
+                                );
+                                setEditedProduct_ar_desc(
+                                  product.product_ar_desc
+                                );
+                                setEditedProduct_en_desc(
+                                  product.product_en_desc
+                                );
+                                setEditedProduct_barcode(
+                                  product.product_barcode
+                                );
+                                setEditedProduct_sku(product.product_sku);
+                                setEditedModel_number(product.model_number);
+                                setEditedQuantity(product.quantity);
+                              }}
+                            >
+                              <i
+                                className="fas fa-edit"
+                                style={{ padding: ".5rem" }}
+                              ></i>{" "}
+                              Edit
+                            </p>
+                            <p
+                              style={{ margin: "0", padding: "14px" }}
+                              onClick={() => {
+                                setDanger(!danger);
+                                setProductDetail(product);
+                              }}
+                            >
+                              <i
+                                className="fas fa-trash-alt"
+                                style={{ padding: ".5rem" }}
+                              ></i>{" "}
+                              Delete
+                            </p>
+                          </div>
+                        </div>
+                      )}
                   </CCardHeader>
                   <CCardBody>
                     <div
@@ -927,31 +947,32 @@ const Dashboard = ({ match, history }) => {
                           </p>
                         </div>
                       </CFormGroup>
-
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="selectSm">select Zone</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CSelect
-                            dir="ltr"
-                            custom
-                            size="sm"
-                            name="selectSm"
-                            id="SelectLm"
-                            onChange={(e) => {
-                              setEditedZone(e.target.value);
-                            }}
-                          >
-                            <option></option>
-                            {zones.map((zone, index) => (
-                              <option key={index} value={zone.id}>
-                                Zone {zone.zone_symbol}
-                              </option>
-                            ))}
-                          </CSelect>
-                        </CCol>
-                      </CFormGroup>
+                      {zones && (
+                        <CFormGroup row>
+                          <CCol md="3">
+                            <CLabel htmlFor="selectSm">select Zone</CLabel>
+                          </CCol>
+                          <CCol xs="12" md="9">
+                            <CSelect
+                              dir="ltr"
+                              custom
+                              size="sm"
+                              name="selectSm"
+                              id="SelectLm"
+                              onChange={(e) => {
+                                setEditedZone(e.target.value);
+                              }}
+                            >
+                              <option></option>
+                              {zones.map((zone, index) => (
+                                <option key={index} value={zone.id}>
+                                  Zone {zone.zone_symbol}
+                                </option>
+                              ))}
+                            </CSelect>
+                          </CCol>
+                        </CFormGroup>
+                      )}
 
                       <CFormGroup row>
                         <CCol md="3">

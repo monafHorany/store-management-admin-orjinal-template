@@ -60,8 +60,8 @@ const reducer = combineReducers({
   standCreate: createNewStandReducer,
 });
 
-const userInfoFromStorage = localStorage.getItem("userInfo")
-  ? JSON.parse(localStorage.getItem("userInfo"))
+const userInfoFromStorage = sessionStorage.getItem("userInfo")
+  ? JSON.parse(sessionStorage.getItem("userInfo"))
   : null;
 
 const initialState = { userLogin: { userInfo: userInfoFromStorage } };

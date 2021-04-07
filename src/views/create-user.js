@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   CButton,
@@ -22,7 +21,7 @@ import CIcon from "@coreui/icons-react";
 import { createUser } from "../actions/user-action";
 import { Toast } from "react-bootstrap";
 
-const Craete = ({ history }) => {
+const Create = ({ history }) => {
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
@@ -48,13 +47,21 @@ const Craete = ({ history }) => {
       );
     }
   };
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
     if (success) {
       history.push("/users");
     } else if (error) {
       setShow(true);
     }
-  }, [dispatch, error, history, success]);
+
+    if (userInfo.role !== "super user") {
+      history.push("/dashboard");
+    }
+  }, [dispatch, error, history, success, userInfo]);
   console.log(name, email, phone_number, password, confirm, role);
   return (
     // <div className="c-app c-default-layout flex-row align-items-center">
@@ -237,7 +244,7 @@ const Craete = ({ history }) => {
           textAlign: "center",
           margin: "auto",
           float: "left",
-        }}  
+        }}
         onClose={() => setShow(false)}
         show={show}
         delay={3000}
@@ -259,4 +266,4 @@ const Craete = ({ history }) => {
   );
 };
 
-export default Craete;
+export default Create;
