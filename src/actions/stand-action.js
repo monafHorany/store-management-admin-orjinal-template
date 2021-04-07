@@ -31,7 +31,10 @@ export const fetchAllStands = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get("/stand", config);
+    const { data } = await axios.get(
+      process.env.REACT_APP_BACKEND_URL + "/stand",
+      config
+    );
 
     dispatch({
       type: FETCH_ALL_STAND_SUCCESS,
@@ -57,7 +60,10 @@ export const fetchSingleStand = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(`/stand/${id}`, config);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/stand/${id}`,
+      config
+    );
 
     dispatch({
       type: FETCH_SINGLE_STAND_SUCCESS,
@@ -83,7 +89,11 @@ export const addNewStand = (id, stand) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(`/stand/${id}/create`, stand, config);
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/stand/${id}/create`,
+      stand,
+      config
+    );
 
     dispatch({
       type: ADD_NEW_STAND_SUCCESS,
@@ -110,7 +120,11 @@ export const updateStand = (id, stand) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.put(`/stand/update/${id}`, stand, config);
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/stand/update/${id}`,
+      stand,
+      config
+    );
 
     dispatch({
       type: UPDATE_STAND_SUCCESS,
@@ -137,7 +151,10 @@ export const deleteStand = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.delete(`/stand/delete/${id}`, config);
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_BACKEND_URL}/stand/delete/${id}`,
+      config
+    );
 
     dispatch({
       type: DELETE_STAND_SUCCESS,

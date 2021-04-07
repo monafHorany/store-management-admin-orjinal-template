@@ -30,7 +30,10 @@ export const fetchAllZones = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get("/zone", config);
+    const { data } = await axios.get(
+      process.env.REACT_APP_BACKEND_URL + "/zone",
+      config
+    );
 
     dispatch({
       type: FETCH_ALL_ZONES_SUCCESS,
@@ -56,7 +59,10 @@ export const fetchSingleZones = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(`/zone/${id}`, config);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/zone/${id}`,
+      config
+    );
 
     dispatch({
       type: FETCH_SINGLE_ZONE_SUCCESS,
@@ -82,7 +88,11 @@ export const addNewZones = (zone) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post("/zone/create", zone, config);
+    const { data } = await axios.post(
+      process.env.REACT_APP_BACKEND_URL + "/zone/create",
+      zone,
+      config
+    );
 
     dispatch({
       type: ADD_NEW_ZONE_SUCCESS,

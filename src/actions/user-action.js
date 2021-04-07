@@ -28,7 +28,11 @@ export const createUser = (user) => async (dispatch, getState) => {
         "content-type": "application/json",
       },
     };
-    const { data } = await axios.post("/user/create", user, config);
+    const { data } = await axios.post(
+      process.env.REACT_APP_BACKEND_URL + "/user/create",
+      user,
+      config
+    );
 
     dispatch({
       type: USER_CREATE_SUCCESS,
@@ -62,7 +66,7 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "user/login",
+      process.env.REACT_APP_BACKEND_URL + "user/login",
       { email, password },
       config
     );
@@ -91,7 +95,10 @@ export const fetchAllUser = () => async (dispatch) => {
         "content-type": "application/json",
       },
     };
-    const { data } = await axios.get("/user", config);
+    const { data } = await axios.get(
+      process.env.REACT_APP_BACKEND_URL + "/user",
+      config
+    );
 
     dispatch({
       type: USER_LIST_SUCCESS,
@@ -116,7 +123,11 @@ export const updateUser = (id, user) => async (dispatch, getState) => {
         "content-type": "application/json",
       },
     };
-    const { data } = await axios.put(`/user/${id}`, user, config);
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/user/${id}`,
+      user,
+      config
+    );
 
     dispatch({
       type: USER_UPDATE_SUCCESS,
@@ -142,7 +153,10 @@ export const deleteUser = (id) => async (dispatch, getState) => {
         "content-type": "application/json",
       },
     };
-    const { data } = await axios.delete(`/user/${id}`, config);
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_BACKEND_URL}/user/${id}`,
+      config
+    );
 
     dispatch({
       type: USER_DELETE_SUCCESS,

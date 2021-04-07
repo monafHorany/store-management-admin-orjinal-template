@@ -63,11 +63,14 @@ const User = ({ match, history }) => {
       setDanger(!danger);
       history.push("/users");
     }
+    if (!user) {
+      history.push("/users");
+    }
 
     if (updateSuccess) {
       setOpenModal(false);
     }
-  }, [danger, history, success, updateSuccess]);
+  }, [danger, history, success, updateSuccess, user]);
   console.log(user);
   return (
     <>

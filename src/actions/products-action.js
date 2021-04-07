@@ -33,7 +33,11 @@ export const createProduct = (product) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.post("/product/create", product, config);
+    const { data } = await axios.post(
+      process.env.REACT_APP_BACKEND_URL + "/product/create",
+      product,
+      config
+    );
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
@@ -61,7 +65,11 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
         "content-type": "application/json",
       },
     };
-    const { data } = await axios.post(`/product/update/${id}`, product, config);
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/product/update/${id}`,
+      product,
+      config
+    );
 
     dispatch({
       type: PRODUCT_UPDATE_SUCCESS,
@@ -83,7 +91,9 @@ export const deleteProduct = (id) => async (dispatch) => {
     dispatch({
       type: PRODUCT_DELETE_REQUEST,
     });
-    const { data } = await axios.delete(`/product/delete/${id}`);
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_BACKEND_URL}/product/delete/${id}`
+    );
 
     dispatch({
       type: PRODUCT_DELETE_SUCCESS,
@@ -102,7 +112,9 @@ export const listProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
-    const { data } = await axios.get("/product");
+    const { data } = await axios.get(
+      process.env.REACT_APP_BACKEND_URL + "/product"
+    );
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
@@ -120,7 +132,7 @@ export const listProductsByStandId = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_BY_STAND_ID_REQUEST });
 
-    const { data } = await axios.get(`/product/${id}`);
+    const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/product/${id}`);
 
     dispatch({
       type: PRODUCT_LIST_BY_STAND_ID_SUCCESS,
