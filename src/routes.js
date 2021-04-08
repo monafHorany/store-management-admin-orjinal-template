@@ -10,10 +10,12 @@ const stand_page = React.lazy(() => import("./views/stand-detail"));
 const login = React.lazy(() => import("./views/login"));
 const create = React.lazy(() => import("./views/create-user"));
 const Logout = React.lazy(() => import("./views/logout"));
+const PPrint = React.lazy(() => import("./views/p-print"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/logout", exact: true, name: "logout", component: Logout },
+  { path: "/p-report", exact: true, name: "p-report", component: PPrint },
   { path: "/zone/:id", exact: true, name: "zone", component: zone_page },
   { path: "/stand/:id", exact: true, name: "stand", component: stand_page },
   { path: "/login", exact: true, name: "login", component: login },

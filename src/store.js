@@ -21,7 +21,10 @@ import {
   userLoginReducer,
   userUpdateReducer,
 } from "./reducers/user-reducers";
-import { createNewStandReducer } from "./reducers/stand-reducer";
+import {
+  createNewStandReducer,
+  fetchAllStandsReducer,
+} from "./reducers/stand-reducer";
 // const initialState = {
 //   sidebarShow: "responsive",
 // };
@@ -42,6 +45,7 @@ const middleware = [thunk];
 const reducer = combineReducers({
   changeState: changeStateReducer,
   allZones: fetchAllZonesReducer,
+  allStands: fetchAllStandsReducer,
   singleZone: fetchSingleZoneReducer,
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,

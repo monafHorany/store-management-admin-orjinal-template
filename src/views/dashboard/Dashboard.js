@@ -54,6 +54,14 @@ const Dashboard = ({ match, history }) => {
 
   const zonesReducer = useSelector((state) => state.allZones);
   const { loading, zones, error } = zonesReducer;
+  const standReducer = useSelector((state) => state.allStands);
+  const { stands: standsList } = standReducer;
+
+  const calculatedStand = standsList.filter(
+    (stand) => stand.id === productDetail.standId
+  )[0];
+
+  console.log(calculatedStand);
 
   let calculatedZone;
 
@@ -762,7 +770,7 @@ const Dashboard = ({ match, history }) => {
                       >
                         STAND:{" "}
                       </span>{" "}
-                      {productDetail.standId}
+                      {calculatedStand.stand_number}
                     </div>{" "}
                     <br />
                     <div>

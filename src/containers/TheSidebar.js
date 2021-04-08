@@ -94,6 +94,17 @@ const TheSidebar = () => {
     },
     {
       _tag: "CSidebarNavItem",
+      name: "Product Report",
+      to: "/p-report",
+      // icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
+      icon: "cil-print",
+    },
+    {
+      _tag: "CSidebarNavDivider",
+      className: "m-3",
+    },
+    {
+      _tag: "CSidebarNavItem",
       name: "logout",
       to: "/logout",
       // icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
