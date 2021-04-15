@@ -23,13 +23,18 @@ export const createUser = (user) => async (dispatch, getState) => {
       type: USER_CREATE_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
     const { data } = await axios.post(
-      process.env.REACT_APP_BACKEND_URL + "/user/create",
+      process.env.REACT_APP_BACKEND_URL + "user/create",
       user,
       config
     );
@@ -48,7 +53,7 @@ export const createUser = (user) => async (dispatch, getState) => {
 };
 
 export const logout = () => (dispatch) => {
-  sessionStorage.removeItem("userInfo");
+  localStorage.removeItem("orjeenUserInfo");
   dispatch({ type: USER_LOGOUT });
 
   document.location.href = "/login";
@@ -75,7 +80,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data,
     });
 
-    sessionStorage.setItem("userInfo", JSON.stringify(data));
+    localStorage.setItem("orjeenUserInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -96,7 +101,7 @@ export const fetchAllUser = () => async (dispatch) => {
       },
     };
     const { data } = await axios.get(
-      process.env.REACT_APP_BACKEND_URL + "/user",
+      process.env.REACT_APP_BACKEND_URL + "user",
       config
     );
 
@@ -118,13 +123,18 @@ export const updateUser = (id, user) => async (dispatch, getState) => {
       type: USER_UPDATE_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
     const { data } = await axios.put(
-      `${process.env.REACT_APP_BACKEND_URL}/user/${id}`,
+      `${process.env.REACT_APP_BACKEND_URL}user/${id}`,
       user,
       config
     );
@@ -148,13 +158,18 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       type: USER_DELETE_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
     const { data } = await axios.delete(
-      `${process.env.REACT_APP_BACKEND_URL}/user/${id}`,
+      `${process.env.REACT_APP_BACKEND_URL}user/${id}`,
       config
     );
 

@@ -16,14 +16,14 @@ import {
   // DELETE_ZONE_FAIL,
 } from "../constants/zone-constants";
 
-export const fetchAllZonesReducer = (state = {}, action) => {
+export const fetchAllZonesReducer = (state = { zones: [] }, action) => {
   switch (action.type) {
     case FETCH_ALL_ZONES_REQUEST:
-      return { loading: true };
+      return {...state, loading: true };
     case FETCH_ALL_ZONES_SUCCESS:
-      return { loading: false, zones: action.payload };
+      return {...state, loading: false, zones: action.payload };
     case FETCH_ALL_ZONES_FAIL:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     default:
       return state;
   }

@@ -31,7 +31,7 @@ export const fetchAllZones = () => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      process.env.REACT_APP_BACKEND_URL + "/zone",
+      process.env.REACT_APP_BACKEND_URL + "zone",
       config
     );
 
@@ -60,7 +60,7 @@ export const fetchSingleZones = (id) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/zone/${id}`,
+      `${process.env.REACT_APP_BACKEND_URL}zone/${id}`,
       config
     );
 
@@ -76,20 +76,24 @@ export const fetchSingleZones = (id) => async (dispatch) => {
   }
 };
 
-export const addNewZones = (zone) => async (dispatch) => {
+export const addNewZones = (zone) => async (dispatch, getState) => {
   try {
     dispatch({
       type: ADD_NEW_ZONE_REQUEST,
     });
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
     const { data } = await axios.post(
-      process.env.REACT_APP_BACKEND_URL + "/zone/create",
+      process.env.REACT_APP_BACKEND_URL + "zone/create",
       zone,
       config
     );

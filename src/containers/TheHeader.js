@@ -109,7 +109,7 @@ const TheHeader = () => {
 
   return (
     <>
-      {!loading && !error ? (
+      {!loading && !error && (
         <>
           <CHeader>
             <CToggler
@@ -265,8 +265,6 @@ const TheHeader = () => {
             </CRow>
           </Modal>
         </>
-      ) : (
-        <h3>...loading</h3>
       )}
 
       {calculatedZone && (

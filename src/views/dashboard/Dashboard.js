@@ -57,9 +57,12 @@ const Dashboard = ({ match, history }) => {
   const standReducer = useSelector((state) => state.allStands);
   const { stands: standsList } = standReducer;
 
-  const calculatedStand = standsList.filter(
-    (stand) => stand.id === productDetail.standId
-  )[0];
+  let calculatedStand;
+  if (standsList) {
+    calculatedStand = standsList.filter(
+      (stand) => stand.id === productDetail.standId
+    )[0];
+  }
 
   console.log(calculatedStand);
 
@@ -239,7 +242,7 @@ const Dashboard = ({ match, history }) => {
   ]);
   return (
     <>
-      {!loading && !error ? (
+      {!loading && !error && (
         <>
           {userInfo &&
             (userInfo.role === "super user" || userInfo.role === "editor") && (
@@ -1079,8 +1082,6 @@ const Dashboard = ({ match, history }) => {
             </CRow>
           </Modal>
         </>
-      ) : (
-        <p>...loading</p>
       )}
     </>
   );

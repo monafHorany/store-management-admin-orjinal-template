@@ -32,7 +32,7 @@ export const fetchAllStands = () => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      process.env.REACT_APP_BACKEND_URL + "/stand",
+      process.env.REACT_APP_BACKEND_URL + "stand",
       config
     );
 
@@ -61,7 +61,7 @@ export const fetchSingleStand = (id) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/stand/${id}`,
+      `${process.env.REACT_APP_BACKEND_URL}stand/${id}`,
       config
     );
 
@@ -77,20 +77,25 @@ export const fetchSingleStand = (id) => async (dispatch) => {
   }
 };
 
-export const addNewStand = (id, stand) => async (dispatch) => {
+export const addNewStand = (id, stand) => async (dispatch, getState) => {
   try {
     dispatch({
       type: ADD_NEW_STAND_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
     const { data } = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/stand/${id}/create`,
+      `${process.env.REACT_APP_BACKEND_URL}stand/${id}/create`,
       stand,
       config
     );
@@ -108,20 +113,25 @@ export const addNewStand = (id, stand) => async (dispatch) => {
   }
 };
 
-export const updateStand = (id, stand) => async (dispatch) => {
+export const updateStand = (id, stand) => async (dispatch, getState) => {
   try {
     dispatch({
       type: UPDATE_STAND_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
     const { data } = await axios.put(
-      `${process.env.REACT_APP_BACKEND_URL}/stand/update/${id}`,
+      `${process.env.REACT_APP_BACKEND_URL}stand/update/${id}`,
       stand,
       config
     );
@@ -139,20 +149,25 @@ export const updateStand = (id, stand) => async (dispatch) => {
   }
 };
 
-export const deleteStand = (id) => async (dispatch) => {
+export const deleteStand = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: DELETE_STAND_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
     const { data } = await axios.delete(
-      `${process.env.REACT_APP_BACKEND_URL}/stand/delete/${id}`,
+      `${process.env.REACT_APP_BACKEND_URL}stand/delete/${id}`,
       config
     );
 

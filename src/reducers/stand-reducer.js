@@ -16,14 +16,14 @@ import {
   DELETE_STAND_FAIL,
 } from "../constants/stand-constants";
 
-export const fetchAllStandsReducer = (state = {}, action) => {
+export const fetchAllStandsReducer = (state = { stands: [] }, action) => {
   switch (action.type) {
     case FETCH_ALL_STAND_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
     case FETCH_ALL_STAND_SUCCESS:
-      return { loading: false, stands: action.payload };
+      return { ...state, loading: false, stands: action.payload };
     case FETCH_ALL_STAND_FAIL:
-      return { loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

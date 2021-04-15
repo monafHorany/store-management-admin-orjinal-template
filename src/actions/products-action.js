@@ -34,7 +34,7 @@ export const createProduct = (product) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.post(
-      process.env.REACT_APP_BACKEND_URL + "/product/create",
+      process.env.REACT_APP_BACKEND_URL + "product/create",
       product,
       config
     );
@@ -49,7 +49,7 @@ export const createProduct = (product) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response
     });
   }
 };
@@ -66,7 +66,7 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/product/update/${id}`,
+      `${process.env.REACT_APP_BACKEND_URL}product/update/${id}`,
       product,
       config
     );
@@ -81,7 +81,7 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_UPDATE_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
@@ -92,7 +92,7 @@ export const deleteProduct = (id) => async (dispatch) => {
       type: PRODUCT_DELETE_REQUEST,
     });
     const { data } = await axios.delete(
-      `${process.env.REACT_APP_BACKEND_URL}/product/delete/${id}`
+      `${process.env.REACT_APP_BACKEND_URL}product/delete/${id}`
     );
 
     dispatch({
@@ -104,7 +104,7 @@ export const deleteProduct = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_DELETE_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
@@ -113,7 +113,7 @@ export const listProducts = () => async (dispatch) => {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
     const { data } = await axios.get(
-      process.env.REACT_APP_BACKEND_URL + "/product"
+      process.env.REACT_APP_BACKEND_URL + "product"
     );
 
     dispatch({
@@ -123,7 +123,7 @@ export const listProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
@@ -132,7 +132,9 @@ export const listProductsByStandId = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_BY_STAND_ID_REQUEST });
 
-    const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/product/${id}`);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}product/${id}`
+    );
 
     dispatch({
       type: PRODUCT_LIST_BY_STAND_ID_SUCCESS,
@@ -141,7 +143,7 @@ export const listProductsByStandId = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_BY_STAND_ID_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };

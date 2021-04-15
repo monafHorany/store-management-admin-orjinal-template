@@ -73,6 +73,13 @@ const StandDetail = ({ match, history }) => {
   const [zone, setEditedZone] = useState();
   const [standId, setEditedStand] = useState();
 
+  const standReducer = useSelector((state) => state.allStands);
+  const { stands: standsList } = standReducer;
+
+  const calculatedStand = standsList.filter(
+    (stand) => stand.id === productDetail.standId
+  )[0];
+
   let stands = [];
 
   if (zone && zones) {
@@ -588,7 +595,7 @@ const StandDetail = ({ match, history }) => {
                   >
                     STAND:{" "}
                   </span>{" "}
-                  {productDetail.standId}
+                  {calculatedStand.stand_number}
                 </div>{" "}
                 <br />
                 <div>
