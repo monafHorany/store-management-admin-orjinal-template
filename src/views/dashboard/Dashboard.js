@@ -586,9 +586,7 @@ const Dashboard = ({ match, history }) => {
                       justifyContent: "space-around",
                     }}
                   >
-                    <span style={{ color: "black", whiteSpace: "nowrap" }}>
-                      {product.product_en_name}
-                    </span>
+                    <span>{product.product_en_name}</span>
                     {userInfo &&
                       (userInfo.role === "super user" ||
                         userInfo.role === "editor") && (
@@ -675,9 +673,7 @@ const Dashboard = ({ match, history }) => {
                       <Image
                         height={150}
                         width={150}
-                        src={
-                          process.env.REACT_APP_BACKEND_URL + product.image_url
-                        }
+                        src={product.image_url}
                         alt=""
                         fluid
                       />
@@ -714,89 +710,60 @@ const Dashboard = ({ match, history }) => {
               </CButton>
             </CModalFooter>
           </CModal>
-          {calculatedZone && (
-            <CModal
-              show={info}
-              onClose={() => setInfo(!info)}
-              color="info"
-              size="lg"
-            >
-              <CModalHeader closeButton>
-                <CModalTitle>{productDetail.product_en_name}</CModalTitle>
-              </CModalHeader>
-              <CModalBody>
-                <CRow>
-                  <CCol>
-                    <div>
-                      <strong>name: </strong> {productDetail.product_en_name}
-                    </div>{" "}
-                    <br />
-                    <strong>description: </strong>{" "}
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: productDetail.product_en_desc,
-                      }}
-                    ></div>{" "}
-                    <br />
-                    <div>
-                      <strong>product_sku: </strong>
-                      {productDetail.product_sku}
-                    </div>{" "}
-                    <br />
-                    <div>
-                      <strong>quantity: </strong> {productDetail.quantity}
-                    </div>{" "}
-                    <br />
-                    <div>
-                      <strong>model_number: </strong>{" "}
-                      {productDetail.model_number}
-                    </div>{" "}
-                    <br />
-                    <div>
-                      <strong>Location: </strong>{" "}
-                      <span
-                        style={{
-                          fontWeight: "bold",
-                          fontStyle: "italic",
-                          color: "blue",
-                        }}
-                      >
-                        ZONE:{" "}
-                      </span>{" "}
-                      {calculatedZone.zone_symbol}{" "}
-                      <span
-                        style={{
-                          fontWeight: "bold",
-                          fontStyle: "italic",
-                          color: "blue",
-                        }}
-                      >
-                        STAND:{" "}
-                      </span>{" "}
-                      {calculatedStand.stand_number}
-                    </div>{" "}
-                    <br />
-                    <div>
-                      <strong>added at: </strong>{" "}
-                      {new Date(productDetail.createdAt).toLocaleString()}{" "}
-                    </div>
-                  </CCol>
-                  <CCol>
-                    <Image
-                      height={300}
-                      width={300}
-                      src={
-                        process.env.REACT_APP_BACKEND_URL +
-                        productDetail.image_url
-                      }
-                      alt=""
-                      fluid
-                    />
-                  </CCol>
-                </CRow>
-              </CModalBody>
-            </CModal>
-          )}
+          <CModal
+            show={info}
+            onClose={() => setInfo(!info)}
+            color="info"
+            size="lg"
+          >
+            <CModalHeader closeButton>
+              <CModalTitle>{productDetail.product_en_name}</CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+              <CRow>
+                <CCol>
+                  <div>
+                    <strong>name: </strong> {productDetail.product_en_name}
+                  </div>{" "}
+                  <br />
+                  <strong>description: </strong>{" "}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: productDetail.product_en_desc,
+                    }}
+                  ></div>{" "}
+                  <br />
+                  <div>
+                    <strong>product_sku: </strong>
+                    {productDetail.product_sku}
+                  </div>{" "}
+                  <br />
+                  <div>
+                    <strong>quantity: </strong> {productDetail.quantity}
+                  </div>{" "}
+                  <br />
+                  <div>
+                    <strong>model_number: </strong> {productDetail.model_number}
+                  </div>{" "}
+                  <br />
+                  <br />
+                  <div>
+                    <strong>added at: </strong>{" "}
+                    {new Date(productDetail.createdAt).toLocaleString()}{" "}
+                  </div>
+                </CCol>
+                <CCol>
+                  <Image
+                    height={300}
+                    width={300}
+                    src={productDetail.image_url}
+                    alt=""
+                    fluid
+                  />
+                </CCol>
+              </CRow>
+            </CModalBody>
+          </CModal>
 
           <Modal
             open={openEditModal}
