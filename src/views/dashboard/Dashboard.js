@@ -5,11 +5,9 @@ import {
   deleteProduct,
   UpdateProduct,
 } from "../../actions/products-action";
-import { Modal } from "react-responsive-modal";
+
 import styles from "./dashboard.module.css";
-import "react-responsive-modal/styles.css";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 import {
   CButton,
   CCard,
@@ -74,17 +72,7 @@ const Dashboard = ({ match, history }) => {
       return obj;
     })[0];
   }
-  const [_ar_name, setProduct_ar_name] = useState("");
-  const [_en_name, setProduct_en_name] = useState("");
-  const [_ar_desc, setProduct_ar_desc] = useState("");
-  const [_en_desc, setProduct_en_desc] = useState("");
-  const [image_url, setImage_url] = useState();
-  const [_barcode, setProduct_barcode] = useState("");
-  const [_sku, setProduct_sku] = useState("");
-  const [productModel_number, setModel_number] = useState("");
-  const [productQuantity, setQuantity] = useState("");
-  const [productZone, setZone] = useState("");
-  const [productStand, setStand] = useState("");
+  
 
   const [product_ar_name, setEditedProduct_ar_name] = useState();
   const [product_en_name, setEditedProduct_en_name] = useState();
@@ -115,43 +103,7 @@ const Dashboard = ({ match, history }) => {
 
   const dispatch = useDispatch();
 
-  const formSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("product_ar_name", _ar_name);
-    formData.append("product_en_name", _en_name);
-    formData.append("product_ar_desc", _ar_desc);
-    formData.append("product_en_desc", _en_desc);
-    formData.append("image_url", image_url);
-    formData.append("product_barcode", _barcode);
-    formData.append("product_sku", _sku);
-    formData.append("model_number", productModel_number);
-    formData.append("quantity", productQuantity);
-    formData.append("standId", productStand);
-    if (
-      productStand &&
-      selectedStand &&
-      (userInfo.role === "super user" || userInfo.role === "editor")
-    ) {
-      if (productQuantity > selectedStand.stand_capacity) {
-        alert("inserted quantity is greater than stand capacity");
-      } else if (
-        _ar_name &&
-        _en_name &&
-        _ar_desc &&
-        _en_desc &&
-        image_url &&
-        _barcode &&
-        _sku &&
-        productModel_number &&
-        productStand
-      ) {
-        dispatch(createProduct(formData));
-      } else {
-        alert("Please Fill All Fields");
-      }
-    }
-  };
+  
 
   const productsList = useSelector((state) => state.productList);
   const { products } = productsList;
@@ -261,311 +213,13 @@ const Dashboard = ({ match, history }) => {
               </CButton>
             )}
 
-          <Modal
-            open={openModal}
-            onClose={onCloseModal}
-            center
-            classNames={{ modal: "customModal" }}
-          >
-            <CRow>
-              <CCol>
-                <CCard>
-                  <CCardHeader
-                    style={{
-                      textAlign: "center",
-                      backgroundColor: "#ee8332",
-                      color: "#FFFFFF",
-                      fontWeight: "bold",
-                      letterSpacing: ".5em",
-                    }}
-                  >
-                    Add Product
-                  </CCardHeader>
-                  <CCardBody>
-                    <CForm
-                      encType="multipart/form-data"
-                      className="form-horizontal"
-                    >
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="text-input">Product Name</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CInput
-                            required
-                            type="text"
-                            onChange={(e) => setProduct_ar_name(e.target.value)}
-                            value={_ar_name}
-                            placeholder="Product Name in Arabic"
-                          />
-                        </CCol>
-                      </CFormGroup>
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="text-input">Product Name</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CInput
-                            onChange={(e) => setProduct_en_name(e.target.value)}
-                            required
-                            type="text"
-                            value={_en_name}
-                            placeholder="Product Name in English"
-                          />
-                        </CCol>
-                      </CFormGroup>
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="textarea-input">
-                            product description
-                          </CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CKEditor
-                            onChange={(event, _ar_desc) => {
-                              setProduct_ar_desc(_ar_desc.getData());
-                            }}
-                            // onChange={(e)=>setar_description(e.target.value)}
-                            required
-                            config={{ language: "ar" }}
-                            editor={ClassicEditor}
-                            placeholder="product description in Arabic"
-                            data={_ar_desc}
-                            dir="rtl"
-                          />
-                        </CCol>
-                      </CFormGroup>
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="textarea-input">
-                            product description
-                          </CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CKEditor
-                            onChange={(event, _en_desc) => {
-                              setProduct_en_desc(_en_desc.getData());
-                            }}
-                            required
-                            editor={ClassicEditor}
-                            placeholder="product description in English"
-                            data={_en_desc}
-                          />
-                        </CCol>
-                      </CFormGroup>
+          
 
-                      <CFormGroup row>
-                        <CLabel col md={3}>
-                          product image
-                        </CLabel>
-                        <CCol xs="12" md="9">
-                          <CInputFile
-                            size="sm"
-                            accept="image/*"
-                            required
-                            onChange={(e) => setImage_url(e.target.files[0])}
-                            name="image_url"
-                            custom
-                            id="custom-file-input"
-                          />
-                          <CLabel
-                            htmlFor="custom-file-input"
-                            variant="custom-file"
-                          >
-                            select the product main image
-                          </CLabel>
-                        </CCol>
-                      </CFormGroup>
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="text-input">product barcode</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CInput
-                            required
-                            onChange={(e) => setProduct_barcode(e.target.value)}
-                            type="number"
-                            value={_barcode}
-                            placeholder="product barcode"
-                          />
-                        </CCol>
-                      </CFormGroup>
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="text-input">SKU Code</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CInput
-                            required
-                            onChange={(e) => setProduct_sku(e.target.value)}
-                            type="text"
-                            value={_sku}
-                            placeholder="SKU Code"
-                          />
-                        </CCol>
-                      </CFormGroup>
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="text-input">Model Number</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CInput
-                            required
-                            onChange={(e) => setModel_number(e.target.value)}
-                            type="text"
-                            value={productModel_number}
-                            placeholder="Model Number"
-                          />
-                        </CCol>
-                      </CFormGroup>
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="text-input">quantity</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CInput
-                            required
-                            onChange={(e) => {
-                              setQuantity(e.target.value);
-                            }}
-                            type="number"
-                            value={productQuantity}
-                            placeholder="quantity"
-                          />
-                        </CCol>
-                        <div style={{ margin: "auto" }}>
-                          <p style={{ fontSize: "11px", margin: "auto" }}>
-                            {" "}
-                            make sure that quantity is not greater than stand
-                            capcity{" "}
-                          </p>
-                        </div>
-                      </CFormGroup>
 
-                      {zones && (
-                        <CFormGroup row>
-                          <CCol md="3">
-                            <CLabel htmlFor="selectSm">select Zone</CLabel>
-                          </CCol>
-                          <CCol xs="12" md="9">
-                            <CSelect
-                              dir="ltr"
-                              custom
-                              size="sm"
-                              name="selectSm"
-                              id="SelectLm"
-                              onChange={(e) => {
-                                setZone(e.target.value);
-                              }}
-                            >
-                              <option></option>
-                              {zones.map((zone, index) => (
-                                <option key={index} value={zone.id}>
-                                  Zone {zone.zone_symbol}
-                                </option>
-                              ))}
-                            </CSelect>
-                          </CCol>
-                        </CFormGroup>
-                      )}
 
-                      <CFormGroup row>
-                        <CCol md="3">
-                          <CLabel htmlFor="selectSm">select stand</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="9">
-                          <CSelect
-                            dir="ltr"
-                            custom
-                            size="sm"
-                            placeholder="set zone and quantity"
-                            disabled={!productZone || !productQuantity}
-                            name="selectSm"
-                            id="SelectLm"
-                            onChange={(e) => {
-                              setStand(e.target.value);
-                            }}
-                          >
-                            <option></option>
-                            {stands.map((stand, index) => (
-                              <option
-                                key={index}
-                                value={stand.id}
-                                style={{
-                                  color:
-                                    +stand.stand_capacity -
-                                      stand.products.reduce(
-                                        (acc, item) => acc + item.quantity,
-                                        0
-                                      ) ===
-                                      0 && "red",
-                                }}
-                                disabled={
-                                  +stand.stand_capacity -
-                                    stand.products.reduce(
-                                      (acc, item) => acc + item.quantity,
-                                      0
-                                    ) ===
-                                    0 ||
-                                  productQuantity >
-                                    +stand.stand_capacity -
-                                      stand.products.reduce(
-                                        (acc, item) => acc + item.quantity,
-                                        0
-                                      )
-                                }
-                              >
-                                {stand.stand_number} available places{" "}
-                                {+stand.stand_capacity -
-                                  stand.products.reduce(
-                                    (acc, item) => acc + item.quantity,
-                                    0
-                                  )}
-                                {+stand.stand_capacity -
-                                  stand.products.reduce(
-                                    (acc, item) => acc + item.quantity,
-                                    0
-                                  ) ===
-                                  0 && " full"}
-                              </option>
-                            ))}
-                          </CSelect>
-                        </CCol>
-                      </CFormGroup>
-                    </CForm>
-                  </CCardBody>
-                  <CCardFooter style={{ textAlign: "center" }}>
-                    <CButton
-                      disabled={
-                        !_ar_name ||
-                        !_en_name ||
-                        !_ar_desc ||
-                        !_en_desc ||
-                        !image_url ||
-                        !_barcode ||
-                        !_sku ||
-                        !productModel_number ||
-                        !productQuantity ||
-                        !productZone ||
-                        !productStand
-                      }
-                      style={{ borderColor: "#ee8332", color: "#ee8332" }}
-                      onClick={formSubmit}
-                      type="button"
-                      variant="outline"
-                      size="lg"
-                    >
-                      Add
-                      <i
-                        className="fas fa-plus"
-                        style={{ marginLeft: "1em" }}
-                      ></i>
-                    </CButton>
-                  </CCardFooter>
-                </CCard>
-              </CCol>
-            </CRow>
-          </Modal>
+
+
+
 
           <CRow>
             {products.map((product) => (
