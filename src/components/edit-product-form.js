@@ -21,38 +21,53 @@ import "react-responsive-modal/styles.css";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { createProduct } from "../actions/products-action";
+import { createProduct, UpdateProduct } from "../actions/products-action";
 
-export function NewProductForm({ openModal, closeModal }) {
-  const [_ar_name, setProduct_ar_name] = useState("");
-  const [_en_name, setProduct_en_name] = useState("");
-  const [_ar_desc, setProduct_ar_desc] = useState("");
-  const [_en_desc, setProduct_en_desc] = useState("");
-  const [image_url, setImage_url] = useState();
-  const [_barcode, setProduct_barcode] = useState("");
-  const [_sku, setProduct_sku] = useState("");
-  const [productModel_number, setModel_number] = useState("");
+export function EditProductForm({ openModal, closeModal }) {
+  const [product_en_name, setEditedProduct_en_name] = useState();
+  const [product_en_desc, setEditedProduct_en_desc] = useState();
+  const [product_barcode, setEditedProduct_barcode] = useState();
+  const [product_sku, setEditedProduct_sku] = useState();
+  const [model_number, setEditedModel_number] = useState();
+
+  const editForm = (e) => {
+    if (
+      product_en_name &&
+      product_en_desc &&
+      product_barcode &&
+      product_sku &&
+      model_number
+    ) {
+      // dispatch(
+      //   UpdateProduct(productDetail.id, {
+      //     product_en_name,
+      //     product_en_desc,
+      //     product_barcode,
+      //     product_sku,
+      //     model_number,
+      //   })
+      // );
+    } else {
+      alert("Please Fill All Fields");
+    }
+  };
 
   const dispatch = useDispatch();
 
   const formSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("product_en_name", _en_name);
-    formData.append("product_en_desc", _en_desc);
-    formData.append("image_url", image_url);
-    formData.append("product_barcode", _barcode);
-    formData.append("product_sku", _sku);
-    formData.append("model_number", productModel_number);
+    formData.append("product_en_name", product_en_name);
+    formData.append("product_en_desc", product_en_desc);
+    formData.append("product_barcode", product_barcode);
+    formData.append("product_sku", product_sku);
+    formData.append("model_number", model_number);
     if (
-      _ar_name &&
-      _en_name &&
-      _ar_desc &&
-      _en_desc &&
-      image_url &&
-      _barcode &&
-      _sku &&
-      productModel_number
+      product_en_name &&
+      product_en_desc &&
+      product_barcode &&
+      product_sku &&
+      model_number
     ) {
       dispatch(createProduct(formData));
     } else {
@@ -71,17 +86,6 @@ export function NewProductForm({ openModal, closeModal }) {
         <CRow>
           <CCol>
             <CCard>
-              <CCardHeader
-                style={{
-                  textAlign: "center",
-                  backgroundColor: "#ee8332",
-                  color: "#FFFFFF",
-                  fontWeight: "bold",
-                  letterSpacing: ".5em",
-                }}
-              >
-                Add Product
-              </CCardHeader>
               <CCardBody>
                 <CForm
                   encType="multipart/form-data"
@@ -93,10 +97,12 @@ export function NewProductForm({ openModal, closeModal }) {
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
-                        onChange={(e) => setProduct_en_name(e.target.value)}
+                        onChange={(e) =>
+                          setEditedProduct_en_name(e.target.value)
+                        }
                         required
                         type="text"
-                        value={_en_name}
+                        value={product_en_name}
                         placeholder="Product Name in English"
                       />
                     </CCol>
@@ -109,34 +115,16 @@ export function NewProductForm({ openModal, closeModal }) {
                     </CCol>
                     <CCol xs="12" md="9">
                       <CKEditor
-                        onChange={(event, _en_desc) => {
-                          setProduct_en_desc(_en_desc.getData());
+                        onChange={(event, editedproduct_en_desc) => {
+                          setEditedProduct_en_desc(
+                            editedproduct_en_desc.getData()
+                          );
                         }}
                         required
                         editor={ClassicEditor}
                         placeholder="product description in English"
-                        data={_en_desc}
+                        data={product_en_desc}
                       />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CLabel col md={3}>
-                      product image
-                    </CLabel>
-                    <CCol xs="12" md="9">
-                      <CInputFile
-                        size="sm"
-                        accept="image/*"
-                        required
-                        onChange={(e) => setImage_url(e.target.files[0])}
-                        name="image_url"
-                        custom
-                        id="custom-file-input"
-                      />
-                      <CLabel htmlFor="custom-file-input" variant="custom-file">
-                        select the product main image
-                      </CLabel>
                     </CCol>
                   </CFormGroup>
                   <CFormGroup row>
@@ -146,9 +134,11 @@ export function NewProductForm({ openModal, closeModal }) {
                     <CCol xs="12" md="9">
                       <CInput
                         required
-                        onChange={(e) => setProduct_barcode(e.target.value)}
+                        onChange={(e) =>
+                          setEditedProduct_barcode(e.target.value)
+                        }
                         type="number"
-                        value={_barcode}
+                        value={product_barcode}
                         placeholder="product barcode"
                       />
                     </CCol>
@@ -160,9 +150,9 @@ export function NewProductForm({ openModal, closeModal }) {
                     <CCol xs="12" md="9">
                       <CInput
                         required
-                        onChange={(e) => setProduct_sku(e.target.value)}
+                        onChange={(e) => setEditedProduct_sku(e.target.value)}
                         type="text"
-                        value={_sku}
+                        value={product_sku}
                         placeholder="SKU Code"
                       />
                     </CCol>
@@ -174,9 +164,9 @@ export function NewProductForm({ openModal, closeModal }) {
                     <CCol xs="12" md="9">
                       <CInput
                         required
-                        onChange={(e) => setModel_number(e.target.value)}
+                        onChange={(e) => setEditedModel_number(e.target.value)}
                         type="text"
-                        value={productModel_number}
+                        value={model_number}
                         placeholder="Model Number"
                       />
                     </CCol>
@@ -186,21 +176,20 @@ export function NewProductForm({ openModal, closeModal }) {
               <CCardFooter style={{ textAlign: "center" }}>
                 <CButton
                   disabled={
-                    !_en_name ||
-                    !_en_desc ||
-                    !image_url ||
-                    !_barcode ||
-                    !_sku ||
-                    !productModel_number
+                    !product_en_name ||
+                    !product_en_desc ||
+                    !product_barcode ||
+                    !product_sku ||
+                    !model_number
                   }
                   style={{ borderColor: "#ee8332", color: "#ee8332" }}
-                  onClick={formSubmit}
+                  onClick={editForm}
                   type="button"
                   variant="outline"
                   size="lg"
                 >
-                  Add
-                  <i className="fas fa-plus" style={{ marginLeft: "1em" }}></i>
+                  OK
+                  <i className="fas fa-pen" style={{ marginLeft: "1em" }}></i>
                 </CButton>
               </CCardFooter>
             </CCard>
