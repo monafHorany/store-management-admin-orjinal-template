@@ -3,65 +3,41 @@ import {
   CCard,
   CCardBody,
   CCardFooter,
-  CCardHeader,
   CCol,
   CForm,
   CFormGroup,
   CInput,
-  CInputFile,
   CLabel,
   CRow,
-  CSelect,
 } from "@coreui/react";
 import React, { useState, useEffect, Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
+import { useDispatch } from "react-redux";
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
-
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { createProduct, UpdateProduct } from "../actions/products-action";
-
-export function EditProductForm({ openModal, closeModal }) {
+import { UpdateProduct } from "../actions/products-action";
+export function EditProductForm({ openModal, closeModal, productDetail }) {
   const [product_en_name, setEditedProduct_en_name] = useState();
   const [product_en_desc, setEditedProduct_en_desc] = useState();
   const [product_barcode, setEditedProduct_barcode] = useState();
   const [product_sku, setEditedProduct_sku] = useState();
   const [model_number, setEditedModel_number] = useState();
-
-  const editForm = (e) => {
-    if (
-      product_en_name &&
-      product_en_desc &&
-      product_barcode &&
-      product_sku &&
-      model_number
-    ) {
-      // dispatch(
-      //   UpdateProduct(productDetail.id, {
-      //     product_en_name,
-      //     product_en_desc,
-      //     product_barcode,
-      //     product_sku,
-      //     model_number,
-      //   })
-      // );
-    } else {
-      alert("Please Fill All Fields");
-    }
-  };
-
   const dispatch = useDispatch();
-
-  const formSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("product_en_name", product_en_name);
-    formData.append("product_en_desc", product_en_desc);
-    formData.append("product_barcode", product_barcode);
-    formData.append("product_sku", product_sku);
-    formData.append("model_number", model_number);
+  useEffect(() => {
+    setEditedProduct_en_name(productDetail.product_en_name);
+    setEditedProduct_en_desc(productDetail.product_en_desc);
+    setEditedProduct_barcode(productDetail.product_barcode);
+    setEditedProduct_sku(productDetail.product_sku);
+    setEditedModel_number(productDetail.model_number);
+  }, [
+    productDetail.model_number,
+    productDetail.product_barcode,
+    productDetail.product_en_desc,
+    productDetail.product_en_name,
+    productDetail.product_sku,
+  ]);
+  const editForm = () => {
     if (
       product_en_name &&
       product_en_desc &&
@@ -69,12 +45,19 @@ export function EditProductForm({ openModal, closeModal }) {
       product_sku &&
       model_number
     ) {
-      dispatch(createProduct(formData));
+      dispatch(
+        UpdateProduct(productDetail.id, {
+          product_en_name,
+          product_en_desc,
+          product_barcode,
+          product_sku,
+          model_number,
+        })
+      );
     } else {
       alert("Please Fill All Fields");
     }
   };
-
   return (
     <Fragment>
       <Modal

@@ -11,10 +11,9 @@ import {
   CInputFile,
   CLabel,
   CRow,
-  CSelect,
 } from "@coreui/react";
-import React, { useState, useEffect, Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
 
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
@@ -24,9 +23,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { createProduct } from "../actions/products-action";
 
 export function NewProductForm({ openModal, closeModal }) {
-  const [_ar_name, setProduct_ar_name] = useState("");
   const [_en_name, setProduct_en_name] = useState("");
-  const [_ar_desc, setProduct_ar_desc] = useState("");
   const [_en_desc, setProduct_en_desc] = useState("");
   const [image_url, setImage_url] = useState();
   const [_barcode, setProduct_barcode] = useState("");
@@ -45,9 +42,7 @@ export function NewProductForm({ openModal, closeModal }) {
     formData.append("product_sku", _sku);
     formData.append("model_number", productModel_number);
     if (
-      _ar_name &&
       _en_name &&
-      _ar_desc &&
       _en_desc &&
       image_url &&
       _barcode &&

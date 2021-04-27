@@ -84,16 +84,7 @@ const TheHeader = () => {
   const [productDetail, setProductDetail] = useState({});
   const [info, setInfo] = useState(false);
   const zonesReducer = useSelector((state) => state.allZones);
-  const { loading, zones, error } = zonesReducer;
-
-  let calculatedZone;
-
-  if (productDetail && zones) {
-    calculatedZone = zones.filter((zone) => {
-      let obj = zone.stands.some(({ id }) => id === productDetail.standId);
-      return obj;
-    })[0];
-  }
+  const { loading, error } = zonesReducer;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -281,7 +272,7 @@ const TheHeader = () => {
               <strong>description: </strong>{" "}
               <div
                 dangerouslySetInnerHTML={{
-                  __html: productDetail.product_en_desc
+                  __html: productDetail.product_en_desc,
                 }}
               ></div>{" "}
               <br />
