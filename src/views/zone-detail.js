@@ -22,23 +22,17 @@ import { Link } from "react-router-dom";
 import { addNewStand } from "../actions/stand-action";
 import { fetchSingleZones } from "../actions/zone-action";
 import { Toast } from "react-bootstrap";
-
 const ZoneDetail = ({ match, history }) => {
   const dispatch = useDispatch();
   const zone_detail = useSelector((state) => state.singleZone);
   const { loading, zone } = zone_detail;
   const createdStand = useSelector((state) => state.standCreate);
   const { success, error } = createdStand;
-  console.log(loading);
-
   const [stand_number, setStand_number] = useState("");
   const [stand_capacity, setStand_capacity] = useState("");
-
   const [openModal, setOpenModal] = useState(false);
-
   const onOpenModal = () => setOpenModal(true);
   const onCloseModal = () => setOpenModal(false);
-
   const formSumbit = () => {
     if (!stand_number) {
       alert("Stand Number can't be blank");
@@ -48,11 +42,9 @@ const ZoneDetail = ({ match, history }) => {
       dispatch(addNewStand(match.params.id, { stand_number, stand_capacity }));
     }
   };
-
   const [show, setShow] = useState(false);
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-
   useEffect(() => {
     if (success) {
       setOpenModal(false);
@@ -61,7 +53,6 @@ const ZoneDetail = ({ match, history }) => {
     }
     dispatch(fetchSingleZones(match.params.id));
   }, [dispatch, error, match.params.id, success]);
-
   return (
     <>
       {!loading && (
@@ -115,7 +106,7 @@ const ZoneDetail = ({ match, history }) => {
                       number of products:{" "}
                       <span style={{ color: "black" }}>
                         {stand.products.reduce(
-                          (acc, item) => acc + item.quantity,
+                          (acc, item) => acc + item.location.quantity,
                           0
                         )}
                       </span>
@@ -124,7 +115,7 @@ const ZoneDetail = ({ match, history }) => {
                       filling Percentage:{" "}
                       <span style={{ color: "black" }}>
                         {(stand.products.reduce(
-                          (acc, item) => acc + item.quantity,
+                          (acc, item) => acc + item.location.quantity,
                           0
                         ) *
                           100) /
@@ -139,7 +130,6 @@ const ZoneDetail = ({ match, history }) => {
           </CRow>
         </>
       )}
-
       <Toast
         style={{
           color: "white",

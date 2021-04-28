@@ -25,6 +25,10 @@ import {
   createNewStandReducer,
   fetchAllStandsReducer,
 } from "./reducers/stand-reducer";
+import {
+  productLocationCreateReducer,
+  productLocationDeleteReducer,
+} from "./reducers/location-reducer";
 // const initialState = {
 //   sidebarShow: "responsive",
 // };
@@ -58,10 +62,10 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   zoneCreate: createNewZoneReducer,
   zoneUpdate: updateZoneReducer,
-
   standProduct: productListByStandIdReducer,
-
   standCreate: createNewStandReducer,
+  addLocation: productLocationCreateReducer,
+  removeLocation: productLocationDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("orjeenUserInfo")

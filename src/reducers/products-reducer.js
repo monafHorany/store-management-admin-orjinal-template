@@ -84,16 +84,16 @@ export const productListReducer = (state = { products: [] }, action) => {
 };
 
 export const productListByStandIdReducer = (
-  state = { products: [] },
+  state = { loading: true },
   action
 ) => {
   switch (action.type) {
     case PRODUCT_LIST_BY_STAND_ID_REQUEST:
-      return { ...state, loading: true, products: [] };
+      return { loading: true };
     case PRODUCT_LIST_BY_STAND_ID_SUCCESS:
       return {
         loading: false,
-        products: action.payload,
+        standProducts: action.payload,
       };
     case PRODUCT_LIST_BY_STAND_ID_FAIL:
       return { loading: false, error: action.payload };

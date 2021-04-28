@@ -49,7 +49,7 @@ export const createProduct = (product) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
-      payload: error.response
+      payload: error.response,
     });
   }
 };
@@ -141,9 +141,10 @@ export const listProductsByStandId = (id) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
+    console.log(error);
     dispatch({
       type: PRODUCT_LIST_BY_STAND_ID_FAIL,
-      payload: error.response,
+      payload: error,
     });
   }
 };

@@ -37,18 +37,10 @@ export function NewProductForm({ openModal, closeModal }) {
     const formData = new FormData();
     formData.append("product_en_name", _en_name);
     formData.append("product_en_desc", _en_desc);
-    formData.append("image_url", image_url);
     formData.append("product_barcode", _barcode);
     formData.append("product_sku", _sku);
     formData.append("model_number", productModel_number);
-    if (
-      _en_name &&
-      _en_desc &&
-      image_url &&
-      _barcode &&
-      _sku &&
-      productModel_number
-    ) {
+    if (_en_name && _en_desc && _barcode && _sku && productModel_number) {
       dispatch(createProduct(formData));
     } else {
       alert("Please Fill All Fields");

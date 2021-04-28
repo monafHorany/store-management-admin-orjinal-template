@@ -15,11 +15,13 @@ import { NewProductForm } from "../../components/new-product-form";
 import { EditProductForm } from "../../components/edit-product-form";
 import { DeleteFrom } from "../../components/delete-form";
 import { InfoModal } from "../../components/info-modal";
+import { LocationForm } from "../../components/location-form";
 const Dashboard = ({ history }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [danger, setDanger] = useState(false);
   const [info, setInfo] = useState(false);
+  const [warning, setWarning] = useState(false);
   const [productDetail, setProductDetail] = useState({});
   const productCreate = useSelector((state) => state.productCreate);
   const { success } = productCreate;
@@ -116,6 +118,19 @@ const Dashboard = ({ history }) => {
                         </p>
                         <p
                           style={{ margin: "0", padding: "14px" }}
+                          onClick={() => {
+                            setWarning(!warning);
+                            setProductDetail(product);
+                          }}
+                        >
+                          <i
+                            className="fas fa-map-marker"
+                            style={{ padding: ".5rem" }}
+                          ></i>{" "}
+                          Assign To LOcation
+                        </p>
+                        <p
+                          style={{ margin: "0", padding: "14px" }}
                           onMouseEnter={() => {
                             setProductDetail(product);
                           }}
@@ -172,6 +187,11 @@ const Dashboard = ({ history }) => {
       <EditProductForm
         openModal={openEditModal}
         closeModal={onCloseEditModal}
+        productDetail={productDetail}
+      />
+      <LocationForm
+        modalShow={warning}
+        modalClose={() => setWarning(false)}
         productDetail={productDetail}
       />
     </>
