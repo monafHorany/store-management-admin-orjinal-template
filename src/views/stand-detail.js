@@ -14,50 +14,23 @@ import "react-responsive-modal/styles.css";
 import { listProductsByStandId } from "../actions/products-action";
 import { InfoModal } from "../components/info-modal";
 import { EditProductForm } from "../components/edit-product-form";
-import { DeleteFrom } from "../components/delete-form";
+// import { DeleteFrom } from "../components/delete-form";
+import { LocationForm } from "../components/location-form";
 const StandDetail = ({ match, history }) => {
-  // const zone_detail = useSelector((state) => state.singleZone);
-  // const { zone: zoneDetail } = zone_detail;
-  // let filterdStand;
-  // if (zoneDetail) {
-  //   filterdStand = zoneDetail.stands.filter(
-  //     (stand) => stand.id === +match.params.id
-  //   )[0];
-  // }
-
   const dispatch = useDispatch();
-
-  // const zonesReducer = useSelector((state) => state.allZones);
-  // const { zones } = zonesReducer;
   const standProduct = useSelector((state) => state.standProduct);
   const { loading, standProducts } = standProduct;
 
-  const [danger, setDanger] = useState(false);
+  // const [danger, setDanger] = useState(false);
 
   const [info, setInfo] = useState(false);
   const [productDetail, setProductDetail] = useState({});
+  const [locationForm, setLocationForm] = useState(false);
 
   const [openEditModal, setOpenEditModal] = useState(false);
 
   const onOpenEditModal = () => setOpenEditModal(true);
   const onCloseEditModal = () => setOpenEditModal(false);
-
-  // const standReducer = useSelector((state) => state.allStands);
-  // const { stands: standsList } = standReducer;
-
-  // const calculatedStand = standsList.filter(
-  //   (stand) => stand.id === productDetail.standId
-  // )[0];
-
-  // let calculatedZone;
-
-  //   if (productDetail && zones) {
-  //     calculatedZone = zones.filter((zone) => {
-  //       let obj = zone.stands.some(({ id }) => id === productDetail.standId);
-  //       console.log(obj);
-  //       return obj;
-  //     })[0];
-  //   }
   const id = match.params.id;
   useEffect(() => {
     dispatch(listProductsByStandId(id));
@@ -111,6 +84,19 @@ const StandDetail = ({ match, history }) => {
                         </p>
                         <p
                           style={{ margin: "0", padding: "14px" }}
+                          onClick={() => {
+                            setLocationForm(!locationForm);
+                            setProductDetail(product);
+                          }}
+                        >
+                          <i
+                            className="fas fa-map-marker"
+                            style={{ padding: ".5rem" }}
+                          ></i>{" "}
+                          Add To Zone
+                        </p>
+                        <p
+                          style={{ margin: "0", padding: "14px" }}
                           onMouseEnter={() => {
                             setProductDetail(product);
                           }}
@@ -124,7 +110,7 @@ const StandDetail = ({ match, history }) => {
                           ></i>{" "}
                           Edit
                         </p>
-                        <p
+                        {/* <p
                           style={{ margin: "0", padding: "14px" }}
                           onClick={() => {
                             setDanger(!danger);
@@ -136,7 +122,7 @@ const StandDetail = ({ match, history }) => {
                             style={{ padding: ".5rem" }}
                           ></i>{" "}
                           Delete
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   </CCardHeader>
@@ -154,8 +140,8 @@ const StandDetail = ({ match, history }) => {
                       />
                       <div className={styles.image_dropdown_content}>
                         <Image
-                          height={800}
-                          width={800}
+                          height={400}
+                          width={400}
                           src={product.image_url}
                           alt=""
                           fluid
@@ -180,10 +166,15 @@ const StandDetail = ({ match, history }) => {
         closeModal={onCloseEditModal}
         productDetail={productDetail}
       />
-
+      {/* 
       <DeleteFrom
         modalShow={danger}
         modalClose={() => setDanger(false)}
+        productDetail={productDetail}
+      /> */}
+      <LocationForm
+        modalShow={locationForm}
+        modalClose={() => setLocationForm(false)}
         productDetail={productDetail}
       />
     </>

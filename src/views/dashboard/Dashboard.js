@@ -13,16 +13,16 @@ import {
 import { Image } from "react-bootstrap";
 import { NewProductForm } from "../../components/new-product-form";
 import { EditProductForm } from "../../components/edit-product-form";
-import { DeleteFrom } from "../../components/delete-form";
+// import { DeleteFrom } from "../../components/delete-form";
 import { InfoModal } from "../../components/info-modal";
 import { LocationForm } from "../../components/location-form";
 const Dashboard = ({ history }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [danger, setDanger] = useState(false);
+  // const [danger, setDanger] = useState(false);
   const [info, setInfo] = useState(false);
-  const [warning, setWarning] = useState(false);
-  const [productDetail, setProductDetail] = useState({});
+  const [locationForm, setLocationForm] = useState(false);
+  const [productDetail, setProductDetail] = useState("");
   const productCreate = useSelector((state) => state.productCreate);
   const { success } = productCreate;
   const productUpdate = useSelector((state) => state.productUpdate);
@@ -33,6 +33,8 @@ const Dashboard = ({ history }) => {
   const { userInfo } = userLogin;
   const productsList = useSelector((state) => state.productList);
   const { products } = productsList;
+  const location = useSelector((state) => state.addLocation);
+  const { success: locationAddSuccess } = location;
 
   const onOpenModal = () => setOpenModal(true);
   const onCloseModal = () => setOpenModal(false);
@@ -48,10 +50,20 @@ const Dashboard = ({ history }) => {
       setOpenEditModal(false);
     }
 
-    if (deleteSuccess) {
-      setDanger(false);
+    // if (deleteSuccess) {
+    //   setDanger(false);
+    // }
+    if (locationAddSuccess) {
+      setLocationForm(false);
     }
-  }, [deleteSuccess, history, success, updateSuccess, userInfo]);
+  }, [
+    deleteSuccess,
+    history,
+    locationAddSuccess,
+    success,
+    updateSuccess,
+    userInfo,
+  ]);
   return (
     <>
       {userInfo &&
@@ -72,11 +84,6 @@ const Dashboard = ({ history }) => {
         )}
 
       <NewProductForm openModal={openModal} closeModal={onCloseModal} />
-      <DeleteFrom
-        modalShow={danger}
-        modalClose={() => setDanger(false)}
-        productDetail={productDetail}
-      />
 
       <CRow>
         {products.map((product) => (
@@ -119,7 +126,7 @@ const Dashboard = ({ history }) => {
                         <p
                           style={{ margin: "0", padding: "14px" }}
                           onClick={() => {
-                            setWarning(!warning);
+                            setLocationForm(!locationForm);
                             setProductDetail(product);
                           }}
                         >
@@ -127,7 +134,7 @@ const Dashboard = ({ history }) => {
                             className="fas fa-map-marker"
                             style={{ padding: ".5rem" }}
                           ></i>{" "}
-                          Assign To LOcation
+                          Add To Zone
                         </p>
                         <p
                           style={{ margin: "0", padding: "14px" }}
@@ -144,7 +151,7 @@ const Dashboard = ({ history }) => {
                           ></i>{" "}
                           Edit
                         </p>
-                        <p
+                        {/* <p
                           style={{ margin: "0", padding: "14px" }}
                           onClick={() => {
                             setDanger(!danger);
@@ -156,7 +163,7 @@ const Dashboard = ({ history }) => {
                             style={{ padding: ".5rem" }}
                           ></i>{" "}
                           Delete
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   )}
@@ -179,6 +186,11 @@ const Dashboard = ({ history }) => {
           </CCol>
         ))}
       </CRow>
+      {/* <DeleteFrom
+        modalShow={danger}
+        modalClose={() => setDanger(false)}
+        productDetail={productDetail}
+      /> */}
       <InfoModal
         modalShow={info}
         modalClose={() => setInfo(false)}
@@ -190,8 +202,8 @@ const Dashboard = ({ history }) => {
         productDetail={productDetail}
       />
       <LocationForm
-        modalShow={warning}
-        modalClose={() => setWarning(false)}
+        modalShow={locationForm}
+        modalClose={() => setLocationForm(false)}
         productDetail={productDetail}
       />
     </>

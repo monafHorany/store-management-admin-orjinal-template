@@ -91,6 +91,8 @@ const TheHeader = () => {
   useEffect(() => {
     if (success) {
       setOpenModal(false);
+      setZone_symbol("");
+      setZone_capacity("");
     }
 
     if (!userInfo) {

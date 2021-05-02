@@ -12,23 +12,36 @@ import {
   CLabel,
   CModal,
   CRow,
+  CSelect,
 } from "@coreui/react";
 import { useSelector, useDispatch } from "react-redux";
+import { locateProduct } from "../actions/location-action";
 
 export const LocationForm = ({ modalShow, modalClose, productDetail }) => {
   const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState("");
+  const [zoneId, setZoneId] = useState();
+  const [standId, setStandId] = useState();
+
+  const productId = productDetail.id;
 
   const zonesReducer = useSelector((state) => state.allZones);
-  const { loading, zones } = zonesReducer;
+  const { zones } = zonesReducer;
 
   console.log(zones);
 
-  const [quantity, setQuantity] = useState();
-  const [zoneId, setZoneId] = useState();
-  const [standId, setStandId] = useState();
-  const [productId, setProductId] = useState();
+  // const [zone, setZone] = useState();
+
+  const formSubmit = () => {
+    if (!quantity || !zoneId || !standId || !productId) {
+      alert("Please fill all fields");
+      return;
+    }
+    dispatch(locateProduct({ quantity, zoneId, standId, productId }));
+  };
+
   return (
-    <CModal show={modalShow} onClose={modalClose} color="warning" size="md">
+    <CModal show={modalShow} onClose={modalClose} color="warning">
       <CRow>
         <CCol>
           <CCard>
@@ -41,7 +54,7 @@ export const LocationForm = ({ modalShow, modalClose, productDetail }) => {
                 letterSpacing: ".5em",
               }}
             >
-              Add Product
+              Assign To Location
             </CCardHeader>
             <CCardBody>
               <CForm encType="multipart/form-data" className="form-horizontal">
@@ -60,57 +73,109 @@ export const LocationForm = ({ modalShow, modalClose, productDetail }) => {
                   </CCol>
                 </CFormGroup>
 
-                <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="text-input">product barcode</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput
-                      required
-                      // onChange={(e) => setProduct_barcode(e.target.value)}
-                      type="number"
-                      // value={_barcode}
-                      placeholder="product barcode"
-                    />
-                  </CCol>
-                </CFormGroup>
-                <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="text-input">SKU Code</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput
-                      required
-                      // onChange={(e) => setProduct_sku(e.target.value)}
-                      type="text"
-                      // value={_sku}
-                      placeholder="SKU Code"
-                    />
-                  </CCol>
-                </CFormGroup>
-                <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="text-input">Model Number</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput
-                      required
-                      // onChange={(e) => setModel_number(e.target.value)}
-                      type="text"
-                      // value={productModel_number}
-                      placeholder="Model Number"
-                    />
-                  </CCol>
-                </CFormGroup>
+                {zones && (
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="selectSm">select Zone</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CSelect
+                        dir="ltr"
+                        custom
+                        size="sm"
+                        name="selectSm"
+                        id="SelectLm"
+                        onChange={(e) => {
+                          setZoneId(e.target.value);
+                        }}
+                      >
+                        <option></option>
+                        {zones.map((zone, index) => (
+                          <option key={index} value={zone.id}>
+                            Zone {zone.zone_symbol}
+                          </option>
+                        ))}
+                      </CSelect>
+                    </CCol>
+                  </CFormGroup>
+                )}
+                {zoneId && (
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="selectSm">select Stand</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CSelect
+                        dir="ltr"
+                        custom
+                        size="sm"
+                        name="selectSm"
+                        id="SelectLm"
+                        onChange={(e) => {
+                          setStandId(e.target.value);
+                        }}
+                      >
+                        <option></option>
+                        {zones[zoneId - 1].stands.map((stand, index) => (
+                          <option
+                            key={index}
+                            value={stand.id}
+                            style={{
+                              color:
+                                +stand.stand_capacity -
+                                  stand.products.reduce(
+                                    (acc, item) => acc + item.location.quantity,
+                                    0
+                                  ) ===
+                                  0 && "red",
+                            }}
+                            disabled={
+                              +stand.stand_capacity -
+                                stand.products.reduce(
+                                  (acc, item) => acc + item.location.quantity,
+                                  0
+                                ) ===
+                                0 ||
+                              quantity >
+                                +stand.stand_capacity -
+                                  stand.products.reduce(
+                                    (acc, item) => acc + item.location.quantity,
+                                    0
+                                  )
+                            }
+                          >
+                            {stand.stand_number} available places{" "}
+                            {+stand.stand_capacity -
+                              stand.products.reduce(
+                                (acc, item) => acc + item.location.quantity,
+                                0
+                              )}
+                            {+stand.stand_capacity -
+                              stand.products.reduce(
+                                (acc, item) => acc + item.location.quantity,
+                                0
+                              ) ===
+                              0 && " full"}
+                          </option>
+                        ))}
+                      </CSelect>
+                    </CCol>
+                  </CFormGroup>
+                )}
               </CForm>
             </CCardBody>
             <CCardFooter style={{ textAlign: "center" }}>
               <CButton
-                style={{ borderColor: "#ee8332", color: "#ee8332" }}
-                //   onClick={formSubmit}
+                style={{
+                  borderColor: "#ee8332",
+                  color: "#ee8332",
+                  cursor: (!quantity || !zoneId || !standId) && "not-allowed",
+                }}
+                onClick={formSubmit}
                 type="button"
                 variant="outline"
                 size="lg"
+                disabled={!quantity || !zoneId || !standId}
               >
                 Add
                 <i className="fas fa-plus" style={{ marginLeft: "1em" }}></i>

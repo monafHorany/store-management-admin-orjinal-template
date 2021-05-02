@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 
 const PPrint = ({ history }) => {
   const clickToPrint = () => {
-    window.location = `http://192.168.1.16:5000/product/printReport`;
+    window.location = `${process.env.REACT_APP_BACKEND_URL}product/printReport`;
   };
 
   useEffect(() => {

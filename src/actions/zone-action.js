@@ -17,6 +17,7 @@ import {
   // DELETE_ZONE_SUCCESS,
   // DELETE_ZONE_FAIL,
 } from "../constants/zone-constants";
+import { logout } from "./user-action";
 
 export const fetchAllZones = () => async (dispatch) => {
   try {
@@ -108,5 +109,6 @@ export const addNewZones = (zone) => async (dispatch, getState) => {
       type: ADD_NEW_ZONE_FAIL,
       payload: error.response.data || error.response.statusText,
     });
+    dispatch(logout());
   }
 };

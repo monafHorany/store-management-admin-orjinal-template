@@ -49,6 +49,7 @@ export const createUser = (user) => async (dispatch, getState) => {
       type: USER_CREATE_FAIL,
       payload: error.response.data || error.response.statusText,
     });
+    dispatch(logout());
   }
 };
 

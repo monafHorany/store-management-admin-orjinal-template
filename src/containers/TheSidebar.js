@@ -23,13 +23,21 @@ const TheSidebar = () => {
   const { loading, zones } = zonesReducer;
 
   var convertedZones = [];
-  if (!loading && zones) {
+  if (!loading && zones.length !== 0) {
     convertedZones = zones.map((zone) => ({
       _tag: "CSidebarNavItem",
       icon: "cil-location-pin",
       name: `Zone ${zone.zone_symbol}`,
       to: `/zone/${zone.id}`,
     }));
+  } else {
+    convertedZones = [
+      {
+        _tag: "CSidebarNavTitle",
+        _children: ["NO ZONES YET"],
+        className: "m-4",
+      },
+    ];
   }
   const history = useHistory();
 

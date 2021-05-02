@@ -58,7 +58,7 @@ const Create = ({ history }) => {
       setShow(true);
     }
 
-    if (userInfo.role !== "super user") {
+    if (userInfo && userInfo.role !== "super user") {
       history.push("/dashboard");
     }
   }, [dispatch, error, history, success, userInfo]);
@@ -210,7 +210,7 @@ const Create = ({ history }) => {
                             variant="custom-checkbox"
                             htmlFor="inline-radio3"
                           >
-                            inspector
+                            spectator
                           </CLabel>
                         </CFormGroup>
                       </CCol>

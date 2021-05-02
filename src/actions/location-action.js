@@ -7,6 +7,7 @@ import {
   LOCATION_DELETE_REQUEST,
   LOCATION_DELETE_SUCCESS,
 } from "../constants/location-constants";
+import { listProducts } from "./products-action";
 
 export const locateProduct = (location) => async (dispatch, getState) => {
   try {
@@ -23,7 +24,7 @@ export const locateProduct = (location) => async (dispatch, getState) => {
     // //   },
     // // };
     const { data } = await axios.post(
-      process.env.REACT_APP_BACKEND_URL + "product/insertProduct",
+      process.env.REACT_APP_BACKEND_URL + "location/insertProduct",
       location
       // config
     );
@@ -32,6 +33,7 @@ export const locateProduct = (location) => async (dispatch, getState) => {
       type: LOCATION_CREATE_SUCCESS,
       payload: data,
     });
+    dispatch(listProducts());
   } catch (error) {
     dispatch({
       type: LOCATION_CREATE_FAIL,
@@ -46,13 +48,14 @@ export const deleteProductLocation = (id) => async (dispatch) => {
       type: LOCATION_DELETE_REQUEST,
     });
     const { data } = await axios.delete(
-      `${process.env.REACT_APP_BACKEND_URL}product/delete/${id}`
+      `${process.env.REACT_APP_BACKEND_URL}location/delete/${id}`
     );
 
     dispatch({
       type: LOCATION_DELETE_SUCCESS,
       payload: data,
     });
+    dispatch(listProducts());
   } catch (error) {
     dispatch({
       type: LOCATION_DELETE_FAIL,

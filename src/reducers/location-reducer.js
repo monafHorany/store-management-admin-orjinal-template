@@ -14,7 +14,7 @@ export const productLocationCreateReducer = (state = {}, action) => {
     case LOCATION_CREATE_REQUEST:
       return { loading: true };
     case LOCATION_CREATE_SUCCESS:
-      return { loading: false, success: true, product: action.payload };
+      return { loading: false, success: true, message: action.payload };
     case LOCATION_CREATE_FAIL:
       return { loading: false, error: action.payload };
     case LOCATION_CREATE_RESET:
@@ -29,7 +29,7 @@ export const productLocationDeleteReducer = (state = {}, action) => {
     case LOCATION_DELETE_REQUEST:
       return { loading: true };
     case LOCATION_DELETE_SUCCESS:
-      return { loading: false, success: true, product: action.payload };
+      return { loading: false, success: true, message: action.payload };
     case LOCATION_DELETE_FAIL:
       return { loading: false, error: action.payload };
     case LOCATION_DELETE_RESET:
