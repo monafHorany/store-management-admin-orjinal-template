@@ -34,6 +34,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { addNewZones } from "../actions/zone-action";
 import { Image } from "react-bootstrap";
+import { InfoModal } from "../components/info-modal";
 
 const TheHeader = () => {
   const dispatch = useDispatch();
@@ -260,7 +261,7 @@ const TheHeader = () => {
         </>
       )}
 
-      <CModal show={info} onClose={() => setInfo(!info)} color="info" size="lg">
+      {/* <CModal show={info} onClose={() => setInfo(!info)} color="info" size="lg">
         <CModalHeader closeButton>
           <CModalTitle>{productDetail.product_en_name}</CModalTitle>
         </CModalHeader>
@@ -303,7 +304,12 @@ const TheHeader = () => {
             </CCol>
           </CRow>
         </CModalBody>
-      </CModal>
+      </CModal> */}
+      <InfoModal
+        modalShow={info}
+        modalClose={() => setInfo(false)}
+        productDetail={productDetail}
+      />
     </>
   );
 };
