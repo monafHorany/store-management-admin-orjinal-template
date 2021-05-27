@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./dashboard.module.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import {
   CButton,
   CCard,
@@ -10,7 +11,6 @@ import {
   CLink,
   CRow,
 } from "@coreui/react";
-import { Image } from "react-bootstrap";
 import { NewProductForm } from "../../components/new-product-form";
 import { EditProductForm } from "../../components/edit-product-form";
 // import { DeleteFrom } from "../../components/delete-form";
@@ -173,12 +173,11 @@ const Dashboard = ({ history }) => {
                   style={{ margin: "auto", textAlign: "center" }}
                   className={styles.image_dropdown}
                 >
-                  <Image
+                  <LazyLoadImage
                     height={150}
                     width={150}
                     src={product.image_url}
-                    alt=""
-                    fluid
+                    alt={product.image_url}
                   />
                 </div>
               </CCardBody>

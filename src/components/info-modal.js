@@ -1,4 +1,5 @@
 import {
+  CButton,
   CCol,
   CModal,
   CModalBody,
@@ -14,7 +15,6 @@ import { LOCATION_DELETE_RESET } from "../constants/location-constants";
 
 export function InfoModal({ modalShow, modalClose, productDetail }) {
   const dispatch = useDispatch();
-
   const deleteLocation = (id) => {
     if (window.confirm("Are You Sure")) {
       dispatch(deleteProductLocation(id));
@@ -27,6 +27,7 @@ export function InfoModal({ modalShow, modalClose, productDetail }) {
     if (success && !error) {
       modalClose();
       dispatch({ type: LOCATION_DELETE_RESET });
+      window.location.reload();
     }
   }, [dispatch, error, modalClose, success]);
   return (
@@ -62,36 +63,58 @@ export function InfoModal({ modalShow, modalClose, productDetail }) {
               <strong>model_number: </strong> {productDetail.model_number}
             </div>{" "}
             <br />
-            {productDetail.stands &&
-              (productDetail.stands.length !== 0 ? (
+            {productDetail.stands ? (
+              productDetail.stands.length !== 0 ? (
                 <div>
                   <strong>Located At:</strong>
                   <ul>
                     {productDetail.stands.map((stand) => (
-                      <>
-                        <li style={{ position: "relative" }}>
-                          {stand.location.quantity} pieces in{" "}
-                          <strong>Zone</strong> {stand.location.zone_Symbol}{" "}
-                          <strong>stand Number</strong> # {stand.stand_number}{" "}
-                          <i
-                            style={{
-                              marginLeft: "24px",
-                              color: "#FF0000",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              deleteLocation(stand.location.id);
-                            }}
-                            className="fas fa-trash-alt"
-                          ></i>
-                        </li>
-                      </>
+                      <li key={stand.id} style={{ position: "relative" }}>
+                        {stand.location.quantity} pieces in{" "}
+                        <strong>Zone</strong> {stand.location.zone_Symbol}{" "}
+                        <strong>stand Number</strong> # {stand.stand_number}{" "}
+                        <i
+                          style={{
+                            marginLeft: "24px",
+                            color: "#FF0000",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            deleteLocation(stand.location.id);
+                          }}
+                          className="fas fa-trash-alt"
+                        ></i>
+                      </li>
                     ))}
                   </ul>
                 </div>
               ) : (
                 <h4 style={{ color: "#920110" }}>Not Added To Any Zone Yet</h4>
-              ))}
+              )
+            ) : productDetail.location ? (
+              <div>
+                <CButton
+                  color="primary"
+                  className="px-4"
+                  size="lg"
+                  onClick={() => {
+                    deleteLocation(productDetail.location.id);
+                  }}
+                >
+                  Remove From This Stand
+                  <i
+                    style={{
+                      marginLeft: "24px",
+                      color: "#FFFFFF",
+                      cursor: "pointer",
+                    }}
+                    className="fas fa-trash-alt"
+                  ></i>
+                </CButton>
+              </div>
+            ) : (
+              <h4 style={{ color: "#920110" }}>Not Added To Any Zone Yet</h4>
+            )}
           </CCol>
           <CCol>
             <Image
