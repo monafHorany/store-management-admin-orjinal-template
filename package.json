@@ -38,7 +38,8 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.0.1",
     "classnames": "^2.3.1",
-    "core-js": "^3.13.0",
+    "core-js": "^3.13.1",
+    "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-app-polyfill": "^2.0.0",
@@ -54,7 +55,6 @@
   },
   "devDependencies": {
     "auto-changelog": "~2.3.0",
-    "node-sass": "^6.0.0",
     "react-scripts": "^4.0.3"
   },
   "scripts": {
