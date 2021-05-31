@@ -15,11 +15,13 @@ import { fetchAllZones } from "./actions/zone-action";
 import { listProducts } from "./actions/products-action";
 import { fetchAllUser } from "./actions/user-action";
 import { fetchAllStands } from "./actions/stand-action";
+import { fetchAllOrders } from "./actions/order";
 // const { userInfo } = store.getState().userLogin;
 store.dispatch(fetchAllZones());
 store.dispatch(listProducts());
 store.dispatch(fetchAllUser());
 store.dispatch(fetchAllStands());
+store.dispatch(fetchAllOrders());
 
 React.icons = icons;
 

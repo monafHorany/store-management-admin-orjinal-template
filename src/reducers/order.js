@@ -10,7 +10,7 @@ export const FetchAllNewOrderReducer = (state = {}, action) => {
     case FETCH_ALL_ORDER_REQUEST:
       return { loading: true };
     case FETCH_ALL_ORDER_SUCCESS:
-      return { loading: false, success: true };
+      return { loading: false, success: true, orders: action.payload };
     case FETCH_ALL_ORDER_FAIL:
       return { loading: false, error: action.payload };
     case FETCH_ALL_ORDER_RESET:
