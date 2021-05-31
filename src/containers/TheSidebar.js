@@ -13,6 +13,7 @@ import {
   CSidebarNavDropdown,
   CSidebarNavItem,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 
 // import CIcon from "@coreui/icons-react";
 
@@ -35,7 +36,7 @@ const TheSidebar = () => {
       {
         _tag: "CSidebarNavTitle",
         _children: ["NO ZONES YET"],
-        className: "m-4",
+        className: "m-2",
       },
     ];
   }
@@ -81,25 +82,36 @@ const TheSidebar = () => {
       // icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
       icon: "cil-speedometer",
     },
-    {
-      _tag: "CSidebarNavDivider",
-      className: "m-2",
-    },
+    // {
+    //   _tag: "CSidebarNavDivider",
+    //   className: "m-2",
+    // },
     {
       _tag: "CSidebarNavTitle",
       _children: ["ZONES"],
     },
     ...convertedZones,
     {
-      _tag: "CSidebarNavDivider",
-      className: "m-3",
+      _tag: "CSidebarNavItem",
+      name: "order",
+      to: "/order",
+      icon: "cil-speedometer",
+
+      badge: {
+        color: "danger",
+        text: "NEW",
+      },
     },
+    // {
+    //   _tag: "CSidebarNavDivider",
+    //   className: "m-3",
+    // },
 
     ...userLinks,
-    {
-      _tag: "CSidebarNavDivider",
-      className: "m-3",
-    },
+    // {
+    //   _tag: "CSidebarNavDivider",
+    //   className: "m-3",
+    // },
     {
       _tag: "CSidebarNavItem",
       name: "Product Report",

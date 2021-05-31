@@ -1,6 +1,7 @@
 import React from "react";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
+const order = React.lazy(() => import("./views/order"));
 
 const Users = React.lazy(() => import("./views/users/Users"));
 const User = React.lazy(() => import("./views/users/User"));
@@ -14,6 +15,7 @@ const PPrint = React.lazy(() => import("./views/p-print"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
+  { path: "/order", exact: true, name: "order", component: order },
   { path: "/logout", exact: true, name: "logout", component: Logout },
   { path: "/p-report", exact: true, name: "p-report", component: PPrint },
   { path: "/zone/:id", exact: true, name: "zone", component: zone_page },

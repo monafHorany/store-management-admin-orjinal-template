@@ -29,6 +29,7 @@ import {
   productLocationCreateReducer,
   productLocationDeleteReducer,
 } from "./reducers/location-reducer";
+import { FetchAllNewOrderReducer } from "./reducers/order";
 // const initialState = {
 //   sidebarShow: "responsive",
 // };
@@ -66,6 +67,7 @@ const reducer = combineReducers({
   standCreate: createNewStandReducer,
   addLocation: productLocationCreateReducer,
   removeLocation: productLocationDeleteReducer,
+  newOrder: FetchAllNewOrderReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("orjeenUserInfo")
