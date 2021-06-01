@@ -46,6 +46,8 @@ const TheSidebar = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const woo_orders = useSelector((state) => state.newOrder);
+  const { orders } = woo_orders;
   if (!userInfo) {
     history.push("/login");
   }
@@ -96,10 +98,9 @@ const TheSidebar = () => {
       name: "order",
       to: "/order",
       icon: "cil-speedometer",
-
-      badge: {
+      badge: orders && {
         color: "danger",
-        text: "NEW",
+        text: orders.length,
       },
     },
     // {

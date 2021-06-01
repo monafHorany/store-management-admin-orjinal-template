@@ -16,6 +16,7 @@ import { listProducts } from "./actions/products-action";
 import { fetchAllUser } from "./actions/user-action";
 import { fetchAllStands } from "./actions/stand-action";
 import { fetchAllOrders } from "./actions/order";
+import "bootstrap/dist/css/bootstrap.min.css";
 // const { userInfo } = store.getState().userLogin;
 store.dispatch(fetchAllZones());
 store.dispatch(listProducts());
