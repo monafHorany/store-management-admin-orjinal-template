@@ -20,13 +20,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 
-const { orders } = store.getState().newOrder;
-console.log(orders);
+// console.log(store.getState().newOrder);
 store.dispatch(fetchAllZones());
 store.dispatch(listProducts());
 store.dispatch(fetchAllUser());
 store.dispatch(fetchAllStands());
-store.dispatch(fetchAllOrders());
+// store.dispatch(fetchAllOrders());
 
 React.icons = icons;
 

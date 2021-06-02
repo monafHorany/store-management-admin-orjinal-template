@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import BootStrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import styles from "./order.module.css";
 import { css } from "@emotion/react";
+import { fetchAllOrders } from "../actions/order";
+
 import ScaleLoader from "react-spinners/ScaleLoader";
 import {
   CBadge,
+  CButton,
   CCard,
   CCardBody,
   CCardHeader,
@@ -26,8 +29,10 @@ const Order = () => {
 
   const woo_orders = useSelector((state) => state.newOrder);
   const { loading: orderLoading, orders } = woo_orders;
-
+  console.log(orderLoading);
+  console.log(orders);
   const orderData =
+    !orderLoading &&
     orders &&
     orders.map((order) => ({
       Order: order.woo_order_id + " " + order.order_owner_name,
@@ -78,8 +83,11 @@ const Order = () => {
       text: "Total",
     },
   ];
+  useEffect(() => {
+    !localStorage.getItem("orjeenOrderInfo") && dispatch(fetchAllOrders());
+  }, [dispatch]);
 
-  return !orderLoading ? (
+  return !orderLoading && orderData ? (
     <CRow className="justify-content-center">
       <CCol xs="12" lg="10">
         <BootStrapTable
@@ -90,22 +98,46 @@ const Order = () => {
           headerClasses={styles.header_class}
         />
       </CCol>
+      <CRow className="justify-content-center">
+        <CCol xs="12" lg="10">
+          <CButton
+            block
+            color="success"
+            size="lg"
+            width="20"
+            onClick={() => {
+              dispatch(fetchAllOrders());
+              localStorage.removeItem("orjeenOrderInfo");
+            }}
+          >
+            Update Order List
+          </CButton>
+        </CCol>
+      </CRow>
     </CRow>
   ) : (
     <CRow className="justify-content-center">
-      <CCol md={10} lg={8} xl={8} xxl={8}>
-        <div className="justify-content-center">
+      <CCol
+        xs="12"
+        sm="10"
+        md="8"
+        lg="10"
+        xl="5"
+        xxl="4"
+        style={{ textAlign: "center" }}
+      >
+        <div style={{ textAlign: "center" }} className="justify-content-center">
           <h3>Please Wait</h3>
         </div>
         <ScaleLoader
           color="#343a40"
           loading={orderLoading}
           size={150}
-          height="90"
+          height="150px"
           speedMultiplier="1"
-          margin="25"
-          width="90"
-          radius="100"
+          margin="25px"
+          width="45px"
+          radius="100px"
         />
       </CCol>
     </CRow>

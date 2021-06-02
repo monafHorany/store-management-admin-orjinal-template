@@ -79,7 +79,7 @@ const orderInfoFromStorage = localStorage.getItem("orjeenOrderInfo")
 
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
-  newOrder: orderInfoFromStorage,
+  newOrder: { orders: orderInfoFromStorage },
 };
 
 const store = createStore(

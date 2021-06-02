@@ -5,7 +5,7 @@ import {
   FETCH_ALL_ORDER_SUCCESS,
 } from "../constants/order-constants";
 
-export const FetchAllNewOrderReducer = (state = {}, action) => {
+export const FetchAllNewOrderReducer = (state = { loading: true }, action) => {
   switch (action.type) {
     case FETCH_ALL_ORDER_REQUEST:
       return { loading: true };
