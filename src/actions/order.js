@@ -30,6 +30,8 @@ export const fetchAllOrders = () => async (dispatch) => {
       type: FETCH_ALL_ORDER_SUCCESS,
       payload: data,
     });
+
+    localStorage.setItem("orjeenOrderInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: FETCH_ALL_ORDER_FAIL,

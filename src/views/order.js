@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
+import BootStrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import styles from "./order.module.css";
+import { css } from "@emotion/react";
+import ScaleLoader from "react-spinners/ScaleLoader";
 import {
   CBadge,
   CCard,
@@ -21,7 +25,7 @@ const Order = () => {
   const { loading, users } = userList;
 
   const woo_orders = useSelector((state) => state.newOrder);
-  const { orders } = woo_orders;
+  const { loading: orderLoading, orders } = woo_orders;
 
   const orderData =
     orders &&
@@ -47,63 +51,62 @@ const Order = () => {
         return "primary";
     }
   };
-  // const pages = (orderData) => {
-  //   switch (orderData.length) {
-  //     case "completed":
-  //       return "success";
-  //     case "cancelled":
-  //       return "secondary";
-  //     case "processing":
-  //       return "warning";
-  //     case "refunded":
-  //       return "danger";
-  //     default:
-  //       return "primary";
-  //   }
-  // };
-  const history = useHistory();
-  const fields = ["Order", "Date", "status", "Billing", "Ship to", "Total"];
 
-  const [currentPage, setCurrentPage] = useState(2);
+  const columns = [
+    {
+      dataField: "Order",
+      text: "Order",
+    },
+    {
+      dataField: "Date",
+      text: "Date",
+    },
+    {
+      dataField: "status",
+      text: "status",
+    },
+    {
+      dataField: "Billing",
+      text: "Billing",
+    },
+    {
+      dataField: "Ship to",
+      text: "Ship to",
+    },
+    {
+      dataField: "Total",
+      text: "Total",
+    },
+  ];
 
-  return (
+  return !orderLoading ? (
     <CRow className="justify-content-center">
-      <CCol xs="12" lg="6">
-        <CCard>
-          <CCardBody>
-            <Table striped bordered hover variant="dark">
-              <thead>
-                <tr>
-                  {fields.map((field) => (
-                    <th>{field}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {orderData &&
-                  orderData.map((order) => (
-                    <tr>
-                      <td>{order.Order}</td>
-                      <td>{order.Date}</td>
-                      <td>
-                        <CBadge color={getBadge(order.status)}>
-                          {order.status}
-                        </CBadge>
-                      </td>
-                      <td>{order.Billing}</td>
-                      <td>{order["Ship to"]}</td>
-                      <td>{order.Total}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
-            <CPagination
-              activePage={currentPage}
-              pages={orderData && orderData.length / 10}
-              onActivePageChange={setCurrentPage}
-            />
-          </CCardBody>
-        </CCard>
+      <CCol xs="12" lg="10">
+        <BootStrapTable
+          keyField="order"
+          data={orderData}
+          columns={columns}
+          pagination={paginationFactory()}
+          headerClasses={styles.header_class}
+        />
+      </CCol>
+    </CRow>
+  ) : (
+    <CRow className="justify-content-center">
+      <CCol md={10} lg={8} xl={8} xxl={8}>
+        <div className="justify-content-center">
+          <h3>Please Wait</h3>
+        </div>
+        <ScaleLoader
+          color="#343a40"
+          loading={orderLoading}
+          size={150}
+          height="90"
+          speedMultiplier="1"
+          margin="25"
+          width="90"
+          radius="100"
+        />
       </CCol>
     </CRow>
   );

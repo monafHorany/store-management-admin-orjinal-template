@@ -17,7 +17,11 @@ import { fetchAllUser } from "./actions/user-action";
 import { fetchAllStands } from "./actions/stand-action";
 import { fetchAllOrders } from "./actions/order";
 import "bootstrap/dist/css/bootstrap.min.css";
-// const { userInfo } = store.getState().userLogin;
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
+
+const { orders } = store.getState().newOrder;
+console.log(orders);
 store.dispatch(fetchAllZones());
 store.dispatch(listProducts());
 store.dispatch(fetchAllUser());
