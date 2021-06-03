@@ -4,117 +4,201 @@ import { useDispatch, useSelector } from "react-redux";
 import BootStrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import styles from "./order.module.css";
-import { css } from "@emotion/react";
 import { fetchAllOrders } from "../actions/order";
 
 import ScaleLoader from "react-spinners/ScaleLoader";
-import {
-  CBadge,
-  CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CDataTable,
-  CPagination,
-  CRow,
-} from "@coreui/react";
-import { Table } from "react-bootstrap";
-import { Pagination } from "@material-ui/lab";
+import { CButton, CCol, CRow } from "@coreui/react";
+import { AlertModal } from "../components/alert-modal";
 
 const Order = () => {
+  const [alert, setAlert] = useState(false);
+  const [warning, setWarning] = useState(false);
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.userList);
   const { loading, users } = userList;
 
   const woo_orders = useSelector((state) => state.newOrder);
   const { loading: orderLoading, orders } = woo_orders;
-  console.log(orderLoading);
-  console.log(orders);
   const orderData =
     !orderLoading &&
     orders &&
     orders.map((order) => ({
-      Order: order.woo_order_id + " " + order.order_owner_name,
+      id: order.woo_order_id,
+      OrderName: order.order_owner_name,
       Date: new Date(order.order_created_date).toLocaleString(),
       status: order.order_status,
       Billing: order.billing_address,
       "Ship to": order.shipping_address,
       Total: order.total,
     }));
-  const getBadge = (status) => {
-    switch (status) {
-      case "completed":
-        return "success";
-      case "cancelled":
-        return "secondary";
-      case "processing":
-        return "warning";
-      case "refunded":
-        return "danger";
-      default:
-        return "primary";
-    }
-  };
-
   const columns = [
     {
-      dataField: "Order",
-      text: "Order",
+      dataField: "id",
+      text: "id",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
+    },
+    {
+      dataField: "OrderName",
+      text: "OrderName",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
     },
     {
       dataField: "Date",
       text: "Date",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
     },
     {
       dataField: "status",
       text: "status",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
     },
     {
       dataField: "Billing",
       text: "Billing",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
     },
     {
       dataField: "Ship to",
       text: "Ship to",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
     },
     {
       dataField: "Total",
       text: "Total",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
     },
   ];
   useEffect(() => {
     !localStorage.getItem("orjeenOrderInfo") && dispatch(fetchAllOrders());
   }, [dispatch]);
 
+  const rowEvents = {
+    onClick: (e, row, rowIndex) => {
+      // console.log(row);
+      if (row.status === "processing" || row.status !== "confirmed") {
+        // setAlert(true);
+      }
+      // else {
+      history.push(`/order_detail/${row.id}`);
+      // }
+    },
+    // onMouseEnter: (e, row, rowIndex) => {
+    //   console.log(`enter on row with index: ${rowIndex}`);
+    // },
+  };
+
   return !orderLoading && orderData ? (
-    <CRow className="justify-content-center">
-      <CCol xs="12" lg="10">
-        <BootStrapTable
-          keyField="order"
-          data={orderData}
-          columns={columns}
-          pagination={paginationFactory()}
-          headerClasses={styles.header_class}
-        />
-      </CCol>
+    <>
+      {" "}
+      <AlertModal modalShow={alert} modalClose={() => setAlert(false)}>
+        This Order hasn't been Confirmed yet, Please try again Later.
+      </AlertModal>
+      <AlertModal
+        modalShow={warning}
+        modalClose={() => setWarning(false)}
+        bottunFooter
+        confirmation={() => {
+          dispatch(fetchAllOrders());
+          localStorage.removeItem("orjeenOrderInfo");
+          setWarning(false);
+        }}
+        cancelation={() => setWarning(false)}
+      >
+        This Process might take approximately 2~3 minutes.
+      </AlertModal>
       <CRow className="justify-content-center">
         <CCol xs="12" lg="10">
-          <CButton
-            block
-            color="success"
-            size="lg"
-            width="20"
-            onClick={() => {
-              dispatch(fetchAllOrders());
-              localStorage.removeItem("orjeenOrderInfo");
-            }}
-          >
-            Update Order List
-          </CButton>
+          <BootStrapTable
+            keyField="id"
+            data={orderData}
+            columns={columns}
+            pagination={paginationFactory()}
+            headerClasses={styles.header_class}
+            rowEvents={rowEvents}
+          />
         </CCol>
+        <CRow className="justify-content-center">
+          <CCol xs="12" lg="10">
+            <CButton
+              block
+              color="success"
+              size="lg"
+              width="20"
+              onClick={() => {
+                setWarning(true);
+              }}
+            >
+              Update Order List
+            </CButton>
+          </CCol>
+        </CRow>
       </CRow>
-    </CRow>
+    </>
   ) : (
     <CRow className="justify-content-center">
       <CCol

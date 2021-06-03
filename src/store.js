@@ -29,7 +29,10 @@ import {
   productLocationCreateReducer,
   productLocationDeleteReducer,
 } from "./reducers/location-reducer";
-import { FetchAllNewOrderReducer } from "./reducers/order";
+import {
+  FetchAllNewOrderReducer,
+  FetchOrderByIdReducer,
+} from "./reducers/order";
 // const initialState = {
 //   sidebarShow: "responsive",
 // };
@@ -68,6 +71,7 @@ const reducer = combineReducers({
   addLocation: productLocationCreateReducer,
   removeLocation: productLocationDeleteReducer,
   newOrder: FetchAllNewOrderReducer,
+  singleOrder: FetchOrderByIdReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("orjeenUserInfo")
