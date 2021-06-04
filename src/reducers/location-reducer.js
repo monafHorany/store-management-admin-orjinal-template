@@ -9,7 +9,10 @@ import {
   LOCATION_DELETE_SUCCESS,
 } from "../constants/location-constants";
 
-export const productLocationCreateReducer = (state = {}, action) => {
+export const productLocationCreateReducer = (
+  state = { loading: false },
+  action
+) => {
   switch (action.type) {
     case LOCATION_CREATE_REQUEST:
       return { loading: true };

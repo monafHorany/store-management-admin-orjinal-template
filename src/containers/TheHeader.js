@@ -22,10 +22,6 @@ import {
   CInputGroup,
   CInputGroupPrepend,
   CInputGroupText,
-  CModal,
-  CModalBody,
-  CModalHeader,
-  CModalTitle,
   CRow,
   CToggler,
   CTooltip,
@@ -33,7 +29,6 @@ import {
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { addNewZones } from "../actions/zone-action";
-import { Image } from "react-bootstrap";
 import { InfoModal } from "../components/info-modal";
 
 const TheHeader = () => {
@@ -260,51 +255,6 @@ const TheHeader = () => {
           </Modal>
         </>
       )}
-
-      {/* <CModal show={info} onClose={() => setInfo(!info)} color="info" size="lg">
-        <CModalHeader closeButton>
-          <CModalTitle>{productDetail.product_en_name}</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CRow>
-            <CCol>
-              <div>
-                <strong>name: </strong> {productDetail.product_en_name}
-              </div>{" "}
-              <br />
-              <strong>description: </strong>{" "}
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: productDetail.product_en_desc,
-                }}
-              ></div>{" "}
-              <br />
-              <div>
-                <strong>product_sku: </strong>
-                {productDetail.product_sku}
-              </div>{" "}
-              <br />
-              <div>
-                <strong>model_number: </strong> {productDetail.model_number}
-              </div>{" "}
-              <br />
-              <div>
-                <strong>added at: </strong>{" "}
-                {new Date(productDetail.createdAt).toLocaleString()}{" "}
-              </div>
-            </CCol>
-            <CCol>
-              <Image
-                height={300}
-                width={300}
-                src={productDetail.image_url}
-                alt=""
-                fluid
-              />
-            </CCol>
-          </CRow>
-        </CModalBody>
-      </CModal> */}
       <InfoModal
         modalShow={info}
         modalClose={() => setInfo(false)}

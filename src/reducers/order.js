@@ -7,6 +7,10 @@ import {
   FETCH_ORDER_BY_ID_REQUEST,
   FETCH_ORDER_BY_ID_RESET,
   FETCH_ORDER_BY_ID_SUCCESS,
+  PROCESS_NEW_BILL_FAIL,
+  PROCESS_NEW_BILL_REQUEST,
+  PROCESS_NEW_BILL_RESET,
+  PROCESS_NEW_BILL_SUCCESS,
 } from "../constants/order-constants";
 
 export const FetchAllNewOrderReducer = (state = { loading: true }, action) => {
@@ -33,6 +37,20 @@ export const FetchOrderByIdReducer = (state = { loading: true }, action) => {
     case FETCH_ORDER_BY_ID_FAIL:
       return { loading: false, error: action.payload };
     case FETCH_ORDER_BY_ID_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+export const ProcessNewBillReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case PROCESS_NEW_BILL_REQUEST:
+      return { loading: true };
+    case PROCESS_NEW_BILL_SUCCESS:
+      return { loading: false, success: true, message: action.payload };
+    case PROCESS_NEW_BILL_FAIL:
+      return { loading: false, error: action.payload };
+    case PROCESS_NEW_BILL_RESET:
       return {};
     default:
       return state;

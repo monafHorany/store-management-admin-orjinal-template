@@ -6,6 +6,9 @@ import {
   FETCH_ORDER_BY_ID_FAIL,
   FETCH_ORDER_BY_ID_REQUEST,
   FETCH_ORDER_BY_ID_SUCCESS,
+  PROCESS_NEW_BILL_FAIL,
+  PROCESS_NEW_BILL_REQUEST,
+  PROCESS_NEW_BILL_SUCCESS,
 } from "../constants/order-constants";
 
 export const fetchAllOrders = () => async (dispatch) => {
@@ -66,6 +69,35 @@ export const fetchOrderDetailById = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ORDER_BY_ID_FAIL,
+      payload: error.response.data || error.response.statusText,
+    });
+  }
+};
+
+export const processNewBill = (orderItem) => async (dispatch) => {
+  try {
+    dispatch({
+      type: PROCESS_NEW_BILL_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.post(
+      process.env.REACT_APP_BACKEND_URL + "order/createBill",
+      orderItem,
+      config
+    );
+
+    dispatch({
+      type: PROCESS_NEW_BILL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROCESS_NEW_BILL_FAIL,
       payload: error.response.data || error.response.statusText,
     });
   }

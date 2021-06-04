@@ -32,6 +32,7 @@ import {
 import {
   FetchAllNewOrderReducer,
   FetchOrderByIdReducer,
+  ProcessNewBillReducer,
 } from "./reducers/order";
 // const initialState = {
 //   sidebarShow: "responsive",
@@ -72,6 +73,7 @@ const reducer = combineReducers({
   removeLocation: productLocationDeleteReducer,
   newOrder: FetchAllNewOrderReducer,
   singleOrder: FetchOrderByIdReducer,
+  newBill: ProcessNewBillReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("orjeenUserInfo")

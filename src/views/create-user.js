@@ -62,7 +62,6 @@ const Create = ({ history }) => {
       history.push("/dashboard");
     }
   }, [dispatch, error, history, success, userInfo]);
-  console.log(name, email, phone_number, password, confirm, role);
   return (
     // <div className="c-app c-default-layout flex-row align-items-center">
     <>

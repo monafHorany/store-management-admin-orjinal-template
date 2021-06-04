@@ -42,8 +42,6 @@ const TheSidebar = () => {
   }
   const history = useHistory();
 
-  console.log(convertedZones);
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const woo_orders = useSelector((state) => state.newOrder);

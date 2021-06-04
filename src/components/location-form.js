@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CButton,
   CCard,
@@ -16,6 +16,7 @@ import {
 } from "@coreui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { locateProduct } from "../actions/location-action";
+import { LOCATION_CREATE_RESET } from "../constants/location-constants";
 
 export const LocationForm = ({ modalShow, modalClose, productDetail }) => {
   const dispatch = useDispatch();
@@ -28,7 +29,15 @@ export const LocationForm = ({ modalShow, modalClose, productDetail }) => {
   const zonesReducer = useSelector((state) => state.allZones);
   const { zones } = zonesReducer;
 
-  console.log(zones);
+  const location = useSelector((state) => state.addLocation);
+  const { loading, success } = location;
+
+  useEffect(() => {
+    if (success) {
+      dispatch({ type: LOCATION_CREATE_RESET });
+      window.location.reload();
+    }
+  }, [dispatch, success]);
 
   // const [zone, setZone] = useState();
 
@@ -175,7 +184,7 @@ export const LocationForm = ({ modalShow, modalClose, productDetail }) => {
                 type="button"
                 variant="outline"
                 size="lg"
-                disabled={!quantity || !zoneId || !standId}
+                disabled={!quantity || !zoneId || !standId || loading}
               >
                 Add
                 <i className="fas fa-plus" style={{ marginLeft: "1em" }}></i>

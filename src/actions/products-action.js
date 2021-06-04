@@ -141,7 +141,6 @@ export const listProductsByStandId = (id) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: PRODUCT_LIST_BY_STAND_ID_FAIL,
       payload: error,

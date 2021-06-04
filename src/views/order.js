@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import BootStrapTable from "react-bootstrap-table-next";
+import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import styles from "./order.module.css";
 import { fetchAllOrders } from "../actions/order";
@@ -14,6 +15,8 @@ const Order = () => {
   const [alert, setAlert] = useState(false);
   const [warning, setWarning] = useState(false);
   const history = useHistory();
+
+  const { SearchBar, ClearSearchButton } = Search;
 
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.userList);
@@ -139,17 +142,10 @@ const Order = () => {
 
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
-      // console.log(row);
       if (row.status === "processing" || row.status !== "confirmed") {
-        // setAlert(true);
       }
-      // else {
       history.push(`/order_detail/${row.id}`);
-      // }
     },
-    // onMouseEnter: (e, row, rowIndex) => {
-    //   console.log(`enter on row with index: ${rowIndex}`);
-    // },
   };
 
   return !orderLoading && orderData ? (
@@ -173,14 +169,32 @@ const Order = () => {
       </AlertModal>
       <CRow className="justify-content-center">
         <CCol xs="12" lg="10">
-          <BootStrapTable
+          <ToolkitProvider
+            keyField="id"
+            data={orderData}
+            columns={columns}
+            search
+          >
+            {(props) => (
+              <React.Fragment>
+                <SearchBar {...props.searchProps} />
+                <BootStrapTable
+                  {...props.baseProps}
+                  pagination={paginationFactory()}
+                  headerClasses={styles.header_class}
+                  rowEvents={rowEvents}
+                />
+              </React.Fragment>
+            )}
+          </ToolkitProvider>
+          {/* <BootStrapTable
             keyField="id"
             data={orderData}
             columns={columns}
             pagination={paginationFactory()}
             headerClasses={styles.header_class}
             rowEvents={rowEvents}
-          />
+          /> */}
         </CCol>
         <CRow className="justify-content-center">
           <CCol xs="12" lg="10">

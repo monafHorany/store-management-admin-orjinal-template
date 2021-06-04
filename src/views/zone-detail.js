@@ -48,6 +48,8 @@ const ZoneDetail = ({ match, history }) => {
   useEffect(() => {
     if (success) {
       setOpenModal(false);
+      setStand_number("");
+      setStand_capacity("");
     } else if (error) {
       setShow(true);
     }

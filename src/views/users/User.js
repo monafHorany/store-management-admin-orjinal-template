@@ -71,7 +71,6 @@ const User = ({ match, history }) => {
       setOpenModal(false);
     }
   }, [danger, history, success, updateSuccess, user]);
-  console.log(user);
   return (
     <>
       {!loading && (
