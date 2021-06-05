@@ -4,6 +4,7 @@ import { logoNegative } from "./logo-negative";
 
 import {
   cibSkype,
+  cibProductHunt,
   cibFacebook,
   cibTwitter,
   cibLinkedin,
@@ -41,6 +42,7 @@ import {
   cilBasket,
   cilBell,
   cilBold,
+  cilCart,
   cilBookmark,
   cilCalculator,
   cilCalendar,
@@ -218,6 +220,7 @@ export const icons = Object.assign(
     cilTags,
     cilTask,
     cilTrash,
+    cilCart,
     cilUnderline,
     cilUser,
     cilUserPlus,
@@ -240,6 +243,7 @@ export const icons = Object.assign(
   {
     cibSkype,
     cibFacebook,
+    cibProductHunt,
     cibTwitter,
     cibLinkedin,
     cibFlickr,

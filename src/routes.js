@@ -3,6 +3,7 @@ import React from "react";
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const order = React.lazy(() => import("./views/order"));
 const order_detail = React.lazy(() => import("./views/order_detail"));
+const products = React.lazy(() => import("./views/products"));
 
 const Users = React.lazy(() => import("./views/users/Users"));
 const User = React.lazy(() => import("./views/users/User"));
@@ -24,6 +25,7 @@ const routes = [
     component: order_detail,
   },
   { path: "/logout", exact: true, name: "logout", component: Logout },
+  { path: "/products", exact: true, name: "logout", component: products },
   { path: "/p-report", exact: true, name: "p-report", component: PPrint },
   { path: "/zone/:id", exact: true, name: "zone", component: zone_page },
   { path: "/stand/:id", exact: true, name: "stand", component: stand_page },

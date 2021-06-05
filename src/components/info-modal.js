@@ -96,6 +96,7 @@ export function InfoModal({ modalShow, modalClose, productDetail }) {
                   <div style={{ color: "#920110" }}>
                     Not added to any zone yet.
                     <CButton
+                      style={{ marginLeft: "1em" }}
                       color="success"
                       onClick={() => setLocationForm(!locationForm)}
                     >
@@ -127,7 +128,10 @@ export function InfoModal({ modalShow, modalClose, productDetail }) {
               ) : (
                 <div style={{ color: "#920110" }}>
                   Not added to any zone yet.{" "}
-                  <CButton onClick={() => setLocationForm(!locationForm)}>
+                  <CButton
+                    onClick={() => setLocationForm(!locationForm)}
+                    style={{ marginLeft: "1em" }}
+                  >
                     add now
                   </CButton>
                   {/* <CButton onClick={() => window.print()}>

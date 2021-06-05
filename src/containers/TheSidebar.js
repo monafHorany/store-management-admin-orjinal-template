@@ -82,6 +82,12 @@ const TheSidebar = () => {
       // icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
       icon: "cil-speedometer",
     },
+    {
+      _tag: "CSidebarNavItem",
+      name: "Products",
+      to: "/Products",
+      icon: "cib-product-hunt",
+    },
     // {
     //   _tag: "CSidebarNavDivider",
     //   className: "m-2",
@@ -95,7 +101,7 @@ const TheSidebar = () => {
       _tag: "CSidebarNavItem",
       name: "order",
       to: "/order",
-      icon: "cil-speedometer",
+      icon: "cil-cart",
       badge: orders && {
         color: "danger",
         text: orders.length,

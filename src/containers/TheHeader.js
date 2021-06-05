@@ -137,6 +137,7 @@ const TheHeader = () => {
               <Autocomplete
                 size="small"
                 autoComplete
+                freeSolo
                 className="w-100"
                 getOptionLabel={(option) =>
                   option && searchTerm === "Search By Product Name"
@@ -149,14 +150,13 @@ const TheHeader = () => {
                 }
                 clearOnBlur={true}
                 clearOnEscape={true}
-                freeSolo
                 id="free-solo-demo"
                 value={searchValue}
                 disableClearable
                 onChange={(event, value, reason) => {
-                  setInfo(!info);
                   setProductDetail(value);
                   if (reason === "select-option") {
+                    setInfo(!info);
                     setSearchValue("");
                   }
                 }}
