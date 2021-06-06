@@ -79,8 +79,8 @@ const reducer = combineReducers({
 const userInfoFromStorage = localStorage.getItem("orjeenUserInfo")
   ? JSON.parse(localStorage.getItem("orjeenUserInfo"))
   : null;
-const orderInfoFromStorage = localStorage.getItem("orjeenOrderInfo")
-  ? JSON.parse(localStorage.getItem("orjeenOrderInfo"))
+const orderInfoFromStorage = sessionStorage.getItem("orjeenOrderInfo")
+  ? JSON.parse(sessionStorage.getItem("orjeenOrderInfo"))
   : null;
 
 const initialState = {

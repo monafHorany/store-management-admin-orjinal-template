@@ -44,7 +44,7 @@ const TheHeader = () => {
   const [zone_symbol, setZone_symbol] = useState("");
   const [zone_capacity, setZone_capacity] = useState("");
 
-  const [searchTerm, setSearchTerm] = useState("Search By Product Name");
+  const [searchTerm, setSearchTerm] = useState("Search By SKU");
 
   const productsList = useSelector((state) => state.productList);
   const { products } = productsList;
@@ -142,11 +142,9 @@ const TheHeader = () => {
                 getOptionLabel={(option) =>
                   option && searchTerm === "Search By Product Name"
                     ? option.product_en_name
-                    : option && searchTerm === "Search By SKU"
-                    ? option.product_sku
-                    : option && searchTerm === "Search By Model Number"
-                    ? option.model_number
-                    : ""
+                    : option &&
+                      searchTerm === "Search By SKU" &&
+                      option.product_sku
                 }
                 clearOnBlur={true}
                 clearOnEscape={true}
@@ -184,11 +182,11 @@ const TheHeader = () => {
                   <CDropdownItem onClick={() => setSearchTerm("Search By SKU")}>
                     Search By SKU
                   </CDropdownItem>
-                  <CDropdownItem
+                  {/* <CDropdownItem
                     onClick={() => setSearchTerm("Search By Model Number")}
                   >
                     Search By Model Number
-                  </CDropdownItem>
+                  </CDropdownItem> */}
                 </CDropdownMenu>
               </CDropdown>
             </CHeaderNav>
@@ -200,7 +198,7 @@ const TheHeader = () => {
             center
             classNames={{ modal: "customModal" }}
           >
-            <CRow>
+            <CRow style={{ width: "75vmin" }}>
               <CCol>
                 <CCardGroup>
                   <CCard className="p-4">

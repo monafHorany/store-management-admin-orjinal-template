@@ -22,7 +22,7 @@ export const fetchAllOrders = () => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    const WooOrder = await axios.get(
+    await axios.get(
       process.env.REACT_APP_BACKEND_URL + "order/fetchAllOrderFromWoocommerce",
       config
     );
@@ -37,7 +37,7 @@ export const fetchAllOrders = () => async (dispatch) => {
       payload: data,
     });
 
-    localStorage.setItem("orjeenOrderInfo", JSON.stringify(data));
+    sessionStorage.setItem("orjeenOrderInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: FETCH_ALL_ORDER_FAIL,

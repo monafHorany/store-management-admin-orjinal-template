@@ -1,34 +1,29 @@
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CForm,
-  CFormGroup,
-  CInput,
-  CLabel,
-  CModal,
-  CRow,
-  CSelect,
-} from "@coreui/react";
+import { CButton } from "@coreui/react";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BootStrapTable from "react-bootstrap-table-next";
 import styles from "./order.module.css";
 import { fetchOrderDetailById, processNewBill } from "../actions/order";
+import { PROCESS_NEW_BILL_RESET } from "../constants/order-constants";
+import { BillInfoModal } from "../components/bill-info";
 
 const OrderDetail = ({ match }) => {
   const dispatch = useDispatch();
   const orderReducer = useSelector((state) => state.singleOrder);
   const { loading, order } = orderReducer;
-  const [showBillForm, setShowBillForm] = useState(false);
+  const BillReducer = useSelector((state) => state.newBill);
+  const { loading: BillLoading, success, message, error } = BillReducer;
+
+  const [info, setInfo] = useState(false);
 
   const id = match.params.id;
 
   useEffect(() => {
     dispatch(fetchOrderDetailById(id));
-  }, [dispatch, id]);
+    if (success || error) {
+      setInfo(true);
+    }
+  }, [dispatch, error, id, success]);
 
   const columns = [
     {
@@ -101,7 +96,7 @@ const OrderDetail = ({ match }) => {
   return order ? (
     <React.Fragment>
       <div>
-        <ul>
+        <ul style={{ color: "#FFFFFF" }}>
           <li>{order.order_owner_name}</li>
           <li>{order.order_owner_phone_number}</li>
           <li>{order.order_owner_email}</li>
@@ -116,6 +111,7 @@ const OrderDetail = ({ match }) => {
         />
         <div style={{ textAlignLast: "center" }}>
           <CButton
+            disabled={BillLoading}
             color="success"
             size="lg"
             onClick={() => dispatch(processNewBill(order.order_items))}
@@ -124,77 +120,37 @@ const OrderDetail = ({ match }) => {
           </CButton>
         </div>
       </div>
-      <CModal
-        show={showBillForm}
-        onClose={() => setShowBillForm(false)}
-        color="success"
-      >
-        <CRow>
-          <CCol>
-            <CCard>
-              <CCardHeader
-                style={{
-                  textAlign: "center",
-                  backgroundColor: "#416442",
-                  color: "#FFFFFF",
-                  fontWeight: "bold",
-                  letterSpacing: ".6em",
-                }}
-              >
-                OREDR COMPLETION{" "}
-              </CCardHeader>
-              <CCardBody>
-                <CForm
-                  encType="multipart/form-data"
-                  className="form-horizontal"
-                >
-                  {/* {!loading && order && order.order_items.map(item=> (
 
-                  ))} */}
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">Quantity</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput required type="number" placeholder="Quantity" />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="selectSm">select Zone</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CSelect
-                        dir="ltr"
-                        custom
-                        size="sm"
-                        name="selectSm"
-                        id="SelectLm"
-                      >
-                        <option></option>
-                      </CSelect>
-                    </CCol>
-                  </CFormGroup>
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="selectSm">select Stand</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CSelect custom size="sm" name="selectSm" id="SelectLm">
-                        <option></option>
-                      </CSelect>
-                    </CCol>
-                  </CFormGroup>
-                </CForm>
-              </CCardBody>
-              <CButton color="success" size="sm">
-                OK
-              </CButton>
-            </CCard>
-          </CCol>
-        </CRow>
-      </CModal>
+      <BillInfoModal
+        modalShow={info}
+        color={success ? "success" : error ? "danger" : "primary"}
+        // modalClose={() => {
+        //   setInfo(false);
+        //   success
+        //     ? (document.location.href = "/order")
+        //     : window.location.reload();
+        // }}
+        header={success ? "New bill Created" : "Some thing went wrong"}
+        bottunFooter
+        ok={() => {
+          setInfo(false);
+          dispatch({ type: PROCESS_NEW_BILL_RESET });
+          success
+            ? document.location.replace("http://localhost:3000/order")
+            : window.location.reload();
+        }}
+        bodyText={
+          error ? (
+            error
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: message,
+              }}
+            ></div>
+          )
+        }
+      />
     </React.Fragment>
   ) : (
     <div>loading</div>

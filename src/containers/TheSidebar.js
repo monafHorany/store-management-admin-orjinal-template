@@ -13,11 +13,6 @@ import {
   CSidebarNavDropdown,
   CSidebarNavItem,
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
-
-// import CIcon from "@coreui/icons-react";
-
-// sidebar nav config
 
 const TheSidebar = () => {
   const zonesReducer = useSelector((state) => state.allZones);
@@ -75,13 +70,6 @@ const TheSidebar = () => {
       : [];
 
   const _nav = [
-    {
-      _tag: "CSidebarNavItem",
-      name: "Dashboard",
-      to: "/dashboard",
-      // icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
-      icon: "cil-speedometer",
-    },
     {
       _tag: "CSidebarNavItem",
       name: "Products",

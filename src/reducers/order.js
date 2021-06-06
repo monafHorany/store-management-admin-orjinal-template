@@ -42,7 +42,7 @@ export const FetchOrderByIdReducer = (state = { loading: true }, action) => {
       return state;
   }
 };
-export const ProcessNewBillReducer = (state = { loading: true }, action) => {
+export const ProcessNewBillReducer = (state = {}, action) => {
   switch (action.type) {
     case PROCESS_NEW_BILL_REQUEST:
       return { loading: true };

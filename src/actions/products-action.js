@@ -14,6 +14,7 @@ import {
   PRODUCT_LIST_BY_STAND_ID_REQUEST,
   PRODUCT_LIST_BY_STAND_ID_SUCCESS,
   PRODUCT_LIST_BY_STAND_ID_FAIL,
+  PRODUCT_UPDATE_RESET,
   // PRODUCT_LIST_FAIL,
 } from "../constants/product-constants";
 
@@ -75,9 +76,6 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
       type: PRODUCT_UPDATE_SUCCESS,
       payload: data,
     });
-    dispatch(listProducts());
-    dispatch({ type: PRODUCT_CREATE_RESET });
-    dispatch(fetchAllZones());
   } catch (error) {
     dispatch({
       type: PRODUCT_UPDATE_FAIL,

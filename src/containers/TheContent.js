@@ -13,7 +13,12 @@ const loading = (
 
 const TheContent = () => {
   return (
-    <main className="c-main">
+    <main
+      className="c-main"
+      style={{
+        backgroundColor: "#4D4D4D",
+      }}
+    >
       <CContainer fluid>
         <Suspense fallback={loading}>
           <Switch>
@@ -35,7 +40,7 @@ const TheContent = () => {
               );
             })}
             {/* <Redirect from="*" to="/" /> */}
-            <Redirect from="*" to="/dashboard" />
+            <Redirect from="*" to="/products" />
           </Switch>
         </Suspense>
       </CContainer>

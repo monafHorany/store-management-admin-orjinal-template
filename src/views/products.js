@@ -185,11 +185,7 @@ const Products = ({ history }) => {
           </CCol>
         ))}
       </CRow>
-      {/* <DeleteFrom
-        modalShow={danger}
-        modalClose={() => setDanger(false)}
-        productDetail={productDetail}
-      /> */}
+     
       <InfoModal
         modalShow={info}
         modalClose={() => setInfo(false)}

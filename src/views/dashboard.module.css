@@ -37,6 +37,7 @@
 
 .__dropdown_content {
   display: none;
+  right: .2vw;
   position: absolute;
   background-color: #ffffff;
   min-width: 200px;

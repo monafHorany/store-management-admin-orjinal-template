@@ -1,23 +1,18 @@
-import React from 'react'
-import {
-  TheContent,
-  TheSidebar,
-  TheHeader
-} from './index'
+import React from "react";
+import { TheContent, TheSidebar, TheHeader } from "./index";
 
 const TheLayout = () => {
-
   return (
     <div className="c-app c-default-layout">
-      <TheSidebar/>
+      <TheSidebar style={{ fontFamily: '"Courier New", Courier, monospace' }} />
       <div className="c-wrapper">
-        <TheHeader/>
+        <TheHeader />
         <div className="c-body">
-          <TheContent/>
+          <TheContent />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TheLayout
+export default TheLayout;

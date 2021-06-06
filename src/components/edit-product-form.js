@@ -38,13 +38,7 @@ export function EditProductForm({ openModal, closeModal, productDetail }) {
     productDetail.product_sku,
   ]);
   const editForm = () => {
-    if (
-      product_en_name &&
-      product_en_desc &&
-      product_barcode &&
-      product_sku &&
-      model_number
-    ) {
+    if (product_en_name) {
       dispatch(
         UpdateProduct(productDetail.id, {
           product_en_name,
@@ -158,13 +152,7 @@ export function EditProductForm({ openModal, closeModal, productDetail }) {
               </CCardBody>
               <CCardFooter style={{ textAlign: "center" }}>
                 <CButton
-                  disabled={
-                    !product_en_name ||
-                    !product_en_desc ||
-                    !product_barcode ||
-                    !product_sku ||
-                    !model_number
-                  }
+                  disabled={!product_en_name}
                   style={{ borderColor: "#ee8332", color: "#ee8332" }}
                   onClick={editForm}
                   type="button"

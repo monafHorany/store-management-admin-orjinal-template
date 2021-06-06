@@ -1,14 +1,11 @@
 import {
   CButton,
   CModal,
-  CModalBody,
   CModalFooter,
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { deleteProduct } from "../actions/products-action";
 export function AlertModal({
   modalShow,
   modalClose,

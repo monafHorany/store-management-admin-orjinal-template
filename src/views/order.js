@@ -16,7 +16,7 @@ const Order = () => {
   const [warning, setWarning] = useState(false);
   const history = useHistory();
 
-  const { SearchBar, ClearSearchButton } = Search;
+  const { SearchBar } = Search;
 
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.userList);
@@ -137,7 +137,7 @@ const Order = () => {
     },
   ];
   useEffect(() => {
-    !localStorage.getItem("orjeenOrderInfo") && dispatch(fetchAllOrders());
+    !sessionStorage.getItem("orjeenOrderInfo") && dispatch(fetchAllOrders());
   }, [dispatch]);
 
   const rowEvents = {
@@ -217,24 +217,27 @@ const Order = () => {
     <CRow className="justify-content-center">
       <CCol
         xs="12"
-        sm="10"
+        sm="12"
         md="8"
         lg="10"
         xl="5"
         xxl="4"
         style={{ textAlign: "center" }}
       >
-        <div style={{ textAlign: "center" }} className="justify-content-center">
+        <div
+          style={{ textAlign: "center", color: "#FFFFFF" }}
+          className="justify-content-center"
+        >
           <h3>Please Wait</h3>
         </div>
         <ScaleLoader
-          color="#343a40"
+          color="#FFFFFF"
           loading={orderLoading}
-          size={150}
+          size={130}
           height="150px"
           speedMultiplier="1"
-          margin="25px"
-          width="45px"
+          margin="20px"
+          width="40px"
           radius="100px"
         />
       </CCol>

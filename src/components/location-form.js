@@ -42,7 +42,7 @@ export const LocationForm = ({ modalShow, modalClose, productDetail }) => {
   // const [zone, setZone] = useState();
 
   const formSubmit = () => {
-    if (!quantity || !zoneId || !standId || !productId) {
+    if (!quantity || !zoneId || !standId || !productId || quantity <= 0) {
       alert("Please fill all fields");
       return;
     }

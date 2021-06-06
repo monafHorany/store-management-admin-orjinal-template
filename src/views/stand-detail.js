@@ -20,6 +20,8 @@ const StandDetail = ({ match, history }) => {
   const dispatch = useDispatch();
   const standProduct = useSelector((state) => state.standProduct);
   const { loading, standProducts } = standProduct;
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const { success: updateSuccess } = productUpdate;
 
   // const [danger, setDanger] = useState(false);
 
@@ -34,7 +36,11 @@ const StandDetail = ({ match, history }) => {
   const id = match.params.id;
   useEffect(() => {
     dispatch(listProductsByStandId(id));
-  }, [dispatch, id]);
+    if (updateSuccess) {
+      setOpenEditModal(false);
+      window.location.reload();
+    }
+  }, [dispatch, id, updateSuccess]);
   return (
     <>
       {!loading && (
