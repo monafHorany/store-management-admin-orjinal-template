@@ -117,8 +117,7 @@ const OrderDetail = ({ match }) => {
             onClick={() =>
               dispatch(
                 processNewBill({
-                  order_items: order.order_items,
-                  isBundle: order.is_bundled,
+                  order_items: order,
                 })
               )
             }

@@ -30,6 +30,7 @@ import {
   productLocationDeleteReducer,
 } from "./reducers/location-reducer";
 import {
+  FetchAllNewBillsReducer,
   FetchAllNewOrderReducer,
   FetchOrderByIdReducer,
   ProcessNewBillReducer,
@@ -74,6 +75,7 @@ const reducer = combineReducers({
   newOrder: FetchAllNewOrderReducer,
   singleOrder: FetchOrderByIdReducer,
   newBill: ProcessNewBillReducer,
+  AllBills: FetchAllNewBillsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("orjeenUserInfo")

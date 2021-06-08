@@ -1,4 +1,8 @@
 import {
+  FETCH_ALL_BILLS_FAIL,
+  FETCH_ALL_BILLS_REQUEST,
+  FETCH_ALL_BILLS_RESET,
+  FETCH_ALL_BILLS_SUCCESS,
   FETCH_ALL_ORDER_FAIL,
   FETCH_ALL_ORDER_REQUEST,
   FETCH_ALL_ORDER_RESET,
@@ -51,6 +55,20 @@ export const ProcessNewBillReducer = (state = {}, action) => {
     case PROCESS_NEW_BILL_FAIL:
       return { loading: false, error: action.payload };
     case PROCESS_NEW_BILL_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+export const FetchAllNewBillsReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case FETCH_ALL_BILLS_REQUEST:
+      return { loading: true };
+    case FETCH_ALL_BILLS_SUCCESS:
+      return { loading: false, success: true, bills: action.payload };
+    case FETCH_ALL_BILLS_FAIL:
+      return { loading: false, error: action.payload };
+    case FETCH_ALL_BILLS_RESET:
       return {};
     default:
       return state;

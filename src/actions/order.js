@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  FETCH_ALL_BILLS_FAIL,
+  FETCH_ALL_BILLS_REQUEST,
+  FETCH_ALL_BILLS_SUCCESS,
   FETCH_ALL_ORDER_FAIL,
   FETCH_ALL_ORDER_REQUEST,
   FETCH_ALL_ORDER_SUCCESS,
@@ -41,6 +44,33 @@ export const fetchAllOrders = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ALL_ORDER_FAIL,
+      payload: error.response.data || error.response.statusText,
+    });
+  }
+};
+export const fetchAllNewBills = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: FETCH_ALL_BILLS_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.get(
+      process.env.REACT_APP_BACKEND_URL + "bills/fetchAllBills",
+      config
+    );
+
+    dispatch({
+      type: FETCH_ALL_BILLS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_ALL_BILLS_FAIL,
       payload: error.response.data || error.response.statusText,
     });
   }

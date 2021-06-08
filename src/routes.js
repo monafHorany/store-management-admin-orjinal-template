@@ -1,6 +1,7 @@
 import React from "react";
 
 const order = React.lazy(() => import("./views/order"));
+const bills = React.lazy(() => import("./views/bills"));
 const order_detail = React.lazy(() => import("./views/order_detail"));
 const products = React.lazy(() => import("./views/products"));
 
@@ -20,8 +21,14 @@ const routes = [
   {
     path: "/order_detail/:id",
     exact: true,
-    name: "order",
+    name: "order_detail",
     component: order_detail,
+  },
+  {
+    path: "/bills",
+    exact: true,
+    name: "bills",
+    component: bills,
   },
   { path: "/logout", exact: true, name: "logout", component: Logout },
   { path: "/products", exact: true, name: "products", component: products },

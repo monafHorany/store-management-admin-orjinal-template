@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
 import {
   CCreateElement,
@@ -13,6 +13,7 @@ import {
   CSidebarNavDropdown,
   CSidebarNavItem,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 
 const TheSidebar = () => {
   const zonesReducer = useSelector((state) => state.allZones);
@@ -81,15 +82,26 @@ const TheSidebar = () => {
     //   className: "m-2",
     // },
     {
-      _tag: "CSidebarNavTitle",
-      _children: ["ZONES"],
+      _tag: "CSidebarNavDropdown",
+      name: "ZONES",
+      icon: "cil-image",
+      _children: [...convertedZones],
     },
-    ...convertedZones,
     {
       _tag: "CSidebarNavItem",
-      name: "order",
+      name: "ORDERS",
       to: "/order",
       icon: "cil-cart",
+      badge: orders && {
+        color: "danger",
+        text: orders.length,
+      },
+    },
+    {
+      _tag: "CSidebarNavItem",
+      name: "BILLS",
+      to: "/bills",
+      icon: "cib-bitcoin",
       badge: orders && {
         color: "danger",
         text: orders.length,

@@ -142,9 +142,11 @@ const TheHeader = () => {
                 getOptionLabel={(option) =>
                   option && searchTerm === "Search By Product Name"
                     ? option.product_en_name
+                    : option && searchTerm === "Search By SKU"
+                    ? option.product_sku
                     : option &&
-                      searchTerm === "Search By SKU" &&
-                      option.product_sku
+                      searchTerm === "Search By Barcode" &&
+                      option.product_barcode
                 }
                 clearOnBlur={true}
                 clearOnEscape={true}
@@ -182,11 +184,11 @@ const TheHeader = () => {
                   <CDropdownItem onClick={() => setSearchTerm("Search By SKU")}>
                     Search By SKU
                   </CDropdownItem>
-                  {/* <CDropdownItem
-                    onClick={() => setSearchTerm("Search By Model Number")}
+                  <CDropdownItem
+                    onClick={() => setSearchTerm("Search By Barcode")}
                   >
-                    Search By Model Number
-                  </CDropdownItem> */}
+                    Search By Barcode
+                  </CDropdownItem>
                 </CDropdownMenu>
               </CDropdown>
             </CHeaderNav>
