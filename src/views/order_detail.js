@@ -24,7 +24,7 @@ const OrderDetail = ({ match }) => {
       setInfo(true);
     }
   }, [dispatch, error, id, success]);
-
+  console.log(order);
   const columns = [
     {
       dataField: "itemName",
@@ -114,7 +114,14 @@ const OrderDetail = ({ match }) => {
             disabled={BillLoading}
             color="success"
             size="lg"
-            onClick={() => dispatch(processNewBill(order.order_items))}
+            onClick={() =>
+              dispatch(
+                processNewBill({
+                  order_items: order.order_items,
+                  isBundle: order.is_bundled,
+                })
+              )
+            }
           >
             Pull This Order
           </CButton>
