@@ -12,6 +12,9 @@ import {
   PROCESS_NEW_BILL_FAIL,
   PROCESS_NEW_BILL_REQUEST,
   PROCESS_NEW_BILL_SUCCESS,
+  REMOVE_BILL_FAIL,
+  REMOVE_BILL_REQUEST,
+  REMOVE_BILL_SUCCESS,
 } from "../constants/order-constants";
 
 export const fetchAllOrders = () => async (dispatch) => {
@@ -128,6 +131,33 @@ export const processNewBill = (orderItem) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PROCESS_NEW_BILL_FAIL,
+      payload: error.response.data || error.response.statusText,
+    });
+  }
+};
+export const removeBill = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: REMOVE_BILL_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.delete(
+      process.env.REACT_APP_BACKEND_URL + `bills/delete/${id}`,
+      config
+    );
+
+    dispatch({
+      type: REMOVE_BILL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REMOVE_BILL_FAIL,
       payload: error.response.data || error.response.statusText,
     });
   }

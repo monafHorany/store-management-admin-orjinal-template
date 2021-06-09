@@ -13,14 +13,15 @@ export function AlertModal({
   bottunFooter,
   confirmation,
   cancelation,
+  size,
 }) {
   return (
-    <CModal show={modalShow} onClose={modalClose} color="danger" size="lg">
-      <CModalHeader closeButton>
+    <CModal show={modalShow} onClose={modalClose} color="danger" size={size}>
+      <CModalHeader>
         <CModalTitle>{children} </CModalTitle>
       </CModalHeader>
       {bottunFooter && (
-        <CModalFooter>
+        <CModalFooter className="justify-content-center">
           <CButton color="danger" onClick={confirmation}>
             OK
           </CButton>{" "}

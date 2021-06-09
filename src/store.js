@@ -34,6 +34,7 @@ import {
   FetchAllNewOrderReducer,
   FetchOrderByIdReducer,
   ProcessNewBillReducer,
+  RemoveSingleBillReducer,
 } from "./reducers/order";
 // const initialState = {
 //   sidebarShow: "responsive",
@@ -76,6 +77,7 @@ const reducer = combineReducers({
   singleOrder: FetchOrderByIdReducer,
   newBill: ProcessNewBillReducer,
   AllBills: FetchAllNewBillsReducer,
+  removeBill: RemoveSingleBillReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("orjeenUserInfo")

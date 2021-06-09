@@ -15,6 +15,10 @@ import {
   PROCESS_NEW_BILL_REQUEST,
   PROCESS_NEW_BILL_RESET,
   PROCESS_NEW_BILL_SUCCESS,
+  REMOVE_BILL_FAIL,
+  REMOVE_BILL_REQUEST,
+  REMOVE_BILL_RESET,
+  REMOVE_BILL_SUCCESS,
 } from "../constants/order-constants";
 
 export const FetchAllNewOrderReducer = (state = { loading: true }, action) => {
@@ -69,6 +73,20 @@ export const FetchAllNewBillsReducer = (state = { loading: true }, action) => {
     case FETCH_ALL_BILLS_FAIL:
       return { loading: false, error: action.payload };
     case FETCH_ALL_BILLS_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+export const RemoveSingleBillReducer = (state = { loading: false }, action) => {
+  switch (action.type) {
+    case REMOVE_BILL_REQUEST:
+      return { loading: true };
+    case REMOVE_BILL_SUCCESS:
+      return { loading: false, success: true, bills: action.payload };
+    case REMOVE_BILL_FAIL:
+      return { loading: false, error: action.payload };
+    case REMOVE_BILL_RESET:
       return {};
     default:
       return state;

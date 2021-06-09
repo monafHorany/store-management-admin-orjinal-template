@@ -13,7 +13,6 @@ import {
   CSidebarNavDropdown,
   CSidebarNavItem,
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
 
 const TheSidebar = () => {
   const zonesReducer = useSelector((state) => state.allZones);
@@ -42,6 +41,8 @@ const TheSidebar = () => {
   const { userInfo } = userLogin;
   const woo_orders = useSelector((state) => state.newOrder);
   const { orders } = woo_orders;
+  const allBills = useSelector((state) => state.AllBills);
+  const { loading: billsLoading, bills } = allBills;
   if (!userInfo) {
     history.push("/login");
   }
@@ -102,9 +103,9 @@ const TheSidebar = () => {
       name: "BILLS",
       to: "/bills",
       icon: "cib-bitcoin",
-      badge: orders && {
+      badge: bills && {
         color: "danger",
-        text: orders.length,
+        text: bills.length,
       },
     },
     // {

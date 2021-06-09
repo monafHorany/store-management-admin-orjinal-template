@@ -96,7 +96,15 @@ const Products = ({ history }) => {
                   justifyContent: "space-around",
                 }}
               >
-                <span>{product.product_en_name}</span>
+                <span
+                  style={{
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                  }}
+                >
+                  {product.product_en_name}
+                </span>
                 {userInfo &&
                   (userInfo.role === "super user" ||
                     userInfo.role === "editor") && (
@@ -185,7 +193,7 @@ const Products = ({ history }) => {
           </CCol>
         ))}
       </CRow>
-     
+
       <InfoModal
         modalShow={info}
         modalClose={() => setInfo(false)}

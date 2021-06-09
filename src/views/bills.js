@@ -5,15 +5,16 @@ import BootStrapTable from "react-bootstrap-table-next";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import styles from "./order.module.css";
-import { fetchAllOrders } from "../actions/order";
+import { fetchAllOrders, removeBill } from "../actions/order";
 
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { CButton, CCol, CRow } from "@coreui/react";
 import { AlertModal } from "../components/alert-modal";
+import { Fragment } from "react";
 
 const Bills = () => {
   const [alert, setAlert] = useState(false);
-  const [warning, setWarning] = useState(false);
+  const [bill_Id, setBillId] = useState();
   const history = useHistory();
 
   const { SearchBar } = Search;
@@ -24,42 +25,120 @@ const Bills = () => {
 
   const allBills = useSelector((state) => state.AllBills);
   const { loading: billsLoading, bills } = allBills;
-  console.log(bills);
-  const rowEvents = {
-    onClick: (e, row, rowIndex) => {
-      if (row.status === "processing" || row.status !== "confirmed") {
-      }
-      history.push(`/order_detail/${row.id}`);
+  const removedBill = useSelector((state) => state.removeBill);
+  const { loading: removeLoading, success } = removedBill;
+
+  const columns = [
+    {
+      dataField: "woo_order_id",
+      text: "Order_id",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
     },
+    {
+      dataField: "order_owner",
+      text: "Ordered By",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
+    },
+    {
+      dataField: "order_total",
+      text: "Total",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
+    },
+    {
+      dataField: "createdAt",
+      text: "Bill Created At",
+      style: (cell, row, rowIndex, colIndex) => {
+        if (rowIndex % 2 === 0) {
+          return {
+            backgroundColor: "#81c784",
+          };
+        }
+        return {
+          backgroundColor: "#c8e6c9",
+        };
+      },
+    },
+    {
+      dataField: "df1",
+      isDummyField: true,
+      text: "Action 1",
+      formatter: (cellContent, row) => {
+        return (
+          <CButton
+            block
+            disabled={removeLoading}
+            color="danger"
+            onClick={() => {
+              setAlert(true);
+              setBillId(row.id);
+              console.log(row);
+            }}
+          >
+            Delete
+            <i className="fas fa-trash-alt pl-4"></i>
+          </CButton>
+        );
+      },
+    },
+  ];
+
+  const expandRow = {
+    renderer: (row) => (
+      <div style={{ color: "#FFFFFF" }}>
+        {bills.map((bill, index) => {
+          return (
+            bill.id === row.id && (
+              <div
+                key={index}
+                dangerouslySetInnerHTML={{
+                  __html: bill.note,
+                }}
+              ></div>
+            )
+          );
+        })}
+      </div>
+    ),
   };
 
+  useEffect(() => {
+    if (success) {
+      window.location.reload();
+    }
+  }, [success]);
+
   return (
-    <>
-      {" "}
-      <AlertModal modalShow={alert} modalClose={() => setAlert(false)}>
-        This Order hasn't been Confirmed yet, Please try again Later.
-      </AlertModal>
-      <AlertModal
-        modalShow={warning}
-        modalClose={() => setWarning(false)}
-        bottunFooter
-        confirmation={() => {
-          dispatch(fetchAllOrders());
-          localStorage.removeItem("orjeenOrderInfo");
-          setWarning(false);
-        }}
-        cancelation={() => setWarning(false)}
-      >
-        This Process might take approximately 2~3 minutes.
-      </AlertModal>
+    <Fragment>
       <CRow className="justify-content-center">
         <CCol xs="12" lg="10">
-          <ToolkitProvider
-            keyField="id"
-            // data={}
-            // columns={}
-            search
-          >
+          <ToolkitProvider keyField="id" data={bills} columns={columns} search>
             {(props) => (
               <React.Fragment>
                 <SearchBar {...props.searchProps} />
@@ -67,37 +146,23 @@ const Bills = () => {
                   {...props.baseProps}
                   pagination={paginationFactory()}
                   headerClasses={styles.header_class}
-                  rowEvents={rowEvents}
+                  expandRow={expandRow}
                 />
               </React.Fragment>
             )}
           </ToolkitProvider>
-          {/* <BootStrapTable
-            keyField="id"
-            data={orderData}
-            columns={columns}
-            pagination={paginationFactory()}
-            headerClasses={styles.header_class}
-            rowEvents={rowEvents}
-          /> */}
         </CCol>
-        <CRow className="justify-content-center">
-          <CCol xs="12" lg="10">
-            <CButton
-              block
-              color="success"
-              size="lg"
-              width="20"
-              onClick={() => {
-                setWarning(true);
-              }}
-            >
-              Update Order List
-            </CButton>
-          </CCol>
-        </CRow>
       </CRow>
-    </>
+      <AlertModal
+        size="sm"
+        bottunFooter
+        modalShow={alert}
+        modalClose={() => setAlert(false)}
+        confirmation={() => dispatch(removeBill(bill_Id))}
+      >
+        Are you sure?
+      </AlertModal>
+    </Fragment>
   );
 };
 

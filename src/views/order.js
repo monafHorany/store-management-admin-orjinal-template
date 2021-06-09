@@ -14,6 +14,7 @@ import { AlertModal } from "../components/alert-modal";
 const Order = () => {
   const [alert, setAlert] = useState(false);
   const [warning, setWarning] = useState(false);
+  const [info, setInfo] = useState(false);
   const history = useHistory();
 
   const { SearchBar } = Search;
@@ -24,6 +25,8 @@ const Order = () => {
 
   const woo_orders = useSelector((state) => state.newOrder);
   const { loading: orderLoading, orders } = woo_orders;
+  const allBills = useSelector((state) => state.AllBills);
+  const { loading: billsLoading, bills } = allBills;
   const orderData =
     !orderLoading &&
     orders &&
@@ -142,15 +145,28 @@ const Order = () => {
 
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
-      if (row.status === "processing" || row.status !== "confirmed") {
+      if (bills.length > 0) {
+        const billedOrder = bills.filter(
+          (bill) => bill.woo_order_id === row.id
+        );
+        if (billedOrder.length > 0) {
+          setInfo(true);
+        } else {
+          history.push(`/order_detail/${row.id}`);
+        }
+      } else {
+        history.push(`/order_detail/${row.id}`);
       }
-      history.push(`/order_detail/${row.id}`);
     },
   };
 
   return !orderLoading && orderData ? (
     <>
       {" "}
+      <AlertModal modalShow={info} modalClose={() => setInfo(false)}>
+        This Order has been processed before, To reprocess it again Please
+        Delete This order's bill from Bills Page.
+      </AlertModal>
       <AlertModal modalShow={alert} modalClose={() => setAlert(false)}>
         This Order hasn't been Confirmed yet, Please try again Later.
       </AlertModal>
