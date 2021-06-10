@@ -140,9 +140,7 @@ const OrderDetail = ({ match }) => {
         ok={() => {
           setInfo(false);
           dispatch({ type: PROCESS_NEW_BILL_RESET });
-          success
-            ? document.location.replace("http://localhost:3000/order")
-            : window.location.reload();
+          success ? document.location.push("/order") : window.location.reload();
         }}
         bodyText={
           error ? (
