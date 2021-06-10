@@ -28,6 +28,7 @@ import {
 import {
   productLocationCreateReducer,
   productLocationDeleteReducer,
+  productLocationEditReducer,
 } from "./reducers/location-reducer";
 import {
   FetchAllNewBillsReducer,
@@ -72,6 +73,7 @@ const reducer = combineReducers({
   standProduct: productListByStandIdReducer,
   standCreate: createNewStandReducer,
   addLocation: productLocationCreateReducer,
+  editLocation: productLocationEditReducer,
   removeLocation: productLocationDeleteReducer,
   newOrder: FetchAllNewOrderReducer,
   singleOrder: FetchOrderByIdReducer,

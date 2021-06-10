@@ -36,7 +36,7 @@ export function InfoModal({ modalShow, modalClose, productDetail }) {
   return (
     <React.Fragment>
       <CModal show={modalShow} onClose={modalClose} color="info" size="lg">
-        <CModalHeader closeButton>
+        <CModalHeader>
           <CModalTitle>{productDetail.product_en_name}</CModalTitle>
         </CModalHeader>
         <CModalBody>
@@ -105,19 +105,34 @@ export function InfoModal({ modalShow, modalClose, productDetail }) {
                   </div>
                 )
               ) : productDetail.location ? (
-                <div>
+                <div style={{ display: "flex" }}>
                   <CButton
                     color="primary"
-                    className="px-4"
-                    size="lg"
+                    className="mx-2"
                     onClick={() => {
                       deleteLocation(productDetail.location.id);
                     }}
                   >
-                    Remove From This Stand
+                    Edit quantity{" "}
                     <i
                       style={{
-                        marginLeft: "24px",
+                        color: "#FFFFFF",
+                        cursor: "pointer",
+                      }}
+                      className="fas fa-edit"
+                    ></i>
+                  </CButton>
+                  <CButton
+                    color="primary"
+                    className="mx-2"
+                    onClick={() => {
+                      deleteLocation(productDetail.location.id);
+                    }}
+                  >
+                    Remove
+                    <i
+                      style={{
+                        marginLeft: "8px",
                         color: "#FFFFFF",
                         cursor: "pointer",
                       }}

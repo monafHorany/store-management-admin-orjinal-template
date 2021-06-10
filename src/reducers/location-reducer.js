@@ -1,4 +1,8 @@
 import {
+  EDIT_LOCATION_FAIL,
+  EDIT_LOCATION_REQUEST,
+  EDIT_LOCATION_RESET,
+  EDIT_LOCATION_SUCCESS,
   LOCATION_CREATE_FAIL,
   LOCATION_CREATE_REQUEST,
   LOCATION_CREATE_RESET,
@@ -21,6 +25,23 @@ export const productLocationCreateReducer = (
     case LOCATION_CREATE_FAIL:
       return { loading: false, error: action.payload };
     case LOCATION_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+export const productLocationEditReducer = (
+  state = { loading: false },
+  action
+) => {
+  switch (action.type) {
+    case EDIT_LOCATION_REQUEST:
+      return { loading: true };
+    case EDIT_LOCATION_SUCCESS:
+      return { loading: false, success: true, message: action.payload };
+    case EDIT_LOCATION_FAIL:
+      return { loading: false, error: action.payload };
+    case EDIT_LOCATION_RESET:
       return {};
     default:
       return state;
