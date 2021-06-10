@@ -22,15 +22,12 @@ const StandDetail = ({ match, history }) => {
   const { loading, standProducts } = standProduct;
   const productUpdate = useSelector((state) => state.productUpdate);
   const { success: updateSuccess } = productUpdate;
-
-  // const [danger, setDanger] = useState(false);
-
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   const [info, setInfo] = useState(false);
   const [productDetail, setProductDetail] = useState({});
   const [locationForm, setLocationForm] = useState(false);
-
   const [openEditModal, setOpenEditModal] = useState(false);
-
   const onOpenEditModal = () => setOpenEditModal(true);
   const onCloseEditModal = () => setOpenEditModal(false);
   const id = match.params.id;
@@ -64,73 +61,74 @@ const StandDetail = ({ match, history }) => {
                       justifyContent: "space-around",
                     }}
                   >
-                    <span>{product.product_en_name}</span>
-                    <div className={`card-header-actions ${styles.__dropdown}`}>
-                      <CLink
-                        className={`card-header-action ${styles.__dropbtn}`}
-                      >
-                        <i className="fas fa-bars"></i>
-                      </CLink>
-                      <div
-                        className={styles.__dropdown_content}
-                        style={{ color: "black" }}
-                      >
-                        <p
-                          style={{ margin: "0", padding: "14px" }}
-                          onClick={() => {
-                            setInfo(!info);
-                            setProductDetail(product);
-                          }}
+                    <span
+                      style={{
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {product.product_en_name}
+                    </span>
+                    {userInfo &&
+                      (userInfo.role === "super user" ||
+                        userInfo.role === "editor") && (
+                        <div
+                          className={`card-header-actions ${styles.__dropdown}`}
                         >
-                          <i
-                            className="fas fa-info-circle"
-                            style={{ padding: ".5rem" }}
-                          ></i>{" "}
-                          Details
-                        </p>
-                        <p
-                          style={{ margin: "0", padding: "14px" }}
-                          onClick={() => {
-                            setLocationForm(!locationForm);
-                            setProductDetail(product);
-                          }}
-                        >
-                          <i
-                            className="fas fa-map-marker"
-                            style={{ padding: ".5rem" }}
-                          ></i>{" "}
-                          Add To Zone
-                        </p>
-                        <p
-                          style={{ margin: "0", padding: "14px" }}
-                          onMouseEnter={() => {
-                            setProductDetail(product);
-                          }}
-                          onClick={() => {
-                            onOpenEditModal();
-                          }}
-                        >
-                          <i
-                            className="fas fa-edit"
-                            style={{ padding: ".5rem" }}
-                          ></i>{" "}
-                          Edit
-                        </p>
-                        {/* <p
-                          style={{ margin: "0", padding: "14px" }}
-                          onClick={() => {
-                            setDanger(!danger);
-                            setProductDetail(product);
-                          }}
-                        >
-                          <i
-                            className="fas fa-trash-alt"
-                            style={{ padding: ".5rem" }}
-                          ></i>{" "}
-                          Delete
-                        </p> */}
-                      </div>
-                    </div>
+                          <CLink
+                            className={`card-header-action ${styles.__dropbtn}`}
+                          >
+                            <i className="fas fa-bars"></i>
+                          </CLink>
+                          <div
+                            className={styles.__dropdown_content}
+                            style={{ color: "black" }}
+                          >
+                            <p
+                              style={{ margin: "0", padding: "14px" }}
+                              onClick={() => {
+                                setInfo(!info);
+                                setProductDetail(product);
+                              }}
+                            >
+                              <i
+                                className="fas fa-info-circle"
+                                style={{ padding: ".5rem" }}
+                              ></i>{" "}
+                              Details
+                            </p>
+                            <p
+                              style={{ margin: "0", padding: "14px" }}
+                              onClick={() => {
+                                setLocationForm(!locationForm);
+                                setProductDetail(product);
+                              }}
+                            >
+                              <i
+                                className="fas fa-map-marker"
+                                style={{ padding: ".5rem" }}
+                              ></i>{" "}
+                              Add To Zone
+                            </p>
+                            <p
+                              style={{ margin: "0", padding: "14px" }}
+                              onMouseEnter={() => {
+                                setProductDetail(product);
+                              }}
+                              onClick={() => {
+                                onOpenEditModal();
+                              }}
+                            >
+                              <i
+                                className="fas fa-edit"
+                                style={{ padding: ".5rem" }}
+                              ></i>{" "}
+                              Edit
+                            </p>
+                          </div>
+                        </div>
+                      )}
                   </CCardHeader>
                   <CCardBody>
                     <div

@@ -24,6 +24,7 @@ import {
 import {
   createNewStandReducer,
   fetchAllStandsReducer,
+  fetchSingleStandReducer,
 } from "./reducers/stand-reducer";
 import {
   productLocationCreateReducer,
@@ -80,6 +81,7 @@ const reducer = combineReducers({
   newBill: ProcessNewBillReducer,
   AllBills: FetchAllNewBillsReducer,
   removeBill: RemoveSingleBillReducer,
+  sigleStand: fetchSingleStandReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("orjeenUserInfo")

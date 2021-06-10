@@ -27,6 +27,10 @@ const Order = () => {
   const { loading: orderLoading, orders } = woo_orders;
   const allBills = useSelector((state) => state.AllBills);
   const { loading: billsLoading, bills } = allBills;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const orderData =
     !orderLoading &&
     orders &&
@@ -212,21 +216,24 @@ const Order = () => {
             rowEvents={rowEvents}
           /> */}
         </CCol>
-        <CRow className="justify-content-center">
-          <CCol xs="12" lg="10">
-            <CButton
-              block
-              color="success"
-              size="lg"
-              width="20"
-              onClick={() => {
-                setWarning(true);
-              }}
-            >
-              Update Order List
-            </CButton>
-          </CCol>
-        </CRow>
+        {userInfo &&
+          (userInfo.role === "super user" || userInfo.role === "editor") && (
+            <CRow className="justify-content-center">
+              <CCol xs="12" lg="10">
+                <CButton
+                  block
+                  color="success"
+                  size="lg"
+                  width="20"
+                  onClick={() => {
+                    setWarning(true);
+                  }}
+                >
+                  Update Order List
+                </CButton>
+              </CCol>
+            </CRow>
+          )}
       </CRow>
     </>
   ) : (
@@ -253,7 +260,7 @@ const Order = () => {
           height="150px"
           speedMultiplier="1"
           margin="20px"
-          width="40px"
+          width="2vw"
           radius="100px"
         />
       </CCol>

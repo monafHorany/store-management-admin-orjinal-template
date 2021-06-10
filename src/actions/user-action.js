@@ -17,6 +17,12 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
 } from "../constants/user-constants";
+export const logout = () => (dispatch) => {
+  localStorage.removeItem("orjeenUserInfo");
+  dispatch({ type: USER_LOGOUT });
+
+  document.location.href = "/login";
+};
 export const createUser = (user) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -47,18 +53,12 @@ export const createUser = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_CREATE_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
     dispatch(logout());
   }
 };
 
-export const logout = () => (dispatch) => {
-  localStorage.removeItem("orjeenUserInfo");
-  dispatch({ type: USER_LOGOUT });
-
-  document.location.href = "/login";
-};
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({
@@ -85,22 +85,28 @@ export const login = (email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
 
-export const fetchAllUser = () => async (dispatch) => {
+export const fetchAllUser = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_LIST_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
+
     const { data } = await axios.get(
       process.env.REACT_APP_BACKEND_URL + "user",
       config
@@ -113,8 +119,9 @@ export const fetchAllUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_LIST_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
+    dispatch(logout());
   }
 };
 
@@ -148,8 +155,9 @@ export const updateUser = (id, user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
+    dispatch(logout());
   }
 };
 
@@ -182,7 +190,8 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DELETE_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
+    dispatch(logout());
   }
 };

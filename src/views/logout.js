@@ -9,7 +9,7 @@ const Logout = ({ history }) => {
     if (window.confirm("Are You Sure")) {
       dispatch(logout());
     } else {
-      history.push("/dashboard");
+      history.push("/products");
     }
   }, [dispatch, history]);
 

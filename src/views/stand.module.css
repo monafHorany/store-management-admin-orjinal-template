@@ -14,6 +14,7 @@
 
 .__dropdown_content {
   display: none;
+  right: 0.2vw;
   position: absolute;
   background-color: #ffffff;
   min-width: 160px;

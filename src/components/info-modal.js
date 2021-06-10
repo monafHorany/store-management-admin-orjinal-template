@@ -12,27 +12,35 @@ import { Image } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteProductLocation } from "../actions/location-action";
 import { LOCATION_DELETE_RESET } from "../constants/location-constants";
+import { EditLocationForm } from "./edit_location_form";
 import { LocationForm } from "./location-form";
 
-export function InfoModal({ modalShow, modalClose, productDetail }) {
+export function InfoModal({ modalShow, modalClose, productDetail, match }) {
   const dispatch = useDispatch();
   const deleteLocation = (id) => {
     if (window.confirm("Are You Sure")) {
       dispatch(deleteProductLocation(id));
     }
   };
-
+  // const id = match.params.id;
   const [locationForm, setLocationForm] = useState(false);
+  const [editLocationForm, setEditLocationForm] = useState(false);
   const LocationDeletion = useSelector((state) => state.removeLocation);
   const { success, error } = LocationDeletion;
 
+  const location = useSelector((state) => state.editLocation);
+  const { loading, success: editingSuccess } = location;
   useEffect(() => {
     if (success && !error) {
       modalClose();
       dispatch({ type: LOCATION_DELETE_RESET });
       window.location.reload();
     }
-  }, [dispatch, error, modalClose, success]);
+    if (editingSuccess) {
+      setEditLocationForm(false);
+      window.location.reload();
+    }
+  }, [dispatch, editingSuccess, error, modalClose, success]);
   return (
     <React.Fragment>
       <CModal show={modalShow} onClose={modalClose} color="info" size="lg">
@@ -110,7 +118,7 @@ export function InfoModal({ modalShow, modalClose, productDetail }) {
                     color="primary"
                     className="mx-2"
                     onClick={() => {
-                      deleteLocation(productDetail.location.id);
+                      setEditLocationForm(true);
                     }}
                   >
                     Edit quantity{" "}
@@ -172,6 +180,13 @@ export function InfoModal({ modalShow, modalClose, productDetail }) {
         modalClose={() => setLocationForm(false)}
         productDetail={productDetail}
       />
+      {productDetail.location && (
+        <EditLocationForm
+          modalShow={editLocationForm}
+          modalClose={() => setEditLocationForm(false)}
+          productDetail={productDetail}
+        />
+      )}
     </React.Fragment>
   );
 }

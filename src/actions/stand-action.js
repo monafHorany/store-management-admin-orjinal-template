@@ -17,6 +17,7 @@ import {
   DELETE_STAND_SUCCESS,
   DELETE_STAND_FAIL,
 } from "../constants/stand-constants";
+import { logout } from "./user-action";
 import { fetchAllZones } from "./zone-action";
 
 export const fetchAllStands = () => async (dispatch) => {
@@ -43,7 +44,7 @@ export const fetchAllStands = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ALL_STAND_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
@@ -61,7 +62,7 @@ export const fetchSingleStand = (id) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}stand/${id}`,
+      `${process.env.REACT_APP_BACKEND_URL}stand/stand/${id}`,
       config
     );
 
@@ -72,7 +73,7 @@ export const fetchSingleStand = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_SINGLE_STAND_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
@@ -108,8 +109,9 @@ export const addNewStand = (id, stand) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ADD_NEW_STAND_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
+    dispatch(logout());
   }
 };
 
@@ -144,8 +146,9 @@ export const updateStand = (id, stand) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: UPDATE_STAND_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
+    dispatch(logout());
   }
 };
 
@@ -179,7 +182,8 @@ export const deleteStand = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: DELETE_STAND_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
+    dispatch(logout());
   }
 };

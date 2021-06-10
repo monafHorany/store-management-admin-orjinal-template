@@ -44,7 +44,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push("/dashboard");
+      history.push("/products");
     } else if (error) {
       setShow(true);
     }

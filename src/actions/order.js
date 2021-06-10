@@ -16,6 +16,7 @@ import {
   REMOVE_BILL_REQUEST,
   REMOVE_BILL_SUCCESS,
 } from "../constants/order-constants";
+import { logout } from "./user-action";
 
 export const fetchAllOrders = () => async (dispatch) => {
   try {
@@ -47,7 +48,7 @@ export const fetchAllOrders = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ALL_ORDER_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
@@ -74,7 +75,7 @@ export const fetchAllNewBills = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ALL_BILLS_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
@@ -102,20 +103,25 @@ export const fetchOrderDetailById = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ORDER_BY_ID_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
 
-export const processNewBill = (orderItem) => async (dispatch) => {
+export const processNewBill = (orderItem) => async (dispatch, getState) => {
   try {
     dispatch({
       type: PROCESS_NEW_BILL_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
     const { data } = await axios.post(
@@ -131,19 +137,24 @@ export const processNewBill = (orderItem) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PROCESS_NEW_BILL_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
+    dispatch(logout());
   }
 };
-export const removeBill = (id) => async (dispatch) => {
+export const removeBill = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: REMOVE_BILL_REQUEST,
     });
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
     const { data } = await axios.delete(
@@ -158,7 +169,8 @@ export const removeBill = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: REMOVE_BILL_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
+    dispatch(logout());
   }
 };

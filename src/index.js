@@ -23,7 +23,6 @@ import { fetchAllNewBills } from "./actions/order";
 
 store.dispatch(fetchAllZones());
 store.dispatch(listProducts());
-store.dispatch(fetchAllUser());
 store.dispatch(fetchAllStands());
 store.dispatch(fetchAllNewBills());
 

@@ -14,6 +14,9 @@ const OrderDetail = ({ match }) => {
   const BillReducer = useSelector((state) => state.newBill);
   const { loading: BillLoading, success, message, error } = BillReducer;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const [info, setInfo] = useState(false);
 
   const id = match.params.id;
@@ -24,7 +27,6 @@ const OrderDetail = ({ match }) => {
       setInfo(true);
     }
   }, [dispatch, error, id, success]);
-  console.log(order);
   const columns = [
     {
       dataField: "itemName",
@@ -109,33 +111,30 @@ const OrderDetail = ({ match }) => {
           columns={columns}
           headerClasses={styles.header_class}
         />
-        <div style={{ textAlignLast: "center" }}>
-          <CButton
-            disabled={BillLoading}
-            color="success"
-            size="lg"
-            onClick={() =>
-              dispatch(
-                processNewBill({
-                  order_items: order,
-                })
-              )
-            }
-          >
-            Pull This Order
-          </CButton>
-        </div>
+        {userInfo &&
+          (userInfo.role === "super user" || userInfo.role === "editor") && (
+            <div style={{ textAlignLast: "center" }}>
+              <CButton
+                disabled={BillLoading}
+                color="success"
+                size="lg"
+                onClick={() =>
+                  dispatch(
+                    processNewBill({
+                      order_items: order,
+                    })
+                  )
+                }
+              >
+                Pull This Order
+              </CButton>
+            </div>
+          )}
       </div>
 
       <BillInfoModal
         modalShow={info}
         color={success ? "success" : error ? "danger" : "primary"}
-        // modalClose={() => {
-        //   setInfo(false);
-        //   success
-        //     ? (document.location.href = "/order")
-        //     : window.location.reload();
-        // }}
         header={success ? "New bill Created" : "Some thing went wrong"}
         bottunFooter
         ok={() => {

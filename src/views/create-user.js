@@ -59,7 +59,7 @@ const Create = ({ history }) => {
     }
 
     if (userInfo && userInfo.role !== "super user") {
-      history.push("/dashboard");
+      history.push("/login");
     }
   }, [dispatch, error, history, success, userInfo]);
   return (

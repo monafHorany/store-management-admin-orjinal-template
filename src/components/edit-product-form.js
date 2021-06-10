@@ -114,7 +114,7 @@ export function EditProductForm({ openModal, closeModal, productDetail }) {
                         onChange={(e) =>
                           setEditedProduct_barcode(e.target.value)
                         }
-                        type="number"
+                        type="text"
                         value={product_barcode}
                         placeholder="product barcode"
                       />

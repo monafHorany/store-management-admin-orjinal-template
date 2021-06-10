@@ -59,35 +59,38 @@ const ZoneDetail = ({ match, history }) => {
     <>
       {!loading && (
         <>
-          {userInfo.role === "super user" && (
-            <Table striped bordered hover variant="dark">
-              <tbody>
-                <tr>
-                  <td style={{ verticalAlign: "middle" }}>
-                    {zone.stands.length} Available{" "}
-                    {zone.stands.length > 1 ? "stands" : "Stand"} in This Zone
-                  </td>
-                  <td style={{ verticalAlign: "middle" }}>
-                    {zone.zone_capacity - zone.stands.length} available Empty
-                    Spaces in This Zone
-                  </td>
-                  <td style={{ verticalAlign: "middle" }}>
-                    <CTooltip content="Add New Stand" placement="bottom">
-                      <CButton
-                        block
-                        color="success"
-                        onClick={onOpenModal}
-                        disabled={zone.zone_capacity - zone.stands.length <= 0}
-                      >
-                        Add New Stand
-                        <i className="fas fa-plus ml-3"></i>
-                      </CButton>
-                    </CTooltip>
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
-          )}
+          {userInfo &&
+            (userInfo.role === "super user" || userInfo.role === "editor") && (
+              <Table striped bordered hover variant="dark">
+                <tbody>
+                  <tr>
+                    <td style={{ verticalAlign: "middle" }}>
+                      {zone.stands.length} Available{" "}
+                      {zone.stands.length > 1 ? "stands" : "Stand"} in This Zone
+                    </td>
+                    <td style={{ verticalAlign: "middle" }}>
+                      {zone.zone_capacity - zone.stands.length} available Empty
+                      Spaces in This Zone
+                    </td>
+                    <td style={{ verticalAlign: "middle" }}>
+                      <CTooltip content="Add New Stand" placement="bottom">
+                        <CButton
+                          block
+                          color="success"
+                          onClick={onOpenModal}
+                          disabled={
+                            zone.zone_capacity - zone.stands.length <= 0
+                          }
+                        >
+                          Add New Stand
+                          <i className="fas fa-plus ml-3"></i>
+                        </CButton>
+                      </CTooltip>
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
+            )}
           <CRow>
             {zone.stands.map((stand) => (
               <CCol key={stand.id} xs="12" sm="6" md="4" lg="3">

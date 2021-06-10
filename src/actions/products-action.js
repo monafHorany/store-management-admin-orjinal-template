@@ -14,12 +14,11 @@ import {
   PRODUCT_LIST_BY_STAND_ID_REQUEST,
   PRODUCT_LIST_BY_STAND_ID_SUCCESS,
   PRODUCT_LIST_BY_STAND_ID_FAIL,
-  PRODUCT_UPDATE_RESET,
-  // PRODUCT_LIST_FAIL,
 } from "../constants/product-constants";
 
 import axios from "axios";
 import { fetchAllZones } from "./zone-action";
+import { logout } from "./user-action";
 export const createProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -52,6 +51,8 @@ export const createProduct = (product) => async (dispatch, getState) => {
       type: PRODUCT_CREATE_FAIL,
       payload: error.response,
     });
+    dispatch(logout());
+
   }
 };
 
@@ -61,9 +62,14 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
       type: PRODUCT_UPDATE_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
     const { data } = await axios.post(
@@ -81,16 +87,29 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
       type: PRODUCT_UPDATE_FAIL,
       payload: error.response,
     });
+    dispatch(logout());
+
   }
 };
 
-export const deleteProduct = (id) => async (dispatch) => {
+export const deleteProduct = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: PRODUCT_DELETE_REQUEST,
     });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
     const { data } = await axios.delete(
-      `${process.env.REACT_APP_BACKEND_URL}product/delete/${id}`
+      `${process.env.REACT_APP_BACKEND_URL}product/delete/${id}`,
+      config
     );
 
     dispatch({
@@ -104,6 +123,8 @@ export const deleteProduct = (id) => async (dispatch) => {
       type: PRODUCT_DELETE_FAIL,
       payload: error.response,
     });
+    dispatch(logout());
+
   }
 };
 export const listProducts = () => async (dispatch) => {
@@ -141,7 +162,7 @@ export const listProductsByStandId = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_BY_STAND_ID_FAIL,
-      payload: error,
+      payload: error.response,
     });
   }
 };

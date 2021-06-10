@@ -159,19 +159,6 @@ const Products = ({ history }) => {
                           ></i>{" "}
                           Edit
                         </p>
-                        {/* <p
-                          style={{ margin: "0", padding: "14px" }}
-                          onClick={() => {
-                            setDanger(!danger);
-                            setProductDetail(product);
-                          }}
-                        >
-                          <i
-                            className="fas fa-trash-alt"
-                            style={{ padding: ".5rem" }}
-                          ></i>{" "}
-                          Delete
-                        </p> */}
                       </div>
                     </div>
                   )}

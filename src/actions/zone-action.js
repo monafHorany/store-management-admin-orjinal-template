@@ -43,7 +43,7 @@ export const fetchAllZones = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ALL_ZONES_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
@@ -72,7 +72,7 @@ export const fetchSingleZones = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_SINGLE_ZONE_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
   }
 };
@@ -107,7 +107,7 @@ export const addNewZones = (zone) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ADD_NEW_ZONE_FAIL,
-      payload: error.response.data || error.response.statusText,
+      payload: error.response,
     });
     dispatch(logout());
   }

@@ -98,7 +98,6 @@ const Bills = () => {
             onClick={() => {
               setAlert(true);
               setBillId(row.id);
-              console.log(row);
             }}
           >
             Delete

@@ -11,25 +11,27 @@ import {
   LOCATION_DELETE_SUCCESS,
 } from "../constants/location-constants";
 import { listProducts } from "./products-action";
+import { logout } from "./user-action";
 
 export const locateProduct = (location) => async (dispatch, getState) => {
   try {
     dispatch({
       type: LOCATION_CREATE_REQUEST,
     });
-    // const {
-    //   userLogin: { userInfo },
-    // } = getState();
-    // // const config = {
-    // //   headers: {
-    // //     "content-type": "multipart/form-data",
-    // //     Authorization: `Bearer ${userInfo.token}`,
-    // //   },
-    // // };
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
     const { data } = await axios.post(
       process.env.REACT_APP_BACKEND_URL + "location/insertProduct",
-      location
-      // config
+      location,
+      config
     );
 
     dispatch({
@@ -42,48 +44,63 @@ export const locateProduct = (location) => async (dispatch, getState) => {
       type: LOCATION_CREATE_FAIL,
       payload: error.response,
     });
+    dispatch(logout());
   }
 };
-export const editLocation = (id, location) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: EDIT_LOCATION_REQUEST,
-    });
-    // const {
-    //   userLogin: { userInfo },
-    // } = getState();
-    // // const config = {
-    // //   headers: {
-    // //     "content-type": "multipart/form-data",
-    // //     Authorization: `Bearer ${userInfo.token}`,
-    // //   },
-    // // };
-    const { data } = await axios.post(
-      process.env.REACT_APP_BACKEND_URL + `location/edit/${id}`,
-      location
-      // config
-    );
+export const editLocationQuantity =
+  (id, quantity) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: EDIT_LOCATION_REQUEST,
+      });
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    dispatch({
-      type: EDIT_LOCATION_SUCCESS,
-      payload: data,
-    });
-    dispatch(listProducts());
-  } catch (error) {
-    dispatch({
-      type: EDIT_LOCATION_FAIL,
-      payload: error.response,
-    });
-  }
-};
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        process.env.REACT_APP_BACKEND_URL + `location/edit/${id}`,
+        quantity,
+        config
+      );
 
-export const deleteProductLocation = (id) => async (dispatch) => {
+      dispatch({
+        type: EDIT_LOCATION_SUCCESS,
+        payload: data,
+      });
+      // dispatch(listProducts());
+    } catch (error) {
+      dispatch({
+        type: EDIT_LOCATION_FAIL,
+        payload: error.response,
+      });
+      dispatch(logout());
+    }
+  };
+
+export const deleteProductLocation = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: LOCATION_DELETE_REQUEST,
     });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
     const { data } = await axios.delete(
-      `${process.env.REACT_APP_BACKEND_URL}location/delete/${id}`
+      `${process.env.REACT_APP_BACKEND_URL}location/delete/${id}`,
+      config
     );
 
     dispatch({
@@ -96,5 +113,6 @@ export const deleteProductLocation = (id) => async (dispatch) => {
       type: LOCATION_DELETE_FAIL,
       payload: error.response,
     });
+    dispatch(logout());
   }
 };

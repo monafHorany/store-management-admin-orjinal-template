@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,6 +15,7 @@ import {
   USER_CREATE_RESET,
   USER_DELETE_RESET,
 } from "../../constants/user-constants";
+import { fetchAllUser } from "../../actions/user-action";
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,9 @@ const Users = () => {
   const { loading, users } = userList;
 
   const transformedListOfUsers = [];
+  useEffect(() => {
+    dispatch(fetchAllUser());
+  }, [dispatch]);
 
   if (!loading && users) {
     users.map((user) =>
