@@ -48,6 +48,12 @@ const Order = () => {
       dataField: "id",
       text: "id",
       style: (cell, row, rowIndex, colIndex) => {
+        if (row.status === "cancelled" || row.status === "refunded") {
+          return {
+            backgroundColor: "#ccc",
+            cursor: "not-allowed",
+          };
+        }
         if (rowIndex % 2 === 0) {
           return {
             backgroundColor: "#81c784",
@@ -62,6 +68,12 @@ const Order = () => {
       dataField: "OrderName",
       text: "OrderName",
       style: (cell, row, rowIndex, colIndex) => {
+        if (row.status === "cancelled" || row.status === "refunded") {
+          return {
+            backgroundColor: "#ccc",
+            cursor: "not-allowed",
+          };
+        }
         if (rowIndex % 2 === 0) {
           return {
             backgroundColor: "#81c784",
@@ -76,6 +88,12 @@ const Order = () => {
       dataField: "Date",
       text: "Date",
       style: (cell, row, rowIndex, colIndex) => {
+        if (row.status === "cancelled" || row.status === "refunded") {
+          return {
+            backgroundColor: "#ccc",
+            cursor: "not-allowed",
+          };
+        }
         if (rowIndex % 2 === 0) {
           return {
             backgroundColor: "#81c784",
@@ -90,6 +108,12 @@ const Order = () => {
       dataField: "status",
       text: "status",
       style: (cell, row, rowIndex, colIndex) => {
+        if (row.status === "cancelled" || row.status === "refunded") {
+          return {
+            backgroundColor: "#ccc",
+            cursor: "not-allowed",
+          };
+        }
         if (rowIndex % 2 === 0) {
           return {
             backgroundColor: "#81c784",
@@ -104,6 +128,13 @@ const Order = () => {
       dataField: "Billing",
       text: "Billing",
       style: (cell, row, rowIndex, colIndex) => {
+        if (row.status === "cancelled" || row.status === "refunded") {
+          return {
+            backgroundColor: "#ccc",
+            cursor: "not-allowed",
+          };
+        }
+
         if (rowIndex % 2 === 0) {
           return {
             backgroundColor: "#81c784",
@@ -118,6 +149,12 @@ const Order = () => {
       dataField: "Ship to",
       text: "Ship to",
       style: (cell, row, rowIndex, colIndex) => {
+        if (row.status === "cancelled" || row.status === "refunded") {
+          return {
+            backgroundColor: "#ccc",
+            cursor: "not-allowed",
+          };
+        }
         if (rowIndex % 2 === 0) {
           return {
             backgroundColor: "#81c784",
@@ -132,6 +169,12 @@ const Order = () => {
       dataField: "Total",
       text: "Total",
       style: (cell, row, rowIndex, colIndex) => {
+        if (row.status === "cancelled" || row.status === "refunded") {
+          return {
+            backgroundColor: "#ccc",
+            cursor: "not-allowed",
+          };
+        }
         if (rowIndex % 2 === 0) {
           return {
             backgroundColor: "#81c784",
@@ -149,6 +192,10 @@ const Order = () => {
 
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
+      if (row.status === "cancelled" || row.status === "refunded") {
+        return;
+      }
+      console.log(row);
       if (bills.length > 0) {
         const billedOrder = bills.filter(
           (bill) => bill.woo_order_id === row.id

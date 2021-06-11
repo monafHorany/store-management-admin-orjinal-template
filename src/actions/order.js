@@ -48,8 +48,18 @@ export const fetchAllOrders = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ALL_ORDER_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };
 export const fetchAllNewBills = () => async (dispatch) => {
@@ -75,8 +85,18 @@ export const fetchAllNewBills = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ALL_BILLS_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };
 
@@ -103,8 +123,18 @@ export const fetchOrderDetailById = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ORDER_BY_ID_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };
 
@@ -135,11 +165,21 @@ export const processNewBill = (orderItem) => async (dispatch, getState) => {
       payload: data,
     });
   } catch (error) {
+    console.log(error);
     dispatch({
       type: PROCESS_NEW_BILL_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };
 export const removeBill = (id) => async (dispatch, getState) => {
@@ -169,8 +209,17 @@ export const removeBill = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: REMOVE_BILL_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };

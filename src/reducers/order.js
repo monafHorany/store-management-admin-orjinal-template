@@ -64,7 +64,10 @@ export const ProcessNewBillReducer = (state = {}, action) => {
       return state;
   }
 };
-export const FetchAllNewBillsReducer = (state = { loading: true }, action) => {
+export const FetchAllNewBillsReducer = (
+  state = { loading: true, bills: [] },
+  action
+) => {
   switch (action.type) {
     case FETCH_ALL_BILLS_REQUEST:
       return { loading: true };

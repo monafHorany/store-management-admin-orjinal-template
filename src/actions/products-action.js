@@ -49,11 +49,18 @@ export const createProduct = (product) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
-
-  }
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }  }
 };
 
 export const UpdateProduct = (id, product) => async (dispatch, getState) => {
@@ -85,11 +92,18 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_UPDATE_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
-
-  }
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }  }
 };
 
 export const deleteProduct = (id) => async (dispatch, getState) => {
@@ -121,11 +135,18 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_DELETE_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
-
-  }
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }  }
 };
 export const listProducts = () => async (dispatch) => {
   try {
@@ -142,8 +163,18 @@ export const listProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };
 
@@ -162,7 +193,17 @@ export const listProductsByStandId = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_BY_STAND_ID_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };

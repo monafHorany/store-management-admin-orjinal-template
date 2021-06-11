@@ -44,8 +44,18 @@ export const fetchAllStands = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_ALL_STAND_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };
 
@@ -73,8 +83,18 @@ export const fetchSingleStand = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_SINGLE_STAND_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };
 
@@ -109,10 +129,18 @@ export const addNewStand = (id, stand) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ADD_NEW_STAND_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
-  }
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }  }
 };
 
 export const updateStand = (id, stand) => async (dispatch, getState) => {
@@ -146,10 +174,18 @@ export const updateStand = (id, stand) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: UPDATE_STAND_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
-  }
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }  }
 };
 
 export const deleteStand = (id) => async (dispatch, getState) => {
@@ -182,8 +218,16 @@ export const deleteStand = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: DELETE_STAND_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
-  }
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }  }
 };

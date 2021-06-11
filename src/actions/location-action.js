@@ -42,9 +42,18 @@ export const locateProduct = (location) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: LOCATION_CREATE_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };
 export const editLocationQuantity =
@@ -77,9 +86,18 @@ export const editLocationQuantity =
     } catch (error) {
       dispatch({
         type: EDIT_LOCATION_FAIL,
-        payload: error.response,
+        payload: error.response.data,
       });
-      dispatch(logout());
+      if (
+        error.response.data === "Not authorized, token failed, Logging you out" ||
+        error.response.data === "Not authorized, no token, Logging you out" ||
+        error.response.data === "Not authorized as an admin, Logging you out" ||
+        error.response.data === "Not authorized as an editor, Logging you out"
+      ) {
+        setTimeout(() => {
+          dispatch(logout());
+        }, 3000);
+      }
     }
   };
 
@@ -111,8 +129,17 @@ export const deleteProductLocation = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: LOCATION_DELETE_FAIL,
-      payload: error.response,
+      payload: error.response.data,
     });
-    dispatch(logout());
+    if (
+      error.response.data === "Not authorized, token failed, Logging you out" ||
+      error.response.data === "Not authorized, no token, Logging you out" ||
+      error.response.data === "Not authorized as an admin, Logging you out" ||
+      error.response.data === "Not authorized as an editor, Logging you out"
+    ) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
   }
 };
