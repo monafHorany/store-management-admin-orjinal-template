@@ -60,7 +60,8 @@ export const createProduct = (product) => async (dispatch, getState) => {
       setTimeout(() => {
         dispatch(logout());
       }, 3000);
-    }  }
+    }
+  }
 };
 
 export const UpdateProduct = (id, product) => async (dispatch, getState) => {
@@ -89,6 +90,7 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
       type: PRODUCT_UPDATE_SUCCESS,
       payload: data,
     });
+    window.location.reload();
   } catch (error) {
     dispatch({
       type: PRODUCT_UPDATE_FAIL,
@@ -103,7 +105,8 @@ export const UpdateProduct = (id, product) => async (dispatch, getState) => {
       setTimeout(() => {
         dispatch(logout());
       }, 3000);
-    }  }
+    }
+  }
 };
 
 export const deleteProduct = (id) => async (dispatch, getState) => {
@@ -146,7 +149,8 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       setTimeout(() => {
         dispatch(logout());
       }, 3000);
-    }  }
+    }
+  }
 };
 export const listProducts = () => async (dispatch) => {
   try {

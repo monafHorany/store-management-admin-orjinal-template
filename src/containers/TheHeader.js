@@ -111,28 +111,30 @@ const TheHeader = () => {
               className="ml-3 d-md-down-none"
               onClick={toggleSidebar}
             />
-            {userInfo && userInfo.role === "super user" && (
-              <CTooltip
-                content="Add New Zone"
-                placement="bottom"
-                // className="ml-sm-auto"
-              >
-                <div
-                  className="ml-sm-auto ml-xs-auto mr-md-auto"
-                  onClick={() => onOpenModal()}
-                  style={{ margin: "10px" }}
+            {userInfo &&
+              (userInfo.role === "super user" ||
+                userInfo.role === "editor") && (
+                <CTooltip
+                  content="Add New Zone"
+                  placement="bottom"
+                  // className="ml-sm-auto"
                 >
-                  <i
-                    className="fas fa-map-marked-alt fa-3x"
-                    style={{
-                      textAlign: "center",
-                      padding: "0px",
-                      cursor: "pointer",
-                    }}
-                  ></i>{" "}
-                </div>
-              </CTooltip>
-            )}
+                  <div
+                    className="ml-sm-auto ml-xs-auto mr-md-auto"
+                    onClick={() => onOpenModal()}
+                    style={{ margin: "10px" }}
+                  >
+                    <i
+                      className="fas fa-map-marked-alt fa-3x"
+                      style={{
+                        textAlign: "center",
+                        padding: "0px",
+                        cursor: "pointer",
+                      }}
+                    ></i>{" "}
+                  </div>
+                </CTooltip>
+              )}
             <CHeaderNav className="d-md-down-none m-auto w-50">
               <Autocomplete
                 size="small"

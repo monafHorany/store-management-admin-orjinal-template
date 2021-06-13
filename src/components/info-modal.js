@@ -27,9 +27,11 @@ export function InfoModal({ modalShow, modalClose, productDetail, match }) {
   const [editLocationForm, setEditLocationForm] = useState(false);
   const LocationDeletion = useSelector((state) => state.removeLocation);
   const { success, error } = LocationDeletion;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const location = useSelector((state) => state.editLocation);
-  const { loading, success: editingSuccess } = location;
+  const { success: editingSuccess } = location;
   useEffect(() => {
     if (success && !error) {
       modalClose();
@@ -85,17 +87,19 @@ export function InfoModal({ modalShow, modalClose, productDetail, match }) {
                           {stand.location.quantity} pieces in{" "}
                           <strong>Zone</strong> {stand.location.zone_Symbol}{" "}
                           <strong>stand Number</strong> # {stand.stand_number}{" "}
-                          <i
-                            style={{
-                              marginLeft: "24px",
-                              color: "#FF0000",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              deleteLocation(stand.location.id);
-                            }}
-                            className="fas fa-trash-alt"
-                          ></i>
+                          {userInfo && userInfo.role === "super user" && (
+                            <i
+                              style={{
+                                marginLeft: "24px",
+                                color: "#FF0000",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => {
+                                deleteLocation(stand.location.id);
+                              }}
+                              className="fas fa-trash-alt"
+                            ></i>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -113,41 +117,44 @@ export function InfoModal({ modalShow, modalClose, productDetail, match }) {
                   </div>
                 )
               ) : productDetail.location ? (
-                <div style={{ display: "flex" }}>
-                  <CButton
-                    color="primary"
-                    className="mx-2"
-                    onClick={() => {
-                      setEditLocationForm(true);
-                    }}
-                  >
-                    Edit quantity{" "}
-                    <i
-                      style={{
-                        color: "#FFFFFF",
-                        cursor: "pointer",
+                userInfo &&
+                userInfo.role === "super user" && (
+                  <div style={{ display: "flex" }}>
+                    <CButton
+                      color="primary"
+                      className="mx-2"
+                      onClick={() => {
+                        setEditLocationForm(true);
                       }}
-                      className="fas fa-edit"
-                    ></i>
-                  </CButton>
-                  <CButton
-                    color="primary"
-                    className="mx-2"
-                    onClick={() => {
-                      deleteLocation(productDetail.location.id);
-                    }}
-                  >
-                    Remove
-                    <i
-                      style={{
-                        marginLeft: "8px",
-                        color: "#FFFFFF",
-                        cursor: "pointer",
+                    >
+                      Edit quantity{" "}
+                      <i
+                        style={{
+                          color: "#FFFFFF",
+                          cursor: "pointer",
+                        }}
+                        className="fas fa-edit"
+                      ></i>
+                    </CButton>
+                    <CButton
+                      color="primary"
+                      className="mx-2"
+                      onClick={() => {
+                        deleteLocation(productDetail.location.id);
                       }}
-                      className="fas fa-trash-alt"
-                    ></i>
-                  </CButton>
-                </div>
+                    >
+                      Remove
+                      <i
+                        style={{
+                          marginLeft: "8px",
+                          color: "#FFFFFF",
+                          cursor: "pointer",
+                        }}
+                        className="fas fa-trash-alt"
+                      ></i>
+                    </CButton>
+                  </div>
+                )
               ) : (
                 <div style={{ color: "#920110" }}>
                   Not added to any zone yet.{" "}

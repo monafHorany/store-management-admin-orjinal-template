@@ -1,11 +1,3 @@
-import {
-  CButton,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
-} from "@coreui/react";
 import { Button, Modal } from "react-bootstrap";
 import React from "react";
 export function BillInfoModal({
@@ -19,29 +11,6 @@ export function BillInfoModal({
   ok,
 }) {
   return (
-    // <CModal show={modalShow} onClose={modalClose} color={color} size={size}>
-    //   <CModalHeader closeButton>
-    //     <CModalTitle>{header} </CModalTitle>
-    //   </CModalHeader>
-    //   <CModalBody>{bodyText} </CModalBody>
-    //   {bottunFooter && !ok && (
-    //     <CModalFooter>
-    //       <CButton color="danger" onClick={confirmation}>
-    //         OK
-    //       </CButton>{" "}
-    //       <CButton color="secondary" onClick={cancelation}>
-    //         Cancel
-    //       </CButton>
-    //     </CModalFooter>
-    //   )}
-    //   {bottunFooter && ok && (
-    //     <CModalFooter>
-    //       <CButton color="success" onClick={ok}>
-    //         OK
-    //       </CButton>{" "}
-    //     </CModalFooter>
-    //   )}
-    // </CModal>
     <Modal
       show={modalShow}
       onHide={modalClose}

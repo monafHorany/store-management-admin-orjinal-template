@@ -11,22 +11,24 @@ import ScaleLoader from "react-spinners/ScaleLoader";
 import { CButton, CCol, CRow } from "@coreui/react";
 import { AlertModal } from "../components/alert-modal";
 import { Fragment } from "react";
+import { BillInfoModal } from "../components/bill-info";
+import { REMOVE_BILL_RESET } from "../constants/order-constants";
 
 const Bills = () => {
   const [alert, setAlert] = useState(false);
   const [bill_Id, setBillId] = useState();
+  const [info, setInfo] = useState(false);
+
   const history = useHistory();
 
   const { SearchBar } = Search;
 
   const dispatch = useDispatch();
-  const userList = useSelector((state) => state.userList);
-  const { loading, users } = userList;
 
   const allBills = useSelector((state) => state.AllBills);
-  const { loading: billsLoading, bills } = allBills;
+  const { bills } = allBills;
   const removedBill = useSelector((state) => state.removeBill);
-  const { loading: removeLoading, success } = removedBill;
+  const { loading: removeLoading, success, error } = removedBill;
 
   const columns = [
     {
@@ -131,7 +133,10 @@ const Bills = () => {
     if (success) {
       window.location.reload();
     }
-  }, [success]);
+    if (error) {
+      setInfo(true);
+    }
+  }, [error, success]);
 
   return (
     <Fragment>
@@ -161,6 +166,31 @@ const Bills = () => {
       >
         Are you sure?
       </AlertModal>
+
+      <BillInfoModal
+        modalShow={info}
+        color={success ? "success" : error ? "danger" : "primary"}
+        header={success ? "New bill Created" : "Some thing went wrong"}
+        bottunFooter
+        ok={() => {
+          setInfo(false);
+          dispatch({ type: REMOVE_BILL_RESET });
+          success
+            ? document.location.replace("/order")
+            : window.location.reload();
+        }}
+        bodyText={
+          error ? (
+            error
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: error,
+              }}
+            ></div>
+          )
+        }
+      />
     </Fragment>
   );
 };

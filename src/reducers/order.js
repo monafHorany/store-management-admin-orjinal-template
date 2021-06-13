@@ -86,7 +86,7 @@ export const RemoveSingleBillReducer = (state = { loading: false }, action) => {
     case REMOVE_BILL_REQUEST:
       return { loading: true };
     case REMOVE_BILL_SUCCESS:
-      return { loading: false, success: true, bills: action.payload };
+      return { loading: false, success: true, message: action.payload };
     case REMOVE_BILL_FAIL:
       return { loading: false, error: action.payload };
     case REMOVE_BILL_RESET:

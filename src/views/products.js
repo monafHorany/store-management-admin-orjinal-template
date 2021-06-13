@@ -144,21 +144,23 @@ const Products = ({ history }) => {
                           ></i>{" "}
                           Add To Zone
                         </p>
-                        <p
-                          style={{ margin: "0", padding: "14px" }}
-                          onMouseEnter={() => {
-                            setProductDetail(product);
-                          }}
-                          onClick={() => {
-                            onOpenEditModal();
-                          }}
-                        >
-                          <i
-                            className="fas fa-edit"
-                            style={{ padding: ".5rem" }}
-                          ></i>{" "}
-                          Edit
-                        </p>
+                        {userInfo.role === "super user" && (
+                          <p
+                            style={{ margin: "0", padding: "14px" }}
+                            onMouseEnter={() => {
+                              setProductDetail(product);
+                            }}
+                            onClick={() => {
+                              onOpenEditModal();
+                            }}
+                          >
+                            <i
+                              className="fas fa-edit"
+                              style={{ padding: ".5rem" }}
+                            ></i>{" "}
+                            Edit
+                          </p>
+                        )}
                       </div>
                     </div>
                   )}
