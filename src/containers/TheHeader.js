@@ -41,7 +41,7 @@ const TheHeader = () => {
 
   const [searchValue, setSearchValue] = useState("");
 
-  const [zone_symbol, setZone_symbol] = useState("");
+  const [zone_label, setZone_label] = useState("");
   const [zone_capacity, setZone_capacity] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("Search By SKU");
@@ -68,12 +68,12 @@ const TheHeader = () => {
   const onCloseModal = () => setOpenModal(false);
 
   const formSumbit = () => {
-    if (!zone_symbol) {
-      alert("zone symbol can't be blank");
+    if (!zone_label) {
+      alert("zone label can't be blank");
     } else if (!zone_capacity) {
       alert("zone capacity can't be blank");
     } else {
-      dispatch(addNewZones({ zone_symbol, zone_capacity }));
+      dispatch(addNewZones({ zone_label, zone_capacity }));
     }
   };
 
@@ -87,7 +87,7 @@ const TheHeader = () => {
   useEffect(() => {
     if (success) {
       setOpenModal(false);
-      setZone_symbol("");
+      setZone_label("");
       setZone_capacity("");
     }
 
@@ -215,10 +215,10 @@ const TheHeader = () => {
                             </CInputGroupText>
                           </CInputGroupPrepend>
                           <CInput
-                            onChange={(e) => setZone_symbol(e.target.value)}
+                            onChange={(e) => setZone_label(e.target.value)}
                             type="text"
-                            value={zone_symbol}
-                            placeholder="Zone Symbol"
+                            value={zone_label}
+                            placeholder="Zone label"
                             autoComplete="new-password"
                           />
                         </CInputGroup>

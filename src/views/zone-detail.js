@@ -28,18 +28,18 @@ const ZoneDetail = ({ match, history }) => {
   const { loading, zone } = zone_detail;
   const createdStand = useSelector((state) => state.standCreate);
   const { success, error } = createdStand;
-  const [stand_number, setStand_number] = useState("");
+  const [stand_label, setStand_label] = useState("");
   const [stand_capacity, setStand_capacity] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const onOpenModal = () => setOpenModal(true);
   const onCloseModal = () => setOpenModal(false);
   const formSumbit = () => {
-    if (!stand_number) {
-      alert("Stand Number can't be blank");
+    if (!stand_label) {
+      alert("Stand label can't be blank");
     } else if (!stand_capacity) {
       alert("Stand capacity can't be blank");
     } else {
-      dispatch(addNewStand(match.params.id, { stand_number, stand_capacity }));
+      dispatch(addNewStand(match.params.id, { stand_label, stand_capacity }));
     }
   };
   const [show, setShow] = useState(false);
@@ -48,7 +48,7 @@ const ZoneDetail = ({ match, history }) => {
   useEffect(() => {
     if (success) {
       setOpenModal(false);
-      setStand_number("");
+      setStand_label("");
       setStand_capacity("");
     } else if (error) {
       setShow(true);
@@ -97,7 +97,7 @@ const ZoneDetail = ({ match, history }) => {
                 <CCard>
                   <CCardHeader>
                     <Link to={`/stand/${stand.id}`}>
-                      Stand # {stand.stand_number}
+                      Stand # {stand.stand_label}
                     </Link>
                   </CCardHeader>
                   <CCardBody>
@@ -108,7 +108,7 @@ const ZoneDetail = ({ match, history }) => {
                       </span>
                     </p>
                     <p style={{ color: "green" }}>
-                      number of products:{" "}
+                      Number of products:{" "}
                       <span style={{ color: "black" }}>
                         {stand.products.reduce(
                           (acc, item) => acc + item.location.quantity,
@@ -182,10 +182,10 @@ const ZoneDetail = ({ match, history }) => {
                         </CInputGroupText>
                       </CInputGroupPrepend>
                       <CInput
-                        onChange={(e) => setStand_number(e.target.value)}
+                        onChange={(e) => setStand_label(e.target.value)}
                         type="text"
-                        value={stand_number}
-                        placeholder="Stand Number"
+                        value={stand_label}
+                        placeholder="Stand label"
                         autoComplete="new-password"
                       />
                     </CInputGroup>

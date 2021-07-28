@@ -23,7 +23,7 @@ const TheSidebar = () => {
     convertedZones = zones.map((zone) => ({
       _tag: "CSidebarNavItem",
       icon: "cil-location-pin",
-      name: `Zone ${zone.zone_symbol}`,
+      name: `Zone ${zone.zone_label}`,
       to: `/zone/${zone.id}`,
     }));
   } else {

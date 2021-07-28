@@ -1,5 +1,6 @@
 import React from "react";
 import { TheContent, TheSidebar, TheHeader } from "./index";
+import TheFooter from "./TheFooter";
 
 const TheLayout = () => {
   return (
@@ -10,6 +11,7 @@ const TheLayout = () => {
         <div className="c-body">
           <TheContent />
         </div>
+        <TheFooter />
       </div>
     </div>
   );

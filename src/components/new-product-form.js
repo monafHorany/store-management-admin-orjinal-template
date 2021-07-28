@@ -135,7 +135,7 @@ export function NewProductForm({ openModal, closeModal }) {
                       <CInput
                         required
                         onChange={(e) => setProduct_barcode(e.target.value)}
-                        type="number"
+                        type="text"
                         value={_barcode}
                         placeholder="product barcode"
                       />

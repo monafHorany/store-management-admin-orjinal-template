@@ -101,7 +101,7 @@ export const LocationForm = ({ modalShow, modalClose, productDetail }) => {
                         <option></option>
                         {zones.map((zone, index) => (
                           <option key={index} value={zone.id}>
-                            Zone {zone.zone_symbol}
+                            Zone {zone.zone_label}
                           </option>
                         ))}
                       </CSelect>
@@ -125,48 +125,52 @@ export const LocationForm = ({ modalShow, modalClose, productDetail }) => {
                         }}
                       >
                         <option></option>
-                        {zones[zoneId - 1].stands.map((stand, index) => (
-                          <option
-                            key={index}
-                            value={stand.id}
-                            style={{
-                              color:
+                        {zones
+                          .filter((zone) => +zone.id === +zoneId)[0]
+                          .stands.map((stand, index) => (
+                            <option
+                              key={index}
+                              value={stand.id}
+                              style={{
+                                color:
+                                  +stand.stand_capacity -
+                                    stand.products.reduce(
+                                      (acc, item) =>
+                                        acc + item.location.quantity,
+                                      0
+                                    ) ===
+                                    0 && "red",
+                              }}
+                              disabled={
                                 +stand.stand_capacity -
                                   stand.products.reduce(
                                     (acc, item) => acc + item.location.quantity,
                                     0
                                   ) ===
-                                  0 && "red",
-                            }}
-                            disabled={
-                              +stand.stand_capacity -
+                                  0 ||
+                                quantity >
+                                  +stand.stand_capacity -
+                                    stand.products.reduce(
+                                      (acc, item) =>
+                                        acc + item.location.quantity,
+                                      0
+                                    )
+                              }
+                            >
+                              {stand.stand_label} available places{" "}
+                              {+stand.stand_capacity -
+                                stand.products.reduce(
+                                  (acc, item) => acc + item.location.quantity,
+                                  0
+                                )}
+                              {+stand.stand_capacity -
                                 stand.products.reduce(
                                   (acc, item) => acc + item.location.quantity,
                                   0
                                 ) ===
-                                0 ||
-                              quantity >
-                                +stand.stand_capacity -
-                                  stand.products.reduce(
-                                    (acc, item) => acc + item.location.quantity,
-                                    0
-                                  )
-                            }
-                          >
-                            {stand.stand_number} available places{" "}
-                            {+stand.stand_capacity -
-                              stand.products.reduce(
-                                (acc, item) => acc + item.location.quantity,
-                                0
-                              )}
-                            {+stand.stand_capacity -
-                              stand.products.reduce(
-                                (acc, item) => acc + item.location.quantity,
-                                0
-                              ) ===
-                              0 && " full"}
-                          </option>
-                        ))}
+                                0 && " full"}
+                            </option>
+                          ))}
                       </CSelect>
                     </CCol>
                   </CFormGroup>

@@ -85,8 +85,8 @@ export function InfoModal({ modalShow, modalClose, productDetail, match }) {
                       {productDetail.stands.map((stand) => (
                         <li key={stand.id} style={{ position: "relative" }}>
                           {stand.location.quantity} pieces in{" "}
-                          <strong>Zone</strong> {stand.location.zone_Symbol}{" "}
-                          <strong>stand Number</strong> # {stand.stand_number}{" "}
+                          <strong>Zone</strong> {stand.location.zone_label}{" "}
+                          <strong>stand Number</strong> # {stand.stand_label}{" "}
                           {userInfo && userInfo.role === "super user" && (
                             <i
                               style={{

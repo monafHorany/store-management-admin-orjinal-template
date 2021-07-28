@@ -16,15 +16,18 @@ import { EditProductForm } from "../components/edit-product-form";
 // import { DeleteFrom } from "../../components/delete-form";
 import { InfoModal } from "../components/info-modal";
 import { LocationForm } from "../components/location-form";
+import { Toast } from "react-bootstrap";
 const Products = ({ history }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   // const [danger, setDanger] = useState(false);
   const [info, setInfo] = useState(false);
+  const [show, setShow] = useState(false);
+
   const [locationForm, setLocationForm] = useState(false);
   const [productDetail, setProductDetail] = useState("");
   const productCreate = useSelector((state) => state.productCreate);
-  const { success } = productCreate;
+  const { success, error } = productCreate;
   const productUpdate = useSelector((state) => state.productUpdate);
   const { success: updateSuccess } = productUpdate;
   const productDelete = useSelector((state) => state.productDelete);
@@ -56,8 +59,12 @@ const Products = ({ history }) => {
     if (locationAddSuccess) {
       setLocationForm(false);
     }
+    if (error) {
+      setShow(true);
+    }
   }, [
     deleteSuccess,
+    error,
     history,
     locationAddSuccess,
     success,
@@ -144,23 +151,25 @@ const Products = ({ history }) => {
                           ></i>{" "}
                           Add To Zone
                         </p>
-                        {userInfo.role === "super user" && (
-                          <p
-                            style={{ margin: "0", padding: "14px" }}
-                            onMouseEnter={() => {
-                              setProductDetail(product);
-                            }}
-                            onClick={() => {
-                              onOpenEditModal();
-                            }}
-                          >
-                            <i
-                              className="fas fa-edit"
-                              style={{ padding: ".5rem" }}
-                            ></i>{" "}
-                            Edit
-                          </p>
-                        )}
+                        {userInfo &&
+                          (userInfo.role === "super user" ||
+                            userInfo.role === "editor") && (
+                            <p
+                              style={{ margin: "0", padding: "14px" }}
+                              onMouseEnter={() => {
+                                setProductDetail(product);
+                              }}
+                              onClick={() => {
+                                onOpenEditModal();
+                              }}
+                            >
+                              <i
+                                className="fas fa-edit"
+                                style={{ padding: ".5rem" }}
+                              ></i>{" "}
+                              Edit
+                            </p>
+                          )}
                       </div>
                     </div>
                   )}
@@ -198,6 +207,33 @@ const Products = ({ history }) => {
         modalClose={() => setLocationForm(false)}
         productDetail={productDetail}
       />
+      <Toast
+        style={{
+          color: "white",
+          backgroundColor: "red",
+          width: "20vw",
+          height: "10vh",
+          textAlign: "center",
+          position: "absolute",
+          top: 100,
+          right: 0,
+        }}
+        onClose={() => setShow(false)}
+        show={show}
+        delay={3000}
+        autohide
+        animation={true}
+      >
+        <Toast.Body
+          style={{
+            padding: "1.75rem",
+            fontStyle: "italic",
+            fontWeight: "bold",
+          }}
+        >
+          {error && error.message}
+        </Toast.Body>
+      </Toast>
     </>
   );
 };
